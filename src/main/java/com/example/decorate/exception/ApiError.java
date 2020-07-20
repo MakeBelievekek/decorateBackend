@@ -1,4 +1,4 @@
-package com.progmasters.reactblog.exception;
+package com.example.decorate.exception;
 
 public class ApiError {
     private String errorCode;

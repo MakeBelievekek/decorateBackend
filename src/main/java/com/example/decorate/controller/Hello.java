@@ -16,7 +16,4 @@ public class Hello {
     public ResponseEntity<String> greetings() {
         return new ResponseEntity<>("hello world", OK);
     }
-
-
-
 }
