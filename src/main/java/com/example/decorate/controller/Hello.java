@@ -11,9 +11,12 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/hello")
 public class Hello {
 
+
     @GetMapping
-    public ResponseEntity<String> getOrcFormData() {
-        return new ResponseEntity<>("Hello world!", OK);
+    public ResponseEntity<String> greetings() {
+        return new ResponseEntity<>("hello world", OK);
     }
+
+
 
 }
