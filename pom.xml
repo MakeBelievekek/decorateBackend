@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>decorate</artifactId>
+	<artifactId>decorateBackend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>decorate</name>
+	<name>decorateBackend</name>
 	<description>project for decorating webshop</description>
 
 	<properties>
