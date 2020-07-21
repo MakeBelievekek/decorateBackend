@@ -1,11 +1,16 @@
 package com.example.decorate.domain.dto;
 
 public class ProductFormData {
+
     String productName;
     String productDesc;
     String productCategory;
+    Long categoryId;
     String productImg;
 
+    public Long getCategoryId() {
+        return categoryId;
+    }
 
     public String getProductName() {
         return productName;
