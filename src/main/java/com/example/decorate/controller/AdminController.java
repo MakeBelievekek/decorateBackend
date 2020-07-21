@@ -30,7 +30,7 @@ public class AdminController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/categories/getAll")
     public ResponseEntity<List<CategoryListItem>> getAllCategory() {
 
         return new ResponseEntity<>(this.categoryService.getAll(), HttpStatus.OK);
