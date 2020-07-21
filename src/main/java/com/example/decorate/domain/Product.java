@@ -1,6 +1,7 @@
 package com.example.decorate.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Product {
@@ -22,6 +23,8 @@ public class Product {
     @Column(name = "image")
     private String imgUrl;
 
+    @OneToMany(mappedBy = "product")
+    private List<ProductCategoryListItem> productCategoryListItems;
 
     public Long getId() {
         return id;
