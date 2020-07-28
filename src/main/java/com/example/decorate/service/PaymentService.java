@@ -1,6 +1,9 @@
 package com.example.decorate.service;
 
-import com.example.decorate.domain.dto.*;
+import com.example.decorate.domain.dto.Items;
+import com.example.decorate.domain.dto.PaymentData;
+import com.example.decorate.domain.dto.ShippingAddress;
+import com.example.decorate.domain.dto.Transactions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +37,7 @@ public class PaymentService {
 
         String url = "https://api.test.barion.com/v2/Payment/Start";
         ObjectMapper mapper = new ObjectMapper();
-        String funding[] = {"All"};
+        String[] funding = {"All"};
         List<Items> itemArray = new ArrayList<>();
         Items items = new Items();
         items.setName("Digital Camera");
@@ -81,16 +84,19 @@ public class PaymentService {
         paymentData.setCurrency("HUF");
         paymentData.setPaymentWindow("00:30:00");
         paymentData.setTransactions(transactionsArray);
+
         String message = mapper.writeValueAsString(paymentData);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
         HttpEntity<String> httpEntity = new HttpEntity<>(message, headers);
         ResponseEntity<String> responseEntity = this.restTemplate.postForEntity(url, httpEntity, String.class);
-        System.out.println(responseEntity.getBody());
+
         JsonNode jsonNode = mapper.readTree(Objects.requireNonNull(responseEntity.getBody()));
         String jsonUrl = jsonNode.get("GatewayUrl").asText();
-        System.out.println(jsonUrl);
+
 
         return responseEntity;
     }

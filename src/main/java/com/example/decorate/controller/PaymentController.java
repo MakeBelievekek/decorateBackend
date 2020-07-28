@@ -22,6 +22,6 @@ public class PaymentController {
 
     @GetMapping
     public ResponseEntity getResult() throws JsonProcessingException {
-        return new ResponseEntity(this.paymentService.payment(),HttpStatus.ACCEPTED);
+        return new ResponseEntity(this.paymentService.payment(), HttpStatus.ACCEPTED);
     }
 }
