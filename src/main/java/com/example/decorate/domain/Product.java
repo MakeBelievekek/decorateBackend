@@ -23,8 +23,12 @@ public class Product {
     @Column(name = "image")
     private String imgUrl;
 
+    @Column(name = "price")
+    private String price;
+
     @OneToMany(mappedBy = "product")
     private List<ProductCategoryListItem> productCategoryListItems;
+
 
     public Long getId() {
         return id;
@@ -64,5 +68,13 @@ public class Product {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

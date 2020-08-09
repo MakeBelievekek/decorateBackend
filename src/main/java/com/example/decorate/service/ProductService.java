@@ -4,14 +4,17 @@ import com.example.decorate.domain.Category;
 import com.example.decorate.domain.Product;
 import com.example.decorate.domain.ProductCategoryListItem;
 import com.example.decorate.domain.dto.ProductFormData;
+import com.example.decorate.domain.dto.ProductListItem;
 import com.example.decorate.repository.CategoryRepository;
 import com.example.decorate.repository.ProductCategoryListItemRepository;
 import com.example.decorate.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -44,5 +47,18 @@ public class ProductService {
             ProductCategoryListItem productCategoryListItem = new ProductCategoryListItem(product, category.get());
             productCategoryListItemRepository.save(productCategoryListItem);
         }
+    }
+
+    public List<ProductListItem> getProductsFromLocal(String productIds) {
+        String[] ids = productIds.split(",");
+        List<Long> productsLong = new ArrayList<>();
+        List<ProductListItem> products = new ArrayList<>();
+        for (int i = 0; i < ids.length; i++) {
+            productsLong.add(Long.parseLong(ids[i]));
+        }
+        for (long id : productsLong) {
+            products.add(productRepository.getProdListItem(id));
+        }
+        return products;
     }
 }
