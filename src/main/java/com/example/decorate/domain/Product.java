@@ -24,7 +24,7 @@ public class Product {
     private String imgUrl;
 
     @Column(name = "price")
-    private String price;
+    private Integer price;
 
     @OneToMany(mappedBy = "product")
     private List<ProductCategoryListItem> productCategoryListItems;
@@ -70,11 +70,11 @@ public class Product {
         this.imgUrl = imgUrl;
     }
 
-    public String getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 }

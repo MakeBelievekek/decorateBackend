@@ -6,7 +6,7 @@ public class ProductListItem {
 
     Long id;
     String productDesc;
-    String price;
+    Integer price;
     String productImg;
 
     public ProductListItem() {
@@ -19,7 +19,7 @@ public class ProductListItem {
         this.productImg = product.getImgUrl();
     }
 
-    public ProductListItem(Long id, String productDesc, String price, String productImg) {
+    public ProductListItem(Long id, String productDesc, Integer price, String productImg) {
         this.id = id;
         this.productDesc = productDesc;
         this.price = price;
@@ -34,7 +34,7 @@ public class ProductListItem {
         return productDesc;
     }
 
-    public String getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
