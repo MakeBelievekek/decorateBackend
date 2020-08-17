@@ -1,12 +1,13 @@
 package com.example.decorate.domain.dto;
 
+import com.example.decorate.domain.Image;
 import com.example.decorate.domain.KeyHolder;
 
 import java.util.List;
 
 public class WallpaperFormData {
 
-    private KeyHolder key;
+
     private String name;
     private String productDesc;
     private int itemNumber;
@@ -15,10 +16,8 @@ public class WallpaperFormData {
     private int price;
     private String composition;
     private List<AttributeListItemData> attributeListItemData;
+    private List<Image> imageList;
 
-    public KeyHolder getKey() {
-        return key;
-    }
 
     public List<AttributeListItemData> getAttributeListItemData() {
         return attributeListItemData;
@@ -28,8 +27,12 @@ public class WallpaperFormData {
         this.attributeListItemData = attributeListItemData;
     }
 
-    public void setKey(KeyHolder key) {
-        this.key = key;
+    public List<Image> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
     }
 
     public String getName() {
@@ -86,5 +89,19 @@ public class WallpaperFormData {
 
     public void setComposition(String composition) {
         this.composition = composition;
+    }
+
+    @Override
+    public String toString() {
+        return "WallpaperFormData{" +
+                "name='" + name + '\'' +
+                ", productDesc='" + productDesc + '\'' +
+                ", itemNumber=" + itemNumber +
+                ", width=" + width +
+                ", patternRep=" + patternRep +
+                ", price=" + price +
+                ", composition='" + composition + '\'' +
+                ", attributeListItemData=" + attributeListItemData +
+                '}';
     }
 }

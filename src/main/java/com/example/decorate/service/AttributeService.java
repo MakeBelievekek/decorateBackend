@@ -37,7 +37,6 @@ public class AttributeService {
 
     public void saveAttributeListItem(List<AttributeListItemData> attributeListItemDataList, Long prodId) {
         for (AttributeListItemData attributeListItemData : attributeListItemDataList) {
-
             Optional<Attribute> optAttribute = attributeRepository.findById(attributeListItemData.getId());
             Optional<KeyHolder> keyHolder = keyHolderRepository.findById(prodId);
             if (optAttribute.isPresent()) {

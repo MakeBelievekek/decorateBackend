@@ -1,5 +1,6 @@
 package com.example.decorate.domain;
 
+/*
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,3 +30,4 @@ public class CategoryListItem {
     }
 
 }
+*/

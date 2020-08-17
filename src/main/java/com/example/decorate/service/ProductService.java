@@ -1,3 +1,4 @@
+/*
 package com.example.decorate.service;
 
 import com.example.decorate.domain.Category;
@@ -44,8 +45,10 @@ public class ProductService {
     public void saveProductCategoryListItem(Product product, Long id) {
         Optional<Category> category = categoryRepository.findById(id);
         if (category.isPresent()) {
-          /*  CategoryListItem categoryListItem = new CategoryListItem(product, category.get());
-            productCategoryListItemRepository.save(categoryListItem);*/
+          */
+/*  CategoryListItem categoryListItem = new CategoryListItem(product, category.get());
+            productCategoryListItemRepository.save(categoryListItem);*//*
+
         }
     }
 
@@ -64,3 +67,4 @@ public class ProductService {
         return products;
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.example.decorate.controller;
 
 import com.example.decorate.domain.dto.ProductListItem;
@@ -33,3 +34,4 @@ public class ProductController {
 
 
 }
+*/

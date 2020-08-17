@@ -21,8 +21,6 @@ public class KeyHolder {
     @OneToMany(mappedBy = "key")
     private List<AttributeListItem> attributeListItems;
 
-    @OneToMany(mappedBy = "keyHolder")
-    private List<CategoryListItem> categoryListItemList;
 
     public Long getId() {
         return id;
@@ -48,11 +46,4 @@ public class KeyHolder {
         this.attributeListItems = attributeListItems;
     }
 
-    public List<CategoryListItem> getCategoryListItemList() {
-        return categoryListItemList;
-    }
-
-    public void setCategoryListItemList(List<CategoryListItem> categoryListItemList) {
-        this.categoryListItemList = categoryListItemList;
-    }
 }
