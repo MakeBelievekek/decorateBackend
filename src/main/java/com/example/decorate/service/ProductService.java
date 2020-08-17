@@ -2,7 +2,7 @@ package com.example.decorate.service;
 
 import com.example.decorate.domain.Category;
 import com.example.decorate.domain.Product;
-import com.example.decorate.domain.ProductCategoryListItem;
+import com.example.decorate.domain.CategoryListItem;
 import com.example.decorate.domain.dto.ProductFormData;
 import com.example.decorate.domain.dto.ProductListItem;
 import com.example.decorate.repository.CategoryRepository;
@@ -44,8 +44,8 @@ public class ProductService {
     public void saveProductCategoryListItem(Product product, Long id) {
         Optional<Category> category = categoryRepository.findById(id);
         if (category.isPresent()) {
-            ProductCategoryListItem productCategoryListItem = new ProductCategoryListItem(product, category.get());
-            productCategoryListItemRepository.save(productCategoryListItem);
+          /*  CategoryListItem categoryListItem = new CategoryListItem(product, category.get());
+            productCategoryListItemRepository.save(categoryListItem);*/
         }
     }
 

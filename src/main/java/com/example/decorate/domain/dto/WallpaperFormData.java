@@ -1,66 +1,31 @@
-package com.example.decorate.domain;
+package com.example.decorate.domain.dto;
 
-import com.example.decorate.domain.dto.WallpaperFormData;
+import com.example.decorate.domain.KeyHolder;
 
-import javax.persistence.*;
+import java.util.List;
 
-@Entity
-public class Wallpaper {
+public class WallpaperFormData {
 
-    @Id
-    @Column(name = "id")
-    private Long id;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "key_id")
     private KeyHolder key;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = " description")
     private String productDesc;
-
-    @Column(name = "itemNo")
     private int itemNumber;
-
-    @Column(name = "width")
     private int width;
-
-    @Column(name = "pattern")
     private int patternRep;
-
-    @Column(name = "price")
     private int price;
-
-    @Column(name = "composition")
     private String composition;
-
-    public Wallpaper() {
-    }
-
-    public Wallpaper(WallpaperFormData wallpaperFormData, KeyHolder keyHolder) {
-        this.key = keyHolder;
-        this.id = keyHolder.getId();
-        this.name = wallpaperFormData.getName();
-        this.productDesc = wallpaperFormData.getProductDesc();
-        this.itemNumber = wallpaperFormData.getItemNumber();
-        this.width = wallpaperFormData.getWidth();
-        this.patternRep = wallpaperFormData.getPatternRep();
-        this.price = wallpaperFormData.getPrice();
-        this.composition = wallpaperFormData.getComposition();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private List<AttributeListItemData> attributeListItemData;
 
     public KeyHolder getKey() {
         return key;
+    }
+
+    public List<AttributeListItemData> getAttributeListItemData() {
+        return attributeListItemData;
+    }
+
+    public void setAttributeListItemData(List<AttributeListItemData> attributeListItemData) {
+        this.attributeListItemData = attributeListItemData;
     }
 
     public void setKey(KeyHolder key) {

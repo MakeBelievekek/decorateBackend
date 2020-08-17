@@ -26,8 +26,7 @@ public class Product {
     @Column(name = "price")
     private Integer price;
 
-    @OneToMany(mappedBy = "product")
-    private List<ProductCategoryListItem> productCategoryListItems;
+
 
 
     public Long getId() {

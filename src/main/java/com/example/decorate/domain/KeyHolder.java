@@ -1,19 +1,28 @@
 package com.example.decorate.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@Data
 public class KeyHolder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "key_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private Enum type;
+    private ProductType type;
 
+    @OneToMany(mappedBy = "key")
+    private List<AttributeListItem> attributeListItems;
+
+    @OneToMany(mappedBy = "keyHolder")
+    private List<CategoryListItem> categoryListItemList;
 
     public Long getId() {
         return id;
@@ -23,11 +32,27 @@ public class KeyHolder {
         this.id = id;
     }
 
-    public Enum getType() {
+    public ProductType getType() {
         return type;
     }
 
-    public void setType(Enum type) {
+    public void setType(ProductType type) {
         this.type = type;
+    }
+
+    public List<AttributeListItem> getAttributeListItems() {
+        return attributeListItems;
+    }
+
+    public void setAttributeListItems(List<AttributeListItem> attributeListItems) {
+        this.attributeListItems = attributeListItems;
+    }
+
+    public List<CategoryListItem> getCategoryListItemList() {
+        return categoryListItemList;
+    }
+
+    public void setCategoryListItemList(List<CategoryListItem> categoryListItemList) {
+        this.categoryListItemList = categoryListItemList;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.decorate.service;
 
 import com.example.decorate.domain.KeyHolder;
+import com.example.decorate.domain.Product;
 import com.example.decorate.domain.ProductType;
 import com.example.decorate.repository.KeyHolderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,8 @@ public class KeyHolderService {
         this.keyHolderRepository = keyHolderRepository;
     }
 
-    public KeyHolder saveKey() {
-
-        KeyHolder keyHolder = new KeyHolder();
-        keyHolder.setType(ProductType.WALLPAPER);
+    public KeyHolder saveKey(KeyHolder keyHolder, ProductType productType) {
+        keyHolder.setType(productType);
         keyHolderRepository.save(keyHolder);
         return keyHolder;
     }

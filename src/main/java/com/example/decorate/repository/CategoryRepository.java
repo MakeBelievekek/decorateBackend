@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    @Query("SELECT new com.example.decorate.domain.dto.CategoryListItem(c.id,c.name,c.type) " +
+   /* @Query("SELECT new com.example.decorate.domain.dto.CategoryListItem(c.id,c.name,c.type) " +
             "FROM Category as c")
-    List<CategoryListItem> listOfAllCategories();
+    List<CategoryListItem> listOfAllCategories();*/
 }

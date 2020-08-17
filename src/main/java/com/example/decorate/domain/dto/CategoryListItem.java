@@ -8,11 +8,7 @@ public class CategoryListItem {
     String name;
     String type;
 
-    public CategoryListItem(Category category) {
-        this.id = category.getId();
-        this.name = category.getName();
-        this.type = category.getType();
-    }
+
 
     public CategoryListItem(Long id, String name, String type) {
         this.id = id;
