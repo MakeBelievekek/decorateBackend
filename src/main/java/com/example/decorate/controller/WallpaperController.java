@@ -36,6 +36,7 @@ public class WallpaperController {
         keyHolderService.saveKey(keyholder, ProductType.WALLPAPER);
         wallpaperService.saveWallpaper(wallpaperFormData, keyholder);
         attributeService.saveAttributeListItem(wallpaperFormData.getAttributeListItemData(), keyholder.getId());
+        imageService.saveImage(wallpaperFormData.getImageList(), keyholder.getId());
         return new WallpaperFormData();
     }
 

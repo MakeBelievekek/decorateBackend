@@ -36,6 +36,12 @@ public class Wallpaper {
     @Column(name = "composition")
     private String composition;
 
+    private String productFamily;
+
+    private String annotation;
+
+    private String recommendedGlue;
+
     public Wallpaper() {
     }
 
@@ -49,6 +55,9 @@ public class Wallpaper {
         this.patternRep = wallpaperFormData.getPatternRep();
         this.price = wallpaperFormData.getPrice();
         this.composition = wallpaperFormData.getComposition();
+        this.productFamily = wallpaperFormData.getProductFamily();
+        this.annotation = wallpaperFormData.getAnnotation();
+        this.recommendedGlue = wallpaperFormData.getRecommendedGlue();
     }
 
     public Long getId() {
@@ -121,5 +130,29 @@ public class Wallpaper {
 
     public void setComposition(String composition) {
         this.composition = composition;
+    }
+
+    public String getProductFamily() {
+        return productFamily;
+    }
+
+    public void setProductFamily(String productFamily) {
+        this.productFamily = productFamily;
+    }
+
+    public String getAnnotation() {
+        return annotation;
+    }
+
+    public void setAnnotation(String annotation) {
+        this.annotation = annotation;
+    }
+
+    public String getRecommendedGlue() {
+        return recommendedGlue;
+    }
+
+    public void setRecommendedGlue(String recommendedGlue) {
+        this.recommendedGlue = recommendedGlue;
     }
 }

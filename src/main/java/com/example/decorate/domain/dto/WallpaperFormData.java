@@ -1,8 +1,4 @@
 package com.example.decorate.domain.dto;
-
-import com.example.decorate.domain.Image;
-import com.example.decorate.domain.KeyHolder;
-
 import java.util.List;
 
 public class WallpaperFormData {
@@ -16,7 +12,10 @@ public class WallpaperFormData {
     private int price;
     private String composition;
     private List<AttributeListItemData> attributeListItemData;
-    private List<Image> imageList;
+    private List<ImageData> imageList;
+    private String productFamily;
+    private String annotation;
+    private String recommendedGlue;
 
 
     public List<AttributeListItemData> getAttributeListItemData() {
@@ -27,11 +26,11 @@ public class WallpaperFormData {
         this.attributeListItemData = attributeListItemData;
     }
 
-    public List<Image> getImageList() {
+    public List<ImageData> getImageList() {
         return imageList;
     }
 
-    public void setImageList(List<Image> imageList) {
+    public void setImageList(List<ImageData> imageList) {
         this.imageList = imageList;
     }
 
@@ -91,17 +90,29 @@ public class WallpaperFormData {
         this.composition = composition;
     }
 
-    @Override
-    public String toString() {
-        return "WallpaperFormData{" +
-                "name='" + name + '\'' +
-                ", productDesc='" + productDesc + '\'' +
-                ", itemNumber=" + itemNumber +
-                ", width=" + width +
-                ", patternRep=" + patternRep +
-                ", price=" + price +
-                ", composition='" + composition + '\'' +
-                ", attributeListItemData=" + attributeListItemData +
-                '}';
+    public String getProductFamily() {
+        return productFamily;
     }
+
+    public void setProductFamily(String productFamily) {
+        this.productFamily = productFamily;
+    }
+
+    public String getAnnotation() {
+        return annotation;
+    }
+
+    public void setAnnotation(String annotation) {
+        this.annotation = annotation;
+    }
+
+    public String getRecommendedGlue() {
+        return recommendedGlue;
+    }
+
+    public void setRecommendedGlue(String recommendedGlue) {
+        this.recommendedGlue = recommendedGlue;
+    }
+
+
 }
