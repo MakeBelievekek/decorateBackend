@@ -1,6 +1,7 @@
 package com.example.decorate.service;
 
 import com.example.decorate.domain.Image;
+import com.example.decorate.domain.ProductType;
 import com.example.decorate.domain.dto.ImageData;
 import com.example.decorate.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,10 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    public void saveImage(List<ImageData> images,Long prodId) {
+    public void saveImage(List<ImageData> images, Long prodId, ProductType type) {
         for (ImageData imageData : images) {
             Image image = new Image(imageData);
+            image.setProductType(type);
             image.setProdKey(prodId);
             imageRepository.save(image);
         }

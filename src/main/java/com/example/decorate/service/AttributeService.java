@@ -4,7 +4,9 @@ import com.example.decorate.domain.Attribute;
 import com.example.decorate.domain.AttributeListItem;
 import com.example.decorate.domain.KeyHolder;
 import com.example.decorate.domain.dto.AttributeFormData;
+import com.example.decorate.domain.dto.AttributeFormListItem;
 import com.example.decorate.domain.dto.AttributeListItemData;
+import com.example.decorate.domain.dto.FormData;
 import com.example.decorate.repository.AttributeListItemRepository;
 import com.example.decorate.repository.AttributeRepository;
 import com.example.decorate.repository.KeyHolderRepository;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +49,14 @@ public class AttributeService {
                 }
             }
         }
+    }
+
+    public FormData getAll() {
+        List<AttributeFormListItem> attributeFormListItems = new ArrayList<>();
+        for (Attribute attribute : attributeRepository.findAll()) {
+            attributeFormListItems.add(new AttributeFormListItem(attribute));
+        }
+        return new FormData(attributeFormListItems);
     }
 
 }

@@ -34,11 +34,6 @@ public class Image {
                 this.imageType = imageType;
             }
         }
-        for (ProductType productType : ProductType.values()) {
-            if (productType.toString().equals(imageData.getProductType())) {
-                this.productType = productType;
-            }
-        }
         this.imgUrl = imageData.getImgUrl();
     }
 

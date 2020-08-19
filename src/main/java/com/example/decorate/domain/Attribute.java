@@ -21,9 +21,6 @@ public class Attribute {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "attribute")
-    private List<AttributeListItem> attributeListItems;
-
     public Attribute() {
     }
 
@@ -35,8 +32,6 @@ public class Attribute {
         }
         this.description = attributeFormData.getDescription();
     }
-
-
     public Long getId() {
         return id;
     }
@@ -61,11 +56,12 @@ public class Attribute {
         this.description = description;
     }
 
-    public List<AttributeListItem> getAttributeListItems() {
-        return attributeListItems;
-    }
-
-    public void setAttributeListItems(List<AttributeListItem> attributeListItems) {
-        this.attributeListItems = attributeListItems;
+    @Override
+    public String toString() {
+        return "Attribute{" +
+                "id=" + id +
+                ", type=" + type +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
