@@ -1,14 +1,18 @@
 package com.example.decorate.service;
 
 
-import com.example.decorate.domain.KeyHolder;
-import com.example.decorate.domain.Wallpaper;
-import com.example.decorate.domain.dto.WallpaperFormData;
+import com.example.decorate.domain.*;
+import com.example.decorate.domain.dto.ImageData;
+import com.example.decorate.domain.dto.ProductFormData;
+import com.example.decorate.domain.dto.ProductListItem;
+import com.example.decorate.repository.ImageRepository;
 import com.example.decorate.repository.WallpaperRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,19 +20,30 @@ import java.util.Optional;
 
 public class WallpaperService {
     private WallpaperRepository wallpaperRepository;
+    private ImageRepository imageRepository;
 
     @Autowired
-    public WallpaperService(WallpaperRepository wallpaperRepository) {
+    public WallpaperService(WallpaperRepository wallpaperRepository, ImageRepository imageRepository) {
         this.wallpaperRepository = wallpaperRepository;
+        this.imageRepository = imageRepository;
     }
 
 
-    public void saveWallpaper(WallpaperFormData wallpaperFormData,KeyHolder keyHolder) {
-        Wallpaper wallpaper = new Wallpaper(wallpaperFormData,keyHolder);
+    public void saveWallpaper(ProductFormData productFormData, KeyHolder keyHolder) {
+        Wallpaper wallpaper = new Wallpaper(productFormData, keyHolder);
         wallpaperRepository.save(wallpaper);
-
     }
 
+    public ProductListItem getWallpaper(KeyHolder keyHolder) {
+
+        Optional<Wallpaper> wallpaper = wallpaperRepository.findById(keyHolder.getId());
+        if (wallpaper.isPresent()) {
+            ImageData image = new ImageData(imageRepository.findByProdKeyAndImageType(keyHolder.getId(), ImageType.PRIMARY_KEY));
+            return new ProductListItem(wallpaper.get(), image);
+        } else {
+            return null;
+        }
+    }
 
 
 }

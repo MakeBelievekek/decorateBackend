@@ -10,7 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT new com.example.decorate.domain.dto.ProductListItem(p.id,p.productDesc,p.price,p.imgUrl) " +
-            "FROM Product as p where p.id =:productId ")
-    ProductListItem getProdListItem(@Param("productId") Long id);
+
 }

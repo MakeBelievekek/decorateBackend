@@ -1,6 +1,6 @@
 package com.example.decorate.domain;
 
-import com.example.decorate.domain.dto.WallpaperFormData;
+import com.example.decorate.domain.dto.ProductFormData;
 
 import javax.persistence.*;
 
@@ -45,19 +45,19 @@ public class Wallpaper {
     public Wallpaper() {
     }
 
-    public Wallpaper(WallpaperFormData wallpaperFormData, KeyHolder keyHolder) {
+    public Wallpaper(ProductFormData productFormData, KeyHolder keyHolder) {
         this.key = keyHolder;
         this.id = keyHolder.getId();
-        this.name = wallpaperFormData.getName();
-        this.productDesc = wallpaperFormData.getProductDesc();
-        this.itemNumber = wallpaperFormData.getItemNumber();
-        this.width = wallpaperFormData.getWidth();
-        this.patternRep = wallpaperFormData.getPatternRep();
-        this.price = wallpaperFormData.getPrice();
-        this.composition = wallpaperFormData.getComposition();
-        this.productFamily = wallpaperFormData.getProductFamily();
-        this.annotation = wallpaperFormData.getAnnotation();
-        this.recommendedGlue = wallpaperFormData.getRecommendedGlue();
+        this.name = productFormData.getName();
+        this.productDesc = productFormData.getProductDesc();
+        this.itemNumber = productFormData.getItemNumber();
+        this.width = productFormData.getWidth();
+        this.patternRep = productFormData.getPatternRep();
+        this.price = productFormData.getPrice();
+        this.composition = productFormData.getComposition();
+        this.productFamily = productFormData.getProductFamily();
+        this.annotation = productFormData.getAnnotation();
+        this.recommendedGlue = productFormData.getRecommendedGlue();
     }
 
     public Long getId() {

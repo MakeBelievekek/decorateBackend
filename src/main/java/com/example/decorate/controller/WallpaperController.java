@@ -2,7 +2,7 @@ package com.example.decorate.controller;
 
 import com.example.decorate.domain.KeyHolder;
 import com.example.decorate.domain.ProductType;
-import com.example.decorate.domain.dto.WallpaperFormData;
+import com.example.decorate.domain.dto.ProductFormData;
 import com.example.decorate.service.AttributeService;
 import com.example.decorate.service.ImageService;
 import com.example.decorate.service.KeyHolderService;
@@ -31,13 +31,14 @@ public class WallpaperController {
     }
 
     @PostMapping
-    public WallpaperFormData saveWallpaper(@RequestBody WallpaperFormData wallpaperFormData) {
+    public ProductFormData saveWallpaper(@RequestBody ProductFormData productFormData) {
+        System.out.println(productFormData);
         KeyHolder keyholder = new KeyHolder();
         keyHolderService.saveKey(keyholder, ProductType.WALLPAPER);
-        wallpaperService.saveWallpaper(wallpaperFormData, keyholder);
-        attributeService.saveAttributeListItem(wallpaperFormData.getAttributeListItemData(), keyholder.getId());
-        imageService.saveImage(wallpaperFormData.getImageList(), keyholder.getId(),ProductType.WALLPAPER);
-        return new WallpaperFormData();
+        wallpaperService.saveWallpaper(productFormData, keyholder);
+        attributeService.saveAttributeListItem(productFormData.getAttributeListItemData(), keyholder.getId());
+        imageService.saveImage(productFormData.getImageList(), keyholder.getId(),ProductType.WALLPAPER);
+        return new ProductFormData();
     }
 
 

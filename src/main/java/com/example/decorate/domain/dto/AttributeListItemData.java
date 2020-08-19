@@ -1,13 +1,20 @@
 package com.example.decorate.domain.dto;
 
 public class AttributeListItemData {
-    Long id;
+    int id;
 
-    public Long getId() {
+    public AttributeListItemData() {
+    }
+
+    public AttributeListItemData(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setIds(Long id) {
+    public void setIds(int id) {
         this.id = id;
     }
 }

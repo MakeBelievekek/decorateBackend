@@ -1,44 +1,66 @@
 package com.example.decorate.domain.dto;
 
-import com.example.decorate.domain.Product;
+import com.example.decorate.domain.Wallpaper;
+
+import java.util.List;
 
 public class ProductListItem {
 
-    Long id;
-    String productDesc;
-    Integer price;
-    String productImg;
+    private Long id;
+    private String productDesc;
+    private int itemNumber;
+    private int price;
+    private String image;
 
     public ProductListItem() {
     }
 
-    public ProductListItem(Product product) {
-        this.id = product.getId();
-        this.productDesc = product.getProductDesc();
-        this.price = product.getPrice();
-        this.productImg = product.getImgUrl();
+    public ProductListItem(Wallpaper wallpaper, ImageData image) {
+        this.id = wallpaper.getId();
+        this.productDesc = wallpaper.getProductDesc();
+        this.itemNumber = wallpaper.getItemNumber();
+        this.price = wallpaper.getPrice();
+        this.image = image.getImgUrl();
     }
 
-    public ProductListItem(Long id, String productDesc, Integer price, String productImg) {
-        this.id = id;
-        this.productDesc = productDesc;
-        this.price = price;
-        this.productImg = productImg;
-    }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getProductDesc() {
         return productDesc;
     }
 
-    public Integer getPrice() {
+    public void setProductDesc(String productDesc) {
+        this.productDesc = productDesc;
+    }
+
+    public int getItemNumber() {
+        return itemNumber;
+    }
+
+    public void setItemNumber(int itemNumber) {
+        this.itemNumber = itemNumber;
+    }
+
+    public int getPrice() {
         return price;
     }
 
-    public String getProductImg() {
-        return productImg;
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
