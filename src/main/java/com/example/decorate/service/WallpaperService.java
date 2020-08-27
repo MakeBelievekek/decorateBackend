@@ -1,7 +1,9 @@
 package com.example.decorate.service;
 
 
-import com.example.decorate.domain.*;
+import com.example.decorate.domain.ImageType;
+import com.example.decorate.domain.KeyHolder;
+import com.example.decorate.domain.Wallpaper;
 import com.example.decorate.domain.dto.ImageData;
 import com.example.decorate.domain.dto.ProductFormData;
 import com.example.decorate.domain.dto.ProductListItem;
@@ -11,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service

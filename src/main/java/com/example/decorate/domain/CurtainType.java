@@ -1,11 +1,11 @@
 package com.example.decorate.domain;
 
-public enum AttributeType {
-    COLOR("Color"), PATTERN("Pattern"), STYLE("Style"), COMPOSITION("Composition");
+public enum CurtainType {
+    BLACKOUT("Blackout"), CHILDREN("Children"), TRANSLUCENT("Translucent"), DARKENER("Darkener");
 
     private String type;
 
-    AttributeType(String type) {
+    CurtainType(String type) {
         this.type = type;
     }
 

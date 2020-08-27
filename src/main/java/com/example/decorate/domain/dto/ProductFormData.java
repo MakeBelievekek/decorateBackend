@@ -1,4 +1,5 @@
 package com.example.decorate.domain.dto;
+
 import java.util.List;
 
 public class ProductFormData {
@@ -8,9 +9,12 @@ public class ProductFormData {
     private String productDesc;
     private int itemNumber;
     private int width;
+    private int height;
     private int patternRep;
     private int price;
     private String composition;
+    private String curtainType;
+    private String cleaningInst;
     private List<AttributeListItemData> attributeListItemData;
     private List<ImageData> imageList;
     private String productFamily;
@@ -24,6 +28,30 @@ public class ProductFormData {
 
     public void setAttributeListItemData(List<AttributeListItemData> attributeListItemData) {
         this.attributeListItemData = attributeListItemData;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public String getCurtainType() {
+        return curtainType;
+    }
+
+    public void setCurtainType(String curtainType) {
+        this.curtainType = curtainType;
+    }
+
+    public String getCleaningInst() {
+        return cleaningInst;
+    }
+
+    public void setCleaningInst(String cleaningInst) {
+        this.cleaningInst = cleaningInst;
     }
 
     public List<ImageData> getImageList() {
