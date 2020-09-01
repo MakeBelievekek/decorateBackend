@@ -22,7 +22,7 @@ public class Wallpaper {
     private String productDesc;
 
     @Column(name = "itemNo")
-    private int itemNumber;
+    private String itemNumber;
 
     @Column(name = "width")
     private int width;
@@ -92,11 +92,11 @@ public class Wallpaper {
         this.productDesc = productDesc;
     }
 
-    public int getItemNumber() {
+    public String getItemNumber() {
         return itemNumber;
     }
 
-    public void setItemNumber(int itemNumber) {
+    public void setItemNumber(String itemNumber) {
         this.itemNumber = itemNumber;
     }
 

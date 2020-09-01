@@ -1,9 +1,5 @@
 package com.example.decorate.domain.dto;
 
-import com.example.decorate.domain.AttributeType;
-import lombok.Data;
-
-
 public class AttributeFormData {
 
 
@@ -24,5 +20,13 @@ public class AttributeFormData {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "AttributeFormData{" +
+                "type='" + type + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

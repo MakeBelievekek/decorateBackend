@@ -7,7 +7,7 @@ public class ProductFormData {
 
     private String name;
     private String productDesc;
-    private int itemNumber;
+    private String itemNumber;
     private int width;
     private int height;
     private int patternRep;
@@ -78,11 +78,11 @@ public class ProductFormData {
         this.productDesc = productDesc;
     }
 
-    public int getItemNumber() {
+    public String getItemNumber() {
         return itemNumber;
     }
 
-    public void setItemNumber(int itemNumber) {
+    public void setItemNumber(String itemNumber) {
         this.itemNumber = itemNumber;
     }
 

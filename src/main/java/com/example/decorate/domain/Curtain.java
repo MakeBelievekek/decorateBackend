@@ -26,7 +26,7 @@ public class Curtain {
     private int height;
 
     @Column(name = "itemNo")
-    private int itemNumber;
+    private String itemNumber;
     @Column(name = "pattern")
     private int patternRep;
 
@@ -110,11 +110,11 @@ public class Curtain {
         this.height = height;
     }
 
-    public int getItemNumber() {
+    public String getItemNumber() {
         return itemNumber;
     }
 
-    public void setItemNumber(int itemNumber) {
+    public void setItemNumber(String itemNumber) {
         this.itemNumber = itemNumber;
     }
 

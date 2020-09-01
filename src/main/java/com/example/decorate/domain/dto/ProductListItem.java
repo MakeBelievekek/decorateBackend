@@ -8,7 +8,7 @@ public class ProductListItem {
 
     private Long id;
     private String productDesc;
-    private int itemNumber;
+    private String itemNumber;
     private int price;
     private String image;
 
@@ -40,11 +40,11 @@ public class ProductListItem {
         this.productDesc = productDesc;
     }
 
-    public int getItemNumber() {
+    public String getItemNumber() {
         return itemNumber;
     }
 
-    public void setItemNumber(int itemNumber) {
+    public void setItemNumber(String itemNumber) {
         this.itemNumber = itemNumber;
     }
 

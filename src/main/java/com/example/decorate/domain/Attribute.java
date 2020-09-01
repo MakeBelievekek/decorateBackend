@@ -26,7 +26,7 @@ public class Attribute {
 
     public Attribute(AttributeFormData attributeFormData) {
         for (AttributeType attributeType : AttributeType.values()) {
-            if (attributeType.toString().equals(attributeFormData.getType())) {
+            if (attributeType.getType().equals(attributeFormData.getType())) {
                 this.type = attributeType;
             }
         }
