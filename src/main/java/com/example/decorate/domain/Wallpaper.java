@@ -3,6 +3,7 @@ package com.example.decorate.domain;
 import com.example.decorate.domain.dto.ProductFormData;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 public class Wallpaper {
@@ -41,6 +42,8 @@ public class Wallpaper {
     private String annotation;
 
     private String recommendedGlue;
+    @Column(name = "date")
+    private java.sql.Date date;
 
     public Wallpaper() {
     }
@@ -154,5 +157,13 @@ public class Wallpaper {
 
     public void setRecommendedGlue(String recommendedGlue) {
         this.recommendedGlue = recommendedGlue;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
