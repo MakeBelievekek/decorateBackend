@@ -2,11 +2,13 @@ package com.example.decorate.controller;
 
 import com.example.decorate.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/home")
@@ -21,6 +23,9 @@ public class HomeController {
 
     @GetMapping
     public ResponseEntity getAllHomeImage() {
-        return new ResponseEntity(homeService.getAllHomeImg(), HttpStatus.OK);
+        CacheControl cacheControl = CacheControl.maxAge(31536000, TimeUnit.SECONDS)
+                .noTransform()
+                .mustRevalidate();
+        return ResponseEntity.ok().cacheControl(cacheControl).body(homeService.getAllHomeImg());
     }
 }

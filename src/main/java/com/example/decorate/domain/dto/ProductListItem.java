@@ -1,12 +1,15 @@
 package com.example.decorate.domain.dto;
 
+import com.example.decorate.domain.Curtain;
 import com.example.decorate.domain.Wallpaper;
+import lombok.Data;
 
-import java.util.List;
-
+@Data
 public class ProductListItem {
 
     private Long id;
+    private String name;
+    private String typeOfSize;
     private String productDesc;
     private String itemNumber;
     private int price;
@@ -21,46 +24,17 @@ public class ProductListItem {
         this.itemNumber = wallpaper.getItemNumber();
         this.price = wallpaper.getPrice();
         this.image = image.getImgUrl();
+        this.name = wallpaper.getName();
     }
 
-
-    public Long getId() {
-        return id;
+    public ProductListItem(Curtain curtain, ImageData image) {
+        this.id = curtain.getId();
+        this.productDesc = curtain.getProductDesc();
+        this.itemNumber = curtain.getItemNumber();
+        this.price = curtain.getPrice();
+        this.image = image.getImgUrl();
+        this.name = curtain.getName();
+        this.typeOfSize = curtain.getTypeOfSize();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getProductDesc() {
-        return productDesc;
-    }
-
-    public void setProductDesc(String productDesc) {
-        this.productDesc = productDesc;
-    }
-
-    public String getItemNumber() {
-        return itemNumber;
-    }
-
-    public void setItemNumber(String itemNumber) {
-        this.itemNumber = itemNumber;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 }

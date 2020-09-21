@@ -1,10 +1,12 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ProductFormData;
+import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
+@Data
 public class Curtain {
 
     @Id
@@ -22,8 +24,8 @@ public class Curtain {
     private String productDesc;
     @Column(name = "curtain_type")
     private CurtainType curtainType;
-    @Column(name = "height")
-    private int height;
+    @Column(name = "width")
+    private int width;
 
     @Column(name = "itemNo")
     private String itemNumber;
@@ -40,6 +42,8 @@ public class Curtain {
     @Column(name = "cleaning")
     private String cleaningInst;
 
+    private String typeOfSize;
+
     public Curtain() {
     }
 
@@ -54,7 +58,7 @@ public class Curtain {
         }
         this.productDesc = productFormData.getProductDesc();
         this.itemNumber = productFormData.getItemNumber();
-        this.height = productFormData.getHeight();
+        this.width = productFormData.getHeight();
         this.patternRep = productFormData.getPatternRep();
         this.price = productFormData.getPrice();
         this.composition = productFormData.getComposition();
@@ -62,99 +66,5 @@ public class Curtain {
         this.cleaningInst = productFormData.getCleaningInst();
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public KeyHolder getKey() {
-        return key;
-    }
-
-    public void setKey(KeyHolder key) {
-        this.key = key;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getProductDesc() {
-        return productDesc;
-    }
-
-    public void setProductDesc(String productDesc) {
-        this.productDesc = productDesc;
-    }
-
-    public CurtainType getType() {
-        return curtainType;
-    }
-
-    public void setType(CurtainType curtainType) {
-        this.curtainType = curtainType;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public String getItemNumber() {
-        return itemNumber;
-    }
-
-    public void setItemNumber(String itemNumber) {
-        this.itemNumber = itemNumber;
-    }
-
-    public int getPatternRep() {
-        return patternRep;
-    }
-
-    public void setPatternRep(int patternRep) {
-        this.patternRep = patternRep;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getComposition() {
-        return composition;
-    }
-
-    public void setComposition(String composition) {
-        this.composition = composition;
-    }
-
-    public String getProductFamily() {
-        return productFamily;
-    }
-
-    public void setProductFamily(String productFamily) {
-        this.productFamily = productFamily;
-    }
-
-    public String getCleaningInst() {
-        return cleaningInst;
-    }
-
-    public void setCleaningInst(String cleaningInst) {
-        this.cleaningInst = cleaningInst;
-    }
 }

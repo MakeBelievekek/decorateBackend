@@ -23,6 +23,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000", "http://localhost:4200")
                 .allowedMethods("GET", "POST", "DELETE", "PUT");
+
     }
 
 }

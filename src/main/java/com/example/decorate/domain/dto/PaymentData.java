@@ -1,5 +1,7 @@
 package com.example.decorate.domain.dto;
 
+import com.example.decorate.domain.ShippingDetails;
+
 import java.util.List;
 
 public class PaymentData {
@@ -11,7 +13,7 @@ public class PaymentData {
     String PaymentRequestId;
     String OrderNumber;
     String PayerHint;
-    ShippingAddress ShippingAddress;
+    ShippingDetails ShippingAddress;
     String RedirectUrl;
     String CallbackUrl;
     String Locale;
@@ -82,12 +84,12 @@ public class PaymentData {
         PayerHint = payerHint;
     }
 
-    public com.example.decorate.domain.dto.ShippingAddress getShippingAddress() {
+    public ShippingDetails getShippingDetails() {
         return ShippingAddress;
     }
 
-    public void setShippingAddress(com.example.decorate.domain.dto.ShippingAddress shippingAddress) {
-        ShippingAddress = shippingAddress;
+    public void setShippingDetails(ShippingDetails ShippingAddress) {
+        ShippingAddress = ShippingAddress;
     }
 
     public String getRedirectUrl() {

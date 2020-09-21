@@ -3,31 +3,17 @@ package com.example.decorate.domain;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+@Embeddable
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = " description")
-    private String productDesc;
+    private String quantity;
 
-    @Column(name = "category")
-    private String productCategory;
-
-    @Column(name = "image")
-    private String imgUrl;
-
-    @Column(name = "price")
     private Integer price;
-
-
-
 
     public Long getId() {
         return id;
@@ -45,28 +31,12 @@ public class Product {
         this.name = name;
     }
 
-    public String getProductDesc() {
-        return productDesc;
+    public String getQuantity() {
+        return quantity;
     }
 
-    public void setProductDesc(String productDesc) {
-        this.productDesc = productDesc;
-    }
-
-    public String getProductCategory() {
-        return productCategory;
-    }
-
-    public void setProductCategory(String productCategory) {
-        this.productCategory = productCategory;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 
     public Integer getPrice() {
