@@ -60,9 +60,7 @@ public class KeyHolderService {
         List<KeyHolder> keys = new ArrayList<>();
         for (Long aLong : itemId) {
             Optional<KeyHolder> keyHolder = this.keyHolderRepository.findById(aLong);
-            if (keyHolder.isPresent()) {
-                keys.add(keyHolder.get());
-            }
+            keyHolder.ifPresent(keys::add);
         }
         return keys;
     }
@@ -85,7 +83,26 @@ public class KeyHolderService {
                 }
             }
         }
-        System.out.println("itt vagyok");
         return items;
     }
+
+    public ProductListItem getProd(Long id) {
+        Optional<KeyHolder> keyHolder = this.keyHolderRepository.findById(id);
+        if (keyHolder.isPresent()) {
+            if (keyHolder.get().getType() == ProductType.WALLPAPER) {
+                Optional<Wallpaper> wallpaper = this.wallpaperRepository.findById(keyHolder.get().getId());
+                if (wallpaper.isPresent()) {
+                    return new ProductListItem(wallpaper.get());
+                }
+            }
+            if (keyHolder.get().getType() == ProductType.CURTAIN) {
+                Optional<Curtain> curtain = this.curtainRepository.findById(keyHolder.get().getId());
+                if (curtain.isPresent()) {
+                    return new ProductListItem(curtain.get());
+                }
+            }
+        }
+        return null;
+    }
+
 }

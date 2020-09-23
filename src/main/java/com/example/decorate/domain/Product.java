@@ -1,9 +1,23 @@
 package com.example.decorate.domain;
 
-import javax.persistence.*;
-import java.util.List;
+import com.example.decorate.domain.dto.ProductListItem;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.FetchMode;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.annotations.Fetch;
+
+
+import javax.persistence.Embeddable;
+
 
 @Embeddable
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class Product {
 
 
@@ -11,39 +25,18 @@ public class Product {
 
     private String name;
 
-    private String quantity;
+    private Integer quantity;
 
     private Integer price;
 
-    public Long getId() {
-        return id;
-    }
+    private String itemNumber;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
+    public Product(ProductListItem productListItem, Integer qty) {
+        this.name = productListItem.getName();
+        this.quantity = qty;
+        this.price = productListItem.getPrice();
+        this.itemNumber = productListItem.getItemNumber();
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
     }
 }

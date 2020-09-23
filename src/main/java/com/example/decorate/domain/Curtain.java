@@ -26,7 +26,8 @@ public class Curtain {
     private CurtainType curtainType;
     @Column(name = "width")
     private int width;
-
+    @Column(name = "height")
+    private int height;
     @Column(name = "itemNo")
     private String itemNumber;
     @Column(name = "pattern")
@@ -58,7 +59,8 @@ public class Curtain {
         }
         this.productDesc = productFormData.getProductDesc();
         this.itemNumber = productFormData.getItemNumber();
-        this.width = productFormData.getHeight();
+        this.width = productFormData.getWidth();
+        this.height = productFormData.getHeight();
         this.patternRep = productFormData.getPatternRep();
         this.price = productFormData.getPrice();
         this.composition = productFormData.getComposition();

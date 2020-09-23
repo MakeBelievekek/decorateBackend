@@ -1,11 +1,12 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ProductFormData;
+import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Entity
+@Data
 public class Wallpaper {
 
     @Id
@@ -27,6 +28,8 @@ public class Wallpaper {
 
     @Column(name = "width")
     private int width;
+
+    private int height;
 
     @Column(name = "pattern")
     private int patternRep;
@@ -55,6 +58,7 @@ public class Wallpaper {
         this.productDesc = productFormData.getProductDesc();
         this.itemNumber = productFormData.getItemNumber();
         this.width = productFormData.getWidth();
+        this.height = productFormData.getHeight();
         this.patternRep = productFormData.getPatternRep();
         this.price = productFormData.getPrice();
         this.composition = productFormData.getComposition();
@@ -63,107 +67,4 @@ public class Wallpaper {
         this.recommendedGlue = productFormData.getRecommendedGlue();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public KeyHolder getKey() {
-        return key;
-    }
-
-    public void setKey(KeyHolder key) {
-        this.key = key;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getProductDesc() {
-        return productDesc;
-    }
-
-    public void setProductDesc(String productDesc) {
-        this.productDesc = productDesc;
-    }
-
-    public String getItemNumber() {
-        return itemNumber;
-    }
-
-    public void setItemNumber(String itemNumber) {
-        this.itemNumber = itemNumber;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getPatternRep() {
-        return patternRep;
-    }
-
-    public void setPatternRep(int patternRep) {
-        this.patternRep = patternRep;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getComposition() {
-        return composition;
-    }
-
-    public void setComposition(String composition) {
-        this.composition = composition;
-    }
-
-    public String getProductFamily() {
-        return productFamily;
-    }
-
-    public void setProductFamily(String productFamily) {
-        this.productFamily = productFamily;
-    }
-
-    public String getAnnotation() {
-        return annotation;
-    }
-
-    public void setAnnotation(String annotation) {
-        this.annotation = annotation;
-    }
-
-    public String getRecommendedGlue() {
-        return recommendedGlue;
-    }
-
-    public void setRecommendedGlue(String recommendedGlue) {
-        this.recommendedGlue = recommendedGlue;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
 }

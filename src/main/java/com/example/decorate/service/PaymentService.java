@@ -1,11 +1,14 @@
 package com.example.decorate.service;
 
-import com.example.decorate.domain.ShippingDetails;
+import com.example.decorate.domain.OrderHistory;
+import com.example.decorate.domain.PaymentHistory;
 import com.example.decorate.domain.dto.*;
 import com.example.decorate.domain.dto.order.ItemAndQty;
 import com.example.decorate.domain.dto.order.OrderDto;
 import com.example.decorate.domain.dto.order.ShippingOrderDto;
 import com.example.decorate.domain.dto.order.UserOrderDto;
+import com.example.decorate.repository.OrderHistoryRepository;
+import com.example.decorate.repository.PaymentHistoryRepository;
 import com.example.decorate.repository.ShippingOptionRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -31,10 +34,16 @@ public class PaymentService {
     private final RestTemplate restTemplate;
     private ShippingOptionRepository shippingOptionRepository;
     private final String startUrl = "https://api.test.barion.com/v2/Payment/Start";
+    private OrderService orderService;
+    private PaymentHistoryRepository paymentHistoryRepository;
+    private OrderHistoryRepository orderHistoryRepository;
 
-    public PaymentService(RestTemplateBuilder restTemplateBuilder, ShippingOptionRepository shippingOptionRepository) {
+    public PaymentService(RestTemplateBuilder restTemplateBuilder, ShippingOptionRepository shippingOptionRepository, OrderService orderService, PaymentHistoryRepository paymentHistoryRepository, OrderHistoryRepository orderHistoryRepository) {
         this.restTemplate = restTemplateBuilder.build();
         this.shippingOptionRepository = shippingOptionRepository;
+        this.orderService = orderService;
+        this.paymentHistoryRepository = paymentHistoryRepository;
+        this.orderHistoryRepository = orderHistoryRepository;
     }
 
     public String generatePaymentId() {
@@ -49,6 +58,10 @@ public class PaymentService {
     public String generateOrderId() {
         String uniqueID = UUID.randomUUID().toString();
         return uniqueID;
+    }
+
+    public void saveOrderInformation() {
+
     }
 
     public List<AptListItem> getAtp() throws JsonProcessingException {
@@ -95,10 +108,9 @@ public class PaymentService {
         return itemArray;
     }
 
-    public ShippingDetails createShippingAddress(ShippingOrderDto shippingOrderDto, UserOrderDto userOrderDto) {
+    public ShippingOrder createShippingAddress(ShippingOrderDto shippingOrderDto, UserOrderDto userOrderDto) {
 
-        ShippingDetails shippingAddress = new ShippingDetails(shippingOrderDto, userOrderDto);
-        return shippingAddress;
+        return new ShippingOrder(shippingOrderDto, userOrderDto);
     }
 
     public List<Transactions> createTransactionArray(List<Items> items) {
@@ -117,19 +129,30 @@ public class PaymentService {
         return transactionsArray;
     }
 
-    public String processOrder(OrderDto orderDto, List<ProductListItem> products) throws JsonProcessingException {
-        String paymentId = generatePaymentId();
+    public List<OrderHistory> test() {
+
+        List<OrderHistory> orderHistory;
+        orderHistory = this.orderHistoryRepository.findAll();
+        orderHistory.forEach(orderHistory1 -> orderHistory1.getProducts());
+        System.out.println(orderHistory);
+        return orderHistory;
+    }
+
+    public ResponseEntity processOrder(OrderDto orderDto, List<ProductListItem> products, String orderId, String paymentId, Long orderDatabaseId) throws JsonProcessingException {
+
         String[] funding = {"All"};
         String url = "https://api.test.barion.com/v2/Payment/Start";
-
+     /*   PaymentHistory paymentHistory = this.paymentHistoryRepository.findByOrderHistory(orderDatabaseId);
+        paymentHistory.setPaymentRequestId(paymentId);
+        System.out.println(paymentHistory);*/
         PaymentData paymentData = new PaymentData();
         paymentData.setPOSKey("5bdaeb94f3a44cdd91a644b73354fc63");
         paymentData.setPaymentType("Immediate");
         paymentData.setGuestCheckout(true);
         paymentData.setFundingSources(funding);
         paymentData.setPaymentRequestId(paymentId);
-        paymentData.setOrderNumber(generateOrderId());
-        paymentData.setShippingDetails(createShippingAddress(orderDto.getShipping(), orderDto.getUser()));
+        paymentData.setOrderNumber(orderId);
+        paymentData.setShippingAddress(null);
         paymentData.setRedirectUrl("http://localhost:4200/");
         paymentData.setCallbackUrl("http://localhost:4200/basket");
         paymentData.setLocale("hu-HU");
@@ -147,11 +170,8 @@ public class PaymentService {
         HttpEntity<String> httpEntity = new HttpEntity<>(message, headers);
         ResponseEntity<String> responseEntity = this.restTemplate.postForEntity(url, httpEntity, String.class);
 
-
-        JsonNode jsonNode = mapper.readTree(Objects.requireNonNull(responseEntity.getBody()));
-        String jsonUrl = jsonNode.get("GatewayUrl").asText();
-
-        return jsonUrl;
+        System.out.println(responseEntity);
+        return responseEntity;
     }
 
  /*   public ResponseEntity<String> payment() throws JsonProcessingException {
