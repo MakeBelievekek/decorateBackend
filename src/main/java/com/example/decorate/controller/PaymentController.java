@@ -61,7 +61,7 @@ public class PaymentController {
     }
 
     @PostMapping("/orderRequest")
-    public ResponseEntity makeOrder(@RequestBody OrderDto orderDto) throws JsonProcessingException {
+    public ResponseEntity makeOrder(@RequestBody OrderDto orderDto) {
         String orderId = this.paymentService.generateOrderId();
         this.orderService.saveOrder(orderDto, orderId);
         return new ResponseEntity(HttpStatus.OK);
@@ -69,12 +69,25 @@ public class PaymentController {
 
     @PostMapping("/order")
     public ResponseEntity saveOrder(@RequestBody OrderDto orderDto) {
-        return new ResponseEntity(HttpStatus.ACCEPTED);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/test")
     public List<OrderHistory> test() {
 
         return this.paymentService.test();
+    }
+
+    @PostMapping("/paymentComplete")
+    public ResponseEntity complete(@RequestBody String paymentId) {
+        this.paymentService.completeOrder(paymentId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/barion")
+    public ResponseEntity checkBarionPayment(@RequestParam (name="paymentId") String id) {
+        System.out.println("első állomás");
+        System.out.println(id);
+        return new ResponseEntity(this.paymentService.barionProcessing(id), HttpStatus.OK);
     }
 }

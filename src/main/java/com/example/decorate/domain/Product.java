@@ -4,11 +4,6 @@ import com.example.decorate.domain.dto.ProductListItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.FetchMode;
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
-import org.hibernate.annotations.Fetch;
-
 
 import javax.persistence.Embeddable;
 
@@ -17,11 +12,7 @@ import javax.persistence.Embeddable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Product {
-
-
-    private Long id;
 
     private String name;
 
@@ -37,6 +28,5 @@ public class Product {
         this.quantity = qty;
         this.price = productListItem.getPrice();
         this.itemNumber = productListItem.getItemNumber();
-
     }
 }

@@ -25,10 +25,7 @@ public class ShippingOptionService {
 
     public List<ShippingOptionListItem> getAllOption() {
         List<ShippingOptionListItem> options = new ArrayList<>();
-
-
         for (ShippingOption shippingOption : this.shippingOptionRepository.findAll()) {
-            //this.shippingOptionRepository.findAllPaymentOption(shippingOption.getId());//
             options.add(new ShippingOptionListItem(shippingOption));
         }
         return options;

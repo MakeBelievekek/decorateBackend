@@ -2,6 +2,7 @@ package com.example.decorate.service;
 
 import com.example.decorate.domain.OrderHistory;
 import com.example.decorate.domain.PaymentHistory;
+import com.example.decorate.domain.PaymentStatus;
 import com.example.decorate.domain.dto.*;
 import com.example.decorate.domain.dto.order.ItemAndQty;
 import com.example.decorate.domain.dto.order.OrderDto;
@@ -113,7 +114,7 @@ public class PaymentService {
         return new ShippingOrder(shippingOrderDto, userOrderDto);
     }
 
-    public List<Transactions> createTransactionArray(List<Items> items) {
+    public List<Transactions> createTransactionArray(List<Items> items, int shippingPrice) {
         int totalPrice = 0;
         List<Transactions> transactionsArray = new ArrayList<>();
         Transactions transactions = new Transactions();
@@ -123,7 +124,7 @@ public class PaymentService {
             totalPrice += item.getItemTotal();
         }
 
-        transactions.setTotal(totalPrice);
+        transactions.setTotal(totalPrice + shippingPrice);
         transactions.setItems(items);
         transactionsArray.add(transactions);
         return transactionsArray;
@@ -131,14 +132,12 @@ public class PaymentService {
 
     public List<OrderHistory> test() {
 
-        List<OrderHistory> orderHistory;
-        orderHistory = this.orderHistoryRepository.findAll();
-        orderHistory.forEach(orderHistory1 -> orderHistory1.getProducts());
-        System.out.println(orderHistory);
-        return orderHistory;
+        return this.orderHistoryRepository.findAll();
     }
 
-    public ResponseEntity processOrder(OrderDto orderDto, List<ProductListItem> products, String orderId, String paymentId, Long orderDatabaseId) throws JsonProcessingException {
+    public ResponseEntity processOrder(OrderDto orderDto, List<ProductListItem> products,
+                                       String orderId, String paymentId, Long orderDatabaseId) throws JsonProcessingException {
+        int shippingPrice = this.shippingOptionRepository.findByTypeOfDelivery(orderDto.getShipping().getShipMethod()).getPrice();
 
         String[] funding = {"All"};
         String url = "https://api.test.barion.com/v2/Payment/Start";
@@ -154,11 +153,11 @@ public class PaymentService {
         paymentData.setOrderNumber(orderId);
         paymentData.setShippingAddress(null);
         paymentData.setRedirectUrl("http://localhost:4200/");
-        paymentData.setCallbackUrl("http://localhost:4200/basket");
+        paymentData.setCallbackUrl("https://localhost:8443/payment/barion");
         paymentData.setLocale("hu-HU");
         paymentData.setCurrency("HUF");
         paymentData.setPaymentWindow("00:30:00");
-        paymentData.setTransactions(createTransactionArray(getItems(orderDto, products)));
+        paymentData.setTransactions(createTransactionArray(getItems(orderDto, products), shippingPrice));
 
         ObjectMapper mapper = new ObjectMapper();
         String message = mapper.writeValueAsString(paymentData);
@@ -169,7 +168,27 @@ public class PaymentService {
 
         HttpEntity<String> httpEntity = new HttpEntity<>(message, headers);
         ResponseEntity<String> responseEntity = this.restTemplate.postForEntity(url, httpEntity, String.class);
+        JsonNode jsonNode = mapper.readTree(Objects.requireNonNull(responseEntity.getBody()));
+        String jsonUrl = jsonNode.get("PaymentId").asText();
+        PaymentHistory paymentHistory = this.paymentHistoryRepository.findByOrderHistory(orderDatabaseId);
+        paymentHistory.setPaymentId(jsonUrl);
+        paymentHistory.setPaymentRequestId(paymentId);
+        this.paymentHistoryRepository.save(paymentHistory);
 
+        return responseEntity;
+    }
+
+    public void completeOrder(String paymentId) {
+        PaymentHistory paymentHistory = this.paymentHistoryRepository.findByPaymentId(paymentId);
+        paymentHistory.setStatus(PaymentStatus.APPROVAL);
+        this.paymentHistoryRepository.save(paymentHistory);
+    }
+
+
+    public ResponseEntity barionProcessing(String paymentId) {
+        System.out.println("itt vagyok");
+        String url = "https://api.test.barion.com/v2/Payment/GetPaymentState/?poskey=5bdaeb94f3a44cdd91a644b73354fc63&paymentId=" + paymentId;
+        ResponseEntity<String> responseEntity = this.restTemplate.getForEntity(url, String.class);
         System.out.println(responseEntity);
         return responseEntity;
     }
