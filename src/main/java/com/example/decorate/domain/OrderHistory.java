@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -18,7 +21,11 @@ public class OrderHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @NotBlank(message = "Kérlek adj meg egy vezetéknevet")
+    @Min(3)
+    @Max(15)
     private String lastName;
+    @NotBlank(message = "Kérlek adj meg egy keresztnevet")
     private String firstName;
     @OneToOne
     @JoinColumn(name = "shipping_id", referencedColumnName = "id")

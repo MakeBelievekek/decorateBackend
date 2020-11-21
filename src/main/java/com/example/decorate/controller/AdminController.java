@@ -2,11 +2,14 @@ package com.example.decorate.controller;
 
 import com.example.decorate.domain.dto.AttributeFormData;
 import com.example.decorate.domain.dto.FormData;
+import com.example.decorate.domain.dto.ProductFormData;
 import com.example.decorate.service.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -31,4 +34,9 @@ public class AdminController {
         return new ResponseEntity(attributeService.getAll(), HttpStatus.OK);
     }
 
+    @PostMapping("/excelData")
+    public ResponseEntity<FormData> saveExcelData(@RequestBody List<ProductFormData> products) {
+        System.out.println(products);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

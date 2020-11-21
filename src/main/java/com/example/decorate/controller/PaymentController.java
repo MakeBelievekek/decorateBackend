@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class PaymentController {
     }
 
     @PostMapping("/orderRequest")
-    public ResponseEntity makeOrder(@RequestBody OrderDto orderDto) {
+    public ResponseEntity makeOrder(@Valid @RequestBody OrderDto orderDto) {
         String orderId = this.paymentService.generateOrderId();
         this.orderService.saveOrder(orderDto, orderId);
         return new ResponseEntity(HttpStatus.OK);
@@ -85,7 +86,7 @@ public class PaymentController {
     }
 
     @PostMapping("/barion")
-    public ResponseEntity checkBarionPayment(@RequestParam (name="paymentId") String id) {
+    public ResponseEntity checkBarionPayment(@RequestParam(name = "paymentId") String id) {
         System.out.println("első állomás");
         System.out.println(id);
         return new ResponseEntity(this.paymentService.barionProcessing(id), HttpStatus.OK);

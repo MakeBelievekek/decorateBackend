@@ -31,7 +31,8 @@ public class CurtainController {
     }
 
     @PostMapping
-    public ProductFormData saveWallpaper(@RequestBody ProductFormData productFormData) {
+    public ProductFormData saveCurtain(@RequestBody ProductFormData productFormData) {
+
         System.out.println(productFormData);
         KeyHolder keyholder = new KeyHolder();
         keyHolderService.saveKey(keyholder, ProductType.CURTAIN);

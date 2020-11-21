@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/attribute")
 public class AttributeController {
@@ -26,5 +28,15 @@ public class AttributeController {
         System.out.println(attributeFormData);
         return new ResponseEntity(HttpStatus.CREATED);
     }
+
+    @PostMapping("/excelAttributes")
+    public ResponseEntity saveAttributeFromExcel(@RequestBody List<AttributeFormData> attributeFormDatas) {
+        System.out.println("itttttttttttttttttttttttttt");
+        for (AttributeFormData attributeFormData : attributeFormDatas) {
+            attributeService.saveAttribute(attributeFormData);
+        }
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
 
 }

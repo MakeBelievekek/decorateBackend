@@ -35,7 +35,11 @@ public class AttributeService {
 
     public void saveAttribute(AttributeFormData attributeFormData) {
         Attribute attribute = new Attribute(attributeFormData);
-        attributeRepository.save(attribute);
+        Object exist = attributeRepository.findByDescription(attribute.getDescription());
+        System.out.println(exist);
+        if (exist == null) {
+            attributeRepository.save(attribute);
+        }
     }
 
     public void saveAttributeListItem(List<AttributeListItemData> attributeListItemDataList, Long prodId) {
