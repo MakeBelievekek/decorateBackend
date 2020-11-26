@@ -1,20 +1,13 @@
 package com.example.decorate.domain.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class AttributeListItemData {
-    int id;
 
-    public AttributeListItemData() {
-    }
-
-    public AttributeListItemData(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setIds(int id) {
-        this.id = id;
-    }
+    private int id;
 }

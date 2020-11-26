@@ -1,25 +1,41 @@
 package com.example.decorate.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class PaymentData {
-    String POSKey;
-    String PaymentType;
-    String PaymentWindow;
-    boolean GuestCheckout;
-    String FundingSources[];
-    String PaymentRequestId;
-    String OrderNumber;
-    String PayerHint;
-    ShippingOrder ShippingAddress;
-    String RedirectUrl;
-    String CallbackUrl;
-    String Locale;
-    String Currency;
-    List<Transactions> Transactions;
 
+    private String POSKey;
 
+    private String PaymentType;
+
+    private String PaymentWindow;
+
+    private boolean GuestCheckout;
+
+    private String FundingSources[];
+
+    private String PaymentRequestId;
+
+    private String OrderNumber;
+
+    private String PayerHint;
+
+    private ShippingOrder ShippingAddress;
+
+    private String RedirectUrl;
+
+    private String CallbackUrl;
+
+    private String Locale;
+
+    private String Currency;
+
+    private List<Transactions> Transactions;
 }

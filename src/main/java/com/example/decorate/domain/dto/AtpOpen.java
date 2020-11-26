@@ -1,80 +1,25 @@
 package com.example.decorate.domain.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class AtpOpen {
-    String hetfo;
-    String kedd;
-    String szerda;
-    String csutortok;
-    String pentek;
-    String szombat;
-    String vasarnap;
 
-    public String getHetfo() {
-        return hetfo;
-    }
+    private String hetfo;
 
-    public void setHetfo(String hetfo) {
-        this.hetfo = hetfo;
-    }
+    private String kedd;
 
-    public String getKedd() {
-        return kedd;
-    }
+    private String szerda;
 
-    public void setKedd(String kedd) {
-        this.kedd = kedd;
-    }
+    private String csutortok;
 
-    public String getSzerda() {
-        return szerda;
-    }
+    private String pentek;
 
-    public void setSzerda(String szerda) {
-        this.szerda = szerda;
-    }
+    private String szombat;
 
-    public String getCsutortok() {
-        return csutortok;
-    }
-
-    public void setCsutortok(String csutortok) {
-        this.csutortok = csutortok;
-    }
-
-    public String getPentek() {
-        return pentek;
-    }
-
-    public void setPentek(String pentek) {
-        this.pentek = pentek;
-    }
-
-    public String getSzombat() {
-        return szombat;
-    }
-
-    public void setSzombat(String szombat) {
-        this.szombat = szombat;
-    }
-
-    public String getVasarnap() {
-        return vasarnap;
-    }
-
-    public void setVasarnap(String vasarnap) {
-        this.vasarnap = vasarnap;
-    }
-
-    @Override
-    public String toString() {
-        return "AtpOpen{" +
-                "hetfo='" + hetfo + '\'' +
-                ", kedd='" + kedd + '\'' +
-                ", szerda='" + szerda + '\'' +
-                ", csutortok='" + csutortok + '\'' +
-                ", pentek='" + pentek + '\'' +
-                ", szombat='" + szombat + '\'' +
-                ", vasarnap='" + vasarnap + '\'' +
-                '}';
-    }
+    private String vasarnap;
 }

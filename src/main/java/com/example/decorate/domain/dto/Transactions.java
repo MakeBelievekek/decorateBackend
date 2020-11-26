@@ -1,42 +1,21 @@
 package com.example.decorate.domain.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Transactions {
-    String POSTransactionId;
-    String Payee;
-    double Total;
-    List<Items> Items;
 
-    public String getPOSTransactionId() {
-        return POSTransactionId;
-    }
+    private String POSTransactionId;
 
-    public void setPOSTransactionId(String POSTransactionId) {
-        this.POSTransactionId = POSTransactionId;
-    }
+    private String Payee;
 
-    public String getPayee() {
-        return Payee;
-    }
+    private double Total;
 
-    public void setPayee(String payee) {
-        Payee = payee;
-    }
-
-    public double getTotal() {
-        return Total;
-    }
-
-    public void setTotal(double total) {
-        Total = total;
-    }
-
-    public List<com.example.decorate.domain.dto.Items> getItems() {
-        return Items;
-    }
-
-    public void setItems(List<com.example.decorate.domain.dto.Items> items) {
-        Items = items;
-    }
+    private List<Items> Items;
 }

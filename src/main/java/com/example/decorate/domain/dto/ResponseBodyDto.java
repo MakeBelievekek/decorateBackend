@@ -5,20 +5,29 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class ResponseBodyDto {
-    String paymentId;
-    String PaymentRequestId;
-    String Status;
-    String QRUrl;
-    List<ResponseTransaction> Transactions;
-    String RecurrenceResult;
-    String GatewayUrl;
-    String RedirectUrl;
-    String CallbackUrl;
-    List<String> Errors;
 
+    private String paymentId;
 
+    private String PaymentRequestId;
+
+    private String Status;
+
+    private String QRUrl;
+
+    private List<ResponseTransaction> Transactions;
+
+    private String RecurrenceResult;
+
+    private String GatewayUrl;
+
+    private String RedirectUrl;
+
+    private String CallbackUrl;
+
+    private List<String> Errors;
 }
