@@ -9,32 +9,39 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
-
-@Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Entity
 public class OrderHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Size(min = 3, max = 15)
     @NotBlank(message = "Kérlek adj meg egy vezetéknevet")
     private String lastName;
+
     @Size(min = 3, max = 15)
     @NotBlank(message = "Kérlek adj meg egy keresztnevet")
     private String firstName;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shipping_id", referencedColumnName = "id")
     private ShippingDetails shippingDetails;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "billing_id", referencedColumnName = "id")
     private BillingDetails billingDetails;
+
     private String orderId;
+
     private String email;
+
     private String paymentType;
+
     private int totalPrice;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -50,6 +57,4 @@ public class OrderHistory {
         this.billingDetails = billingDetails;
         this.shippingDetails = shippingDetails;
     }
-
-
 }

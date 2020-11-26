@@ -1,12 +1,16 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ProductFormData;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Entity
 public class Curtain {
 
     @Id
@@ -22,14 +26,19 @@ public class Curtain {
 
     @Column(name = " description")
     private String productDesc;
+
     @Column(name = "curtain_type")
     private CurtainType curtainType;
+
     @Column(name = "width")
     private int width;
+
     @Column(name = "height")
     private int height;
+
     @Column(name = "itemNo")
     private String itemNumber;
+
     @Column(name = "pattern")
     private int patternRep;
 
@@ -40,13 +49,11 @@ public class Curtain {
     private String composition;
 
     private String productFamily;
+
     @Column(name = "cleaning")
     private String cleaningInst;
 
     private String typeOfSize;
-
-    public Curtain() {
-    }
 
     public Curtain(ProductFormData productFormData, KeyHolder keyHolder) {
         this.key = keyHolder;

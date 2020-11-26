@@ -1,9 +1,14 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ImageData;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
 public class Image {
 
@@ -11,6 +16,7 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
     private Long id;
+
     @Column(name = "prod_id")
     private Long prodKey;
 
@@ -25,9 +31,6 @@ public class Image {
     @Column(name = "img_url")
     private String imgUrl;
 
-    public Image() {
-    }
-
     public Image(ImageData imageData) {
         for (ImageType imageType : ImageType.values()) {
             if (imageType.toString().equals(imageData.getImageType())) {
@@ -35,46 +38,5 @@ public class Image {
             }
         }
         this.imgUrl = imageData.getImgUrl();
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getProdKey() {
-        return prodKey;
-    }
-
-    public void setProdKey(Long prodKey) {
-        this.prodKey = prodKey;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-
-    public ImageType getImageType() {
-        return imageType;
-    }
-
-    public void setImageType(ImageType imageType) {
-        this.imageType = imageType;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
     }
 }

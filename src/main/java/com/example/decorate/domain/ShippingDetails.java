@@ -7,27 +7,38 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-
+@Entity
 public class ShippingDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @OneToOne(fetch = FetchType.LAZY)
+
     private OrderHistory orderHistory;
+
     private String company;
+
     private String country;
+
     private String city;
+
     private String province;
+
     private int zip;
+
     private String address;
+
     private String address2;
+
     private String shipInfo;
+
     private String shipMethod;
+
     private String foxpost;
 
     public ShippingDetails(OrderDto orderDto) {
@@ -42,6 +53,4 @@ public class ShippingDetails {
         this.shipMethod = orderDto.getShipping().getShipMethod();
         this.foxpost = orderDto.getShipping().getFoxpost();
     }
-
-
 }

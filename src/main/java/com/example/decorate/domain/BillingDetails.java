@@ -7,18 +7,21 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Entity
 @Table(name = "billingDetails")
 public class BillingDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @OneToOne(fetch = FetchType.LAZY)
     private OrderHistory orderHistory;
+
     private String company;
 
     private String country;
@@ -45,5 +48,4 @@ public class BillingDetails {
         this.address2 = orderDto.getBilling().getAddress2();
         this.phoneNumber = orderDto.getBilling().getPhone();
     }
-
 }

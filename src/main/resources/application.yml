@@ -25,7 +25,7 @@ logging:
 
 
 server:
-  port: 8443
+  port: 8080
   ssl:
     key-alias: medium
     key-password: password

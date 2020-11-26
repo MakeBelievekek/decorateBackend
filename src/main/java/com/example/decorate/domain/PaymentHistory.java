@@ -6,16 +6,17 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+@Entity
 public class PaymentHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @OneToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     private OrderHistory orderHistory;
