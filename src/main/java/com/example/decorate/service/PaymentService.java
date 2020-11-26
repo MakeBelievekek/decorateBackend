@@ -180,7 +180,7 @@ public class PaymentService {
 
     public void completeOrder(String paymentId) {
         PaymentHistory paymentHistory = this.paymentHistoryRepository.findByPaymentId(paymentId);
-        paymentHistory.setStatus(PaymentStatus.APPROVAL);
+      paymentHistory.setStatus(PaymentStatus.APPROVAL);
         this.paymentHistoryRepository.save(paymentHistory);
     }
 

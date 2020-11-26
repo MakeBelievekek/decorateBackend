@@ -10,11 +10,15 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+
 public class ShippingDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @OneToOne(fetch = FetchType.LAZY)
+    private OrderHistory orderHistory;
     private String company;
     private String country;
     private String city;
@@ -39,93 +43,5 @@ public class ShippingDetails {
         this.foxpost = orderDto.getShipping().getFoxpost();
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public int getZip() {
-        return zip;
-    }
-
-    public void setZip(int zip) {
-        this.zip = zip;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getAddress2() {
-        return address2;
-    }
-
-    public void setAddress2(String address2) {
-        this.address2 = address2;
-    }
-
-    public String getShipInfo() {
-        return shipInfo;
-    }
-
-    public void setShipInfo(String shipInfo) {
-        this.shipInfo = shipInfo;
-    }
-
-    public String getShipMethod() {
-        return shipMethod;
-    }
-
-    public void setShipMethod(String shipMethod) {
-        this.shipMethod = shipMethod;
-    }
-
-    public String getFoxpost() {
-        return foxpost;
-    }
-
-    public void setFoxpost(String foxpost) {
-        this.foxpost = foxpost;
-    }
 }

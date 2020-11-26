@@ -37,7 +37,6 @@ public class ProductController {
 
     @GetMapping("/local/{ids}")
     public ResponseEntity getProductsForLocalStorage(@PathVariable("ids") String productsIds) {
-
         List<KeyHolder> keyHolders = keyHolderService.getProductsFromLocal(productsIds);
         List<ProductListItem> products = this.keyHolderService.getProducts(keyHolders);
 

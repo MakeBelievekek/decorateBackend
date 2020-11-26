@@ -6,9 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -21,16 +20,16 @@ public class OrderHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @Size(min = 3, max = 15)
     @NotBlank(message = "Kérlek adj meg egy vezetéknevet")
-    @Min(3)
-    @Max(15)
     private String lastName;
+    @Size(min = 3, max = 15)
     @NotBlank(message = "Kérlek adj meg egy keresztnevet")
     private String firstName;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shipping_id", referencedColumnName = "id")
     private ShippingDetails shippingDetails;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "billing_id", referencedColumnName = "id")
     private BillingDetails billingDetails;
     private String orderId;
@@ -45,7 +44,7 @@ public class OrderHistory {
         this.lastName = orderDto.getUser().getLastname();
         this.firstName = orderDto.getUser().getFirstname();
         this.email = orderDto.getUser().getEmail();
-        this.products = products;
+      this.products = products;
         this.paymentType = orderDto.getPaymentOption();
         this.orderId = orderId;
         this.billingDetails = billingDetails;
