@@ -19,7 +19,7 @@ public class PaymentData {
 
     private boolean GuestCheckout;
 
-    private String FundingSources[];
+    private String[] FundingSources;
 
     private String PaymentRequestId;
 
