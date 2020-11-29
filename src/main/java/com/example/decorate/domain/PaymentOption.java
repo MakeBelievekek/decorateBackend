@@ -16,7 +16,4 @@ public class PaymentOption {
 
     @Enumerated(EnumType.STRING)
     private PaymentOptionEnum paymentOption;
-
-
-
 }

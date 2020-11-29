@@ -2,21 +2,28 @@ package com.example.decorate.domain.dto;
 
 import com.example.decorate.domain.Curtain;
 import com.example.decorate.domain.Wallpaper;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class ProductListItem {
 
     private Long id;
-    private String name;
-    private String typeOfSize;
-    private String productDesc;
-    private String itemNumber;
-    private int price;
-    private String image;
 
-    public ProductListItem() {
-    }
+    private String name;
+
+    private String typeOfSize;
+
+    private String productDesc;
+
+    private String itemNumber;
+
+    private int price;
+
+    private String image;
 
     public ProductListItem(Wallpaper wallpaper, ImageData image) {
         this.id = wallpaper.getId();
@@ -26,6 +33,7 @@ public class ProductListItem {
         this.image = image.getImgUrl();
         this.name = wallpaper.getName();
     }
+
     public ProductListItem(Wallpaper wallpaper) {
         this.id = wallpaper.getId();
         this.productDesc = wallpaper.getProductDesc();
@@ -51,5 +59,4 @@ public class ProductListItem {
         this.name = curtain.getName();
         this.typeOfSize = curtain.getTypeOfSize();
     }
-
 }

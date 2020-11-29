@@ -1,12 +1,16 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ProductFormData;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Entity
 public class Wallpaper {
 
     @Id
@@ -45,11 +49,9 @@ public class Wallpaper {
     private String annotation;
 
     private String recommendedGlue;
+
     @Column(name = "date")
     private java.sql.Date date;
-
-    public Wallpaper() {
-    }
 
     public Wallpaper(ProductFormData productFormData, KeyHolder keyHolder) {
         this.key = keyHolder;
@@ -66,5 +68,4 @@ public class Wallpaper {
         this.annotation = productFormData.getAnnotation();
         this.recommendedGlue = productFormData.getRecommendedGlue();
     }
-
 }

@@ -1,12 +1,16 @@
 package com.example.decorate.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Entity
 public class KeyHolder {
 
     @Id
@@ -20,30 +24,4 @@ public class KeyHolder {
 
     @OneToMany(mappedBy = "key")
     private List<AttributeListItem> attributeListItems;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public ProductType getType() {
-        return type;
-    }
-
-    public void setType(ProductType type) {
-        this.type = type;
-    }
-
-    public List<AttributeListItem> getAttributeListItems() {
-        return attributeListItems;
-    }
-
-    public void setAttributeListItems(List<AttributeListItem> attributeListItems) {
-        this.attributeListItems = attributeListItems;
-    }
-
 }

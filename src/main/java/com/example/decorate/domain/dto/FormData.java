@@ -1,30 +1,15 @@
 package com.example.decorate.domain.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class FormData {
 
     private List<AttributeFormListItem> attributes;
-
-    public FormData() {
-    }
-
-    public FormData(List<AttributeFormListItem> attributes) {
-        this.attributes = attributes;
-    }
-
-    public List<AttributeFormListItem> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<AttributeFormListItem> attributes) {
-        this.attributes = attributes;
-    }
-
-    @Override
-    public String toString() {
-        return "FormData{" +
-                "attributeList=" + attributes +
-                '}';
-    }
 }

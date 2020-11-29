@@ -4,16 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class Items {
+
     private String Name;
+
     private String Description;
+
     private int Quantity;
+
     private String Unit;
+
     private int UnitPrice;
+
     private int ItemTotal;
+
     private String SKU;
 
     public Items(ProductListItem productListItem, int qty) {
@@ -25,6 +32,4 @@ public class Items {
         this.ItemTotal = productListItem.getPrice() * qty;
         this.SKU = productListItem.getItemNumber();
     }
-
-
 }

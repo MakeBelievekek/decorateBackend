@@ -10,16 +10,12 @@ import lombok.NoArgsConstructor;
 @Data
 public class PaymentOptionListItem {
 
-
     private String type;
 
     private Integer price;
 
-
     public PaymentOptionListItem(PaymentOption paymentOption) {
-
         this.type = paymentOption.getPaymentOption().getOption();
         this.price = paymentOption.getPaymentOption().getPrice();
     }
-
 }

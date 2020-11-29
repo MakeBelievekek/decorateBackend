@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
-
-@Embeddable
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+@Embeddable
 public class Product {
 
     private String name;
@@ -21,7 +20,6 @@ public class Product {
     private Integer price;
 
     private String itemNumber;
-
 
     public Product(ProductListItem productListItem, Integer qty) {
         this.name = productListItem.getName();

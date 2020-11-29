@@ -4,14 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class ResponseTransaction {
-    String POSTransactionId;
-    String TransactionId;
-    String Status;
-    String Currency;
-    String TransactionTime;
-    String RelatedId;
+
+    private String POSTransactionId;
+
+    private String TransactionId;
+
+    private String Status;
+
+    private String Currency;
+
+    private String TransactionTime;
+
+    private String RelatedId;
 }

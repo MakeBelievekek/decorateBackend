@@ -2,21 +2,25 @@ package com.example.decorate.domain.dto;
 
 import com.example.decorate.domain.PaymentOption;
 import com.example.decorate.domain.ShippingOption;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class ShippingOptionListItem {
 
-    String name;
-    String typeOfDelivery;
-    int price;
-    List<PaymentOptionListItem> paymentOptions;
+    private String name;
 
-    public ShippingOptionListItem() {
-    }
+    private String typeOfDelivery;
+
+    private int price;
+
+    private List<PaymentOptionListItem> paymentOptions;
 
     public ShippingOptionListItem(ShippingOption shippingOption) {
         this.name = shippingOption.getName();
@@ -28,6 +32,4 @@ public class ShippingOptionListItem {
         }
         this.paymentOptions = temp;
     }
-
-
 }

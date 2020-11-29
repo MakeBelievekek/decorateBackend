@@ -6,16 +6,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class ShippingOrder {
 
     private String country;
+
     private String city;
+
     private String region;
+
     private int zip;
+
     private String street;
+
     private String fullName;
 
     public ShippingOrder(ShippingOrderDto shippingOrderDto, UserOrderDto userOrderDto) {
