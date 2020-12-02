@@ -20,7 +20,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("/api/public/payment")
 @Slf4j
 public class PaymentController {
 

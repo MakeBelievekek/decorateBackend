@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/home")
+@RequestMapping("/api/public/home")
 public class HomeController {
 
     private HomeService homeService;
