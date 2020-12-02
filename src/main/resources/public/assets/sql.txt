@@ -1,8 +1,0 @@
-INSERT INTO public.home (id, img_url, type) VALUES (3, 'https://i.imgur.com/iXge7wi.jpg', 'Darkener');
-INSERT INTO public.home (id, img_url, type) VALUES (7, 'https://i.imgur.com/rxkFUPv.jpg', 'Blackout');
-INSERT INTO public.home (id, img_url, type) VALUES (1, 'https://i.imgur.com/a0Rfq6d.jpg', 'Pillow');
-INSERT INTO public.home (id, img_url, type) VALUES (5, 'https://i.imgur.com/2fsAr6Y.jpg', 'Decoration');
-INSERT INTO public.home (id, img_url, type) VALUES (4, 'https://i.imgur.com/O7e7DYI.jpg', 'Wallpaper');
-INSERT INTO public.home (id, img_url, type) VALUES (2, 'https://i.imgur.com/70uuloM.jpg', 'Translucent');
-INSERT INTO public.home (id, img_url, type) VALUES (8, 'https://i.imgur.com/xsxi6cT.jpg', 'FurnitureFabric');
-INSERT INTO public.home (id, img_url, type) VALUES (9, 'https://i.imgur.com/Xo7Vo3m.jpg', 'Children');

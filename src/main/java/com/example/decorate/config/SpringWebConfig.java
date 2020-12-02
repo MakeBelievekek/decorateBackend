@@ -42,9 +42,8 @@ public class SpringWebConfig implements WebMvcConfigurer {
    @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "DELETE", "PUT","OPTION");
-
+                .allowedOrigins("*", "http://loacalhost:4200", "http://loacalhost:5000")
+                .allowedMethods("GET", "POST", "DELETE", "PUT","OPTION", "HEAD");
     }
 
 }

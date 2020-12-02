@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/api/public/product")
 public class ProductController {
 
     private KeyHolderService keyHolderService;

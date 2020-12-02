@@ -1,21 +1,20 @@
 spring:
+  profiles:
+    active: @spring.profiles.active@
 
   # Database
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/decorate
     username: postgres
     password: root1234
+    url: jdbc:postgresql://decorate.csjuggemk0ut.eu-central-1.rds.amazonaws.com:5432/decorate
   # JPA properties
   jpa:
     hibernate:
       ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
     show-sql: true
-    database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
-    generate-ddl: true
-
+    generate-ddl: false
   mail:
     host: "smtp.mailtrap.io"
     port: 2525
@@ -24,7 +23,6 @@ spring:
     username: "2c09225ea19cd0"
     password: "d06a0abade0cb1"
     protocol: "smtp"
-
 
 logging:
   level:
@@ -36,7 +34,7 @@ logging:
 
 
 server:
-  port: 8080
+  port: 5000
 
 
 

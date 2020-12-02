@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
-@RequestMapping("/hello")
+@RequestMapping("/api/public/hello")
 public class Hello {
 
 
