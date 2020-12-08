@@ -84,7 +84,7 @@ public class KeyHolderService {
                 .map(Optional::get)
                 .map(wallpaper -> new ProductListItem(wallpaper, new ImageData(imageRepository.findByProdKeyAndImageType(wallpaper.getId(), ImageType.PRIMARY_KEY))))
                 .forEach(items::add);
-
+        System.out.println("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
         keys.stream().filter(keyHolder -> keyHolder.getType() == CURTAIN)
                 .map(keyHolder -> this.curtainRepository.findById(keyHolder.getId()))
                 .filter(Optional::isPresent)
@@ -108,6 +108,7 @@ public class KeyHolderService {
                 }
             }
         }*/
+
         return items;
     }
 

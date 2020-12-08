@@ -39,7 +39,9 @@ public class ProductController {
     public ResponseEntity getProductsForLocalStorage(@PathVariable("ids") String productsIds) {
         List<KeyHolder> keyHolders = keyHolderService.getProductsFromLocal(productsIds);
         List<ProductListItem> products = this.keyHolderService.getProducts(keyHolders);
-
+        for (ProductListItem product : products) {
+            System.out.println(product);
+        }
         return new ResponseEntity(products, HttpStatus.OK);
     }
 

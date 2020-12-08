@@ -5,11 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ProductFormData {
+public class ExcelData {
+    private String typeOfProduct;
 
     private String name;
 
