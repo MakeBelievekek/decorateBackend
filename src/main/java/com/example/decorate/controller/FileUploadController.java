@@ -3,6 +3,8 @@ package com.example.decorate.controller;
 import com.example.decorate.domain.ResponseMessage;
 import com.example.decorate.service.ExcelHelper;
 import com.example.decorate.service.ExcelService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,22 +13,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import static org.springframework.http.HttpStatus.*;
 
-
+@AllArgsConstructor
+@Slf4j
 @RestController
 @RequestMapping("/api/public/fileupload")
 public class FileUploadController {
-    private ExcelService excelService;
-
-    @Autowired
-    public FileUploadController(ExcelService excelService) {
-
-        this.excelService = excelService;
-    }
+    private final ExcelService excelService;
 
     @PostMapping()
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
-
         if (ExcelHelper.hasExcelFormat(file)) {
             try {
                 excelService.save(file);
