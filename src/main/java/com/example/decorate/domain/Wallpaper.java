@@ -1,5 +1,6 @@
 package com.example.decorate.domain;
 
+import com.example.decorate.domain.dto.ExcelData;
 import com.example.decorate.domain.dto.ProductFormData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -67,5 +68,21 @@ public class Wallpaper {
         this.productFamily = productFormData.getProductFamily();
         this.annotation = productFormData.getAnnotation();
         this.recommendedGlue = productFormData.getRecommendedGlue();
+    }
+
+    public Wallpaper(ExcelData excelData, KeyHolder keyHolder) {
+        this.key = keyHolder;
+        this.id = keyHolder.getId();
+        this.name = excelData.getName();
+        this.productDesc = excelData.getProductDesc();
+        this.itemNumber = excelData.getItemNumber();
+        this.width = excelData.getWidth();
+        this.height = excelData.getHeight();
+        this.patternRep = excelData.getPatternRep();
+        this.price = excelData.getPrice();
+        this.composition = excelData.getComposition();
+        this.productFamily = excelData.getProductFamily();
+        this.annotation = excelData.getAnnotation();
+        this.recommendedGlue = excelData.getRecommendedGlue();
     }
 }

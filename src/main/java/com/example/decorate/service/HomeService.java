@@ -25,6 +25,7 @@ public class HomeService {
         List<HomeListItem> images = new ArrayList<>();
         for (Home home : homeRepository.findAll()) {
             images.add(new HomeListItem(home));
+            System.out.println(home);
         }
         return images;
     }
