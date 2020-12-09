@@ -120,13 +120,16 @@
     </build>
     <profiles>
         <profile>
-            <id>demo</id>
+            <id>dev</id>
             <properties>
-                <spring.profiles.active>
-                    demo
-                </spring.profiles.active>
+                <spring.profiles.active>default</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <spring.profiles.active>prod</spring.profiles.active>
             </properties>
         </profile>
     </profiles>
-
 </project>
