@@ -16,7 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ExcelHelper {
-    public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  //  public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    public static String TYPE = "application/octet-stream";
     static String[] HEADERs = {"Id", "Title", "Description", "Published"};
     static String SHEET = "Tutorials";
 

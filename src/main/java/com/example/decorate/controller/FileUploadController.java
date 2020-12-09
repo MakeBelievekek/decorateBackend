@@ -22,11 +22,12 @@ public class FileUploadController {
 
     @PostMapping()
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
+        System.out.println("IIIIIIIIIIIIIIIIIIIIIIIIIIITTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+        System.out.println(file.getContentType());
         String message = "";
         if (ExcelHelper.hasExcelFormat(file)) {
             try {
                 excelService.save(file);
-
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.status(OK).body(new ResponseMessage(message));
             } catch (Exception e) {
@@ -34,7 +35,6 @@ public class FileUploadController {
                 return ResponseEntity.status(EXPECTATION_FAILED).body(new ResponseMessage(message));
             }
         }
-
         message = "Please upload an excel file!";
         return ResponseEntity.status(BAD_REQUEST).body(new ResponseMessage(message));
     }
