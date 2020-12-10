@@ -1,6 +1,7 @@
 package com.example.decorate.domain.dto;
 
 import com.example.decorate.domain.Attribute;
+import com.example.decorate.domain.AttributeListItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AttributeFormListItem {
+public class AttributeModel {
 
     private Long id;
 
@@ -16,9 +17,15 @@ public class AttributeFormListItem {
 
     private String description;
 
-    public AttributeFormListItem(Attribute attribute) {
+    public AttributeModel(Attribute attribute) {
         this.id = attribute.getId();
         this.type = attribute.getType().getType();
         this.description = attribute.getDescription();
+    }
+
+    public AttributeModel(AttributeListItem attributeListItem) {
+        this.id = attributeListItem.getId();
+        this.type = attributeListItem.getAttribute().getType().toString();
+        this.description = attributeListItem.getAttribute().getDescription();
     }
 }

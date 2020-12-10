@@ -1,7 +1,7 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ExcelData;
-import com.example.decorate.domain.dto.ProductFormData;
+import com.example.decorate.domain.dto.ProductCreationFormData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -54,20 +54,20 @@ public class Wallpaper {
     @Column(name = "date")
     private java.sql.Date date;
 
-    public Wallpaper(ProductFormData productFormData, KeyHolder keyHolder) {
+    public Wallpaper(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
         this.key = keyHolder;
         this.id = keyHolder.getId();
-        this.name = productFormData.getName();
-        this.productDesc = productFormData.getProductDesc();
-        this.itemNumber = productFormData.getItemNumber();
-        this.width = productFormData.getWidth();
-        this.height = productFormData.getHeight();
-        this.patternRep = productFormData.getPatternRep();
-        this.price = productFormData.getPrice();
-        this.composition = productFormData.getComposition();
-        this.productFamily = productFormData.getProductFamily();
-        this.annotation = productFormData.getAnnotation();
-        this.recommendedGlue = productFormData.getRecommendedGlue();
+        this.name = productCreationFormData.getName();
+        this.productDesc = productCreationFormData.getProductDesc();
+        this.itemNumber = productCreationFormData.getItemNumber();
+        this.width = productCreationFormData.getWidth();
+        this.height = productCreationFormData.getHeight();
+        this.patternRep = productCreationFormData.getPatternRep();
+        this.price = productCreationFormData.getPrice();
+        this.composition = productCreationFormData.getComposition();
+        this.productFamily = productCreationFormData.getProductFamily();
+        this.annotation = productCreationFormData.getAnnotation();
+        this.recommendedGlue = productCreationFormData.getRecommendedGlue();
     }
 
     public Wallpaper(ExcelData excelData, KeyHolder keyHolder) {
