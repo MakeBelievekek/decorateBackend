@@ -33,7 +33,7 @@ public class ExcelData {
 
     private String cleaningInst;
 
-    private List<AttributeListItemData> attributeListItemData = new ArrayList<>();
+    private List<AttributeCreationFormData> attributes = new ArrayList<>();
 
     private List<ImageData> imageList = new ArrayList<>();
 
@@ -44,4 +44,5 @@ public class ExcelData {
     private String recommendedGlue;
 
     private String typeOfSize;
+    private String AbrasionResistance;
 }

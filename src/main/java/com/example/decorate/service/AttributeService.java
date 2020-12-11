@@ -4,8 +4,8 @@ import com.example.decorate.domain.Attribute;
 import com.example.decorate.domain.AttributeListItem;
 import com.example.decorate.domain.KeyHolder;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
-import com.example.decorate.domain.dto.AttributeModel;
 import com.example.decorate.domain.dto.AttributeListItemData;
+import com.example.decorate.domain.dto.AttributeModel;
 import com.example.decorate.domain.dto.FormData;
 import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.exception.ExceptionMessages;
@@ -16,7 +16,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +45,15 @@ public class AttributeService {
         attributeListItemRepository.delete(attributeListItem);
     }
 
+    public void saveListItem(Attribute attribute, KeyHolder keyHolder) {
+
+        AttributeListItem attributeListItem = AttributeListItem.builder()
+                .attribute(attribute)
+                .key(keyHolder)
+                .build();
+        attributeListItemRepository.save(attributeListItem);
+    }
+
     public void saveAttributeListItem(List<AttributeListItemData> attributeListItemDataList, Long prodId) {
         if (attributeListItemDataList.isEmpty()) {
             throw new DecorateBackendException("You must fill out the product attribute list!");
@@ -61,11 +69,7 @@ public class AttributeService {
                     .findById(prodId)
                     .orElseThrow(() -> new DecorateBackendException("Desired product dose not exists!"));
 
-            AttributeListItem attributeListItem = AttributeListItem.builder()
-                    .attribute(attribute)
-                    .key(keyHolder)
-                    .build();
-            attributeListItemRepository.save(attributeListItem);
+            saveListItem(attribute, keyHolder);
         }
     }
 
@@ -81,4 +85,14 @@ public class AttributeService {
         return attributeListItemRepository.findAllByKey_Id(productId);
     }
 
+    public void saveAttributesFromExcel(List<AttributeCreationFormData> attributes, KeyHolder keyHolder) {
+        for (AttributeCreationFormData attribute : attributes) {
+            if (attributeRepository.findByDescription(attribute.getDescription()) != null) {
+                saveListItem(new Attribute(attribute), keyHolder);
+            } else {
+                saveListItem(attributeRepository.save(new Attribute(attribute)), keyHolder);
+            }
+        }
+
+    }
 }

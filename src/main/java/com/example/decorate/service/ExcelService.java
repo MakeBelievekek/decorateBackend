@@ -24,14 +24,16 @@ public class ExcelService {
     WallpaperRepository wallpaperRepository;
     KeyHolderService keyHolderService;
     ImageService imageService;
+    AttributeService attributeService;
 
     @Autowired
     public ExcelService(CurtainRepository curtainRepository, WallpaperRepository wallpaperRepository,
-                        KeyHolderService keyHolderService, ImageService imageService) {
+                        KeyHolderService keyHolderService, ImageService imageService, AttributeService attributeService) {
         this.curtainRepository = curtainRepository;
         this.wallpaperRepository = wallpaperRepository;
         this.keyHolderService = keyHolderService;
         this.imageService = imageService;
+        this.attributeService = attributeService;
     }
 
     public void save(MultipartFile file) {
@@ -45,13 +47,15 @@ public class ExcelService {
                         keyHolderService.saveKey(keyHolder, ProductType.WALLPAPER);
                         Wallpaper wallpaper = new Wallpaper(product, keyHolder);
                         wallpaperRepository.save(wallpaper);
-                        imageService.saveImage(product.getImageList(), wallpaper.getId(), ProductType.WALLPAPER);
+                        imageService.saveImageList(product.getImageList(), wallpaper.getId(), ProductType.WALLPAPER);
+                        attributeService.saveAttributesFromExcel(product.getAttributes(), keyHolder);
                         break;
                     case "CURTAIN":
                         keyHolderService.saveKey(keyHolder, ProductType.CURTAIN);
                         Curtain curtain = new Curtain(product, keyHolder);
                         curtainRepository.save(curtain);
-                        imageService.saveImage(product.getImageList(), curtain.getId(), ProductType.CURTAIN);
+                        imageService.saveImageList(product.getImageList(), curtain.getId(), ProductType.CURTAIN);
+                        attributeService.saveAttributesFromExcel(product.getAttributes(), keyHolder);
                         break;
                 }
             }
