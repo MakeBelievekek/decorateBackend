@@ -5,7 +5,7 @@ import com.example.decorate.domain.ImageType;
 import com.example.decorate.domain.KeyHolder;
 import com.example.decorate.domain.Wallpaper;
 import com.example.decorate.domain.dto.ImageData;
-import com.example.decorate.domain.dto.ProductFormData;
+import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.domain.dto.ProductListItem;
 import com.example.decorate.repository.ImageRepository;
 import com.example.decorate.repository.WallpaperRepository;
@@ -29,8 +29,8 @@ public class WallpaperService {
     }
 
 
-    public void saveWallpaper(ProductFormData productFormData, KeyHolder keyHolder) {
-        Wallpaper wallpaper = new Wallpaper(productFormData, keyHolder);
+    public void saveWallpaper(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
+        Wallpaper wallpaper = new Wallpaper(productCreationFormData, keyHolder);
         wallpaperRepository.save(wallpaper);
     }
 

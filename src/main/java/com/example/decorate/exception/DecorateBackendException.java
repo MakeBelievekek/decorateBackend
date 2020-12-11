@@ -1,6 +1,6 @@
-package com.example.decorate.exceptions;
+package com.example.decorate.exception;
 
-public class DecorateBackendException extends RuntimeException{
+public class DecorateBackendException extends RuntimeException {
     public DecorateBackendException(String exMessage, Exception exception) {
         super(exMessage, exception);
     }

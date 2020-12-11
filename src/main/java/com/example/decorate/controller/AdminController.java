@@ -1,8 +1,8 @@
 package com.example.decorate.controller;
 
-import com.example.decorate.domain.dto.AttributeFormData;
+import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.FormData;
-import com.example.decorate.domain.dto.ProductFormData;
+import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.service.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,8 +24,8 @@ public class AdminController {
     }
 
     @PostMapping("/attribute")
-    public ResponseEntity saveAttribute(@RequestBody AttributeFormData attributeFormData) {
-        attributeService.saveAttribute(attributeFormData);
+    public ResponseEntity saveAttribute(@RequestBody AttributeCreationFormData attributeCreationFormData) {
+        attributeService.saveAttribute(attributeCreationFormData);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -34,4 +34,9 @@ public class AdminController {
         return new ResponseEntity(attributeService.getAll(), HttpStatus.OK);
     }
 
+    @PostMapping("/excelData")
+    public ResponseEntity<FormData> saveExcelData(@RequestBody List<ProductCreationFormData> products) {
+        System.out.println(products);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

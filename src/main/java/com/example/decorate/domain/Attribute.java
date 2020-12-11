@@ -1,12 +1,11 @@
 package com.example.decorate.domain;
 
-import com.example.decorate.domain.dto.AttributeFormData;
+import com.example.decorate.domain.dto.AttributeCreationFormData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,12 +25,12 @@ public class Attribute {
     @Column(name = "description")
     private String description;
 
-    public Attribute(AttributeFormData attributeFormData) {
+    public Attribute(AttributeCreationFormData attributeCreationFormData) {
         for (AttributeType attributeType : AttributeType.values()) {
-            if (attributeType.getType().equals(attributeFormData.getType())) {
+            if (attributeType.getType().equals(attributeCreationFormData.getType())) {
                 this.type = attributeType;
             }
         }
-        this.description = attributeFormData.getDescription();
+        this.description = attributeCreationFormData.getDescription();
     }
 }

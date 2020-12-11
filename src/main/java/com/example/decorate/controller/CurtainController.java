@@ -1,44 +1,117 @@
 package com.example.decorate.controller;
 
-import com.example.decorate.domain.KeyHolder;
-import com.example.decorate.domain.ProductType;
-import com.example.decorate.domain.dto.ProductFormData;
-import com.example.decorate.service.AttributeService;
+import com.example.decorate.domain.dto.AttributeListItemData;
+import com.example.decorate.domain.dto.CurtainModel;
+import com.example.decorate.domain.dto.ImageData;
+import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.service.CurtainService;
-import com.example.decorate.service.ImageService;
-import com.example.decorate.service.KeyHolderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
+
+@Slf4j
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/public/curtain")
 public class CurtainController {
 
-    private CurtainService curtainService;
-    private KeyHolderService keyHolderService;
-    private AttributeService attributeService;
-    private ImageService imageService;
+    private final CurtainService curtainService;
 
-    @Autowired
-    public CurtainController(CurtainService curtainService, KeyHolderService keyHolderService, AttributeService attributeService, ImageService imageService) {
-        this.curtainService = curtainService;
-        this.keyHolderService = keyHolderService;
-        this.attributeService = attributeService;
-        this.imageService = imageService;
-    }
 
     @PostMapping
-    public ProductFormData saveCurtain(@RequestBody ProductFormData productFormData) {
+    public ResponseEntity<String> createCurtain(@RequestBody ProductCreationFormData productCreationFormData) {
+        curtainService.saveCurtain(productCreationFormData);
 
-        System.out.println(productFormData);
-        KeyHolder keyholder = new KeyHolder();
-        keyHolderService.saveKey(keyholder, ProductType.CURTAIN);
-        curtainService.saveCurtain(productFormData, keyholder);
-        attributeService.saveAttributeListItem(productFormData.getAttributeListItemData(), keyholder.getId());
-        imageService.saveImage(productFormData.getImageList(), keyholder.getId(), ProductType.CURTAIN);
-        return new ProductFormData();
+        log.info("Curtain successfully created!");
+
+        return ResponseEntity
+                .status(CREATED)
+                .body("Curtain successfully created!");
+    }
+
+    @GetMapping("/{curtainId}")
+    public ResponseEntity<CurtainModel> getCurtainById(@PathVariable Long curtainId) {
+        CurtainModel curtain = curtainService.getCurtain(curtainId);
+
+        log.info("Curtain whit id: " + curtainId + " is fetched!");
+
+        return ResponseEntity
+                .status(OK)
+                .body(curtain);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CurtainModel>> getAllCurtains() {
+        List<CurtainModel> allCurtains = curtainService.getAllCurtains();
+
+        log.info(allCurtains.size() + " curtains fetched from database!");
+
+        return ResponseEntity
+                .status(OK)
+                .body(allCurtains);
+    }
+
+    @PutMapping("/update/{curtainId}")
+    public ResponseEntity<String> updateCurtain(@RequestBody CurtainModel curtainModel, @PathVariable Long curtainId) {
+        curtainService.updateCurtain(curtainId, curtainModel);
+
+        log.info("Curtain successfully updated whit id: " + curtainId);
+
+        return ResponseEntity
+                .status(ACCEPTED)
+                .body("Curtain update accepted!");
+    }
+
+    @DeleteMapping("/delete/{curtainId}")
+    public ResponseEntity<String> deleteCurtain(@PathVariable Long curtainId) {
+        curtainService.deleteCurtain(curtainId);
+
+        log.info("Curtain successfully deleted whit id: " + curtainId);
+
+        return ResponseEntity
+                .status(ACCEPTED)
+                .body("Curtain has been deleted!");
+    }
+
+    @GetMapping
+    public ResponseEntity<ProductCreationFormData> controllDto() {
+        return ResponseEntity
+                .status(OK)
+                .body(ProductCreationFormData.builder()
+                        .name("japan black")
+                        .productDesc("hosszu és kimeritő szöveg")
+                        .itemNumber("1345")
+                        .width(325)
+                        .height(500)
+                        .patternRep(15)
+                        .price(5000)
+                        .composition("bársony")
+                        .curtainType("BLACKOUT")
+                        .cleaningInst("balek")
+                        .attributeListItemData(Arrays.asList(
+                                AttributeListItemData.builder()
+                                        .id(1L)
+                                        .build()
+                        ))
+                        .imageList(Arrays.asList(
+                                ImageData.builder()
+                                        .imageType("PRIMARY_KEY")
+                                        .imgUrl("valami.hu")
+                                        .build()
+                        ))
+                        .productFamily("japan")
+                        .annotation("kockás")
+                        .recommendedGlue("erős")
+                        .typeOfSize("nagy")
+                        .build());
     }
 }

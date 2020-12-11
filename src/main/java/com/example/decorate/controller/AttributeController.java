@@ -1,9 +1,9 @@
 package com.example.decorate.controller;
 
-import com.example.decorate.domain.dto.AttributeFormData;
+import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.service.AttributeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,31 +12,37 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
+@Slf4j
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/public/attribute")
 public class AttributeController {
-    private AttributeService attributeService;
-
-    @Autowired
-    public AttributeController(AttributeService attributeService) {
-        this.attributeService = attributeService;
-    }
+    private final AttributeService attributeService;
 
     @PostMapping
-    public ResponseEntity saveAttribute(@RequestBody AttributeFormData attributeFormData) {
-        attributeService.saveAttribute(attributeFormData);
-        System.out.println(attributeFormData);
-        return new ResponseEntity(HttpStatus.CREATED);
+    public ResponseEntity<String> saveAttribute(@RequestBody AttributeCreationFormData attributeCreationFormData) {
+        attributeService.saveAttribute(attributeCreationFormData);
+
+        log.info("Attribute form data saved. Parameters: " + attributeCreationFormData.toString());
+
+        return ResponseEntity
+                .status(CREATED)
+                .body("SUCCESS Attribute form data saved.");
     }
 
     @PostMapping("/excelAttributes")
-    public ResponseEntity saveAttributeFromExcel(@RequestBody List<AttributeFormData> attributeFormDatas) {
-        System.out.println("itttttttttttttttttttttttttt");
-        for (AttributeFormData attributeFormData : attributeFormDatas) {
-            attributeService.saveAttribute(attributeFormData);
-        }
-        return new ResponseEntity(HttpStatus.CREATED);
+    public ResponseEntity<String> saveAttributeFromExcel(@RequestBody List<AttributeCreationFormData> attributeCreationFormData) {
+        //TODO hide the loop in the service
+      /*  for (AttributeCreationFormData attributeCreationFormData : attributeCreationFormData) {
+            attributeService.saveAttribute(attributeCreationFormData);
+        }*/
+
+        log.info("Attribute form data saved successfully from file.");
+
+        return ResponseEntity
+                .status(CREATED)
+                .body("SUCCESS Attribute form data saved successfully from file.");
     }
-
-
 }

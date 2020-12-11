@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AttributeFormData {
+public class AttributeCreationFormData {
 
     private String type;
 

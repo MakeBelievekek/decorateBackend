@@ -1,7 +1,7 @@
 package com.example.decorate.service;
 
 import com.example.decorate.domain.RefreshToken;
-import com.example.decorate.exceptions.DecorateBackendException;
+import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repository.RefreshTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

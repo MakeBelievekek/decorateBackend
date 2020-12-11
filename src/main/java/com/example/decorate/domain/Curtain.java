@@ -1,7 +1,7 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ExcelData;
-import com.example.decorate.domain.dto.ProductFormData;
+import com.example.decorate.domain.dto.ProductCreationFormData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,10 +25,12 @@ public class Curtain {
     @Column(name = "name")
     private String name;
 
-    @Column(name = " description")
+    @Column(name = "description")
     private String productDesc;
 
+
     @Column(name = "curtain_type")
+    @Enumerated(EnumType.STRING)
     private CurtainType curtainType;
 
     @Column(name = "width")
@@ -56,24 +58,25 @@ public class Curtain {
 
     private String typeOfSize;
 
-    public Curtain(ProductFormData productFormData, KeyHolder keyHolder) {
+    public Curtain(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
         this.key = keyHolder;
         this.id = keyHolder.getId();
-        this.name = productFormData.getName();
+        this.name = productCreationFormData.getName();
         for (CurtainType curtain : CurtainType.values()) {
-            if (curtain.getType().equals(productFormData.getCurtainType())) {
+            if (curtain.getType().equals(productCreationFormData.getCurtainType())) {
                 this.curtainType = curtain;
             }
         }
-        this.productDesc = productFormData.getProductDesc();
-        this.itemNumber = productFormData.getItemNumber();
-        this.width = productFormData.getWidth();
-        this.height = productFormData.getHeight();
-        this.patternRep = productFormData.getPatternRep();
-        this.price = productFormData.getPrice();
-        this.composition = productFormData.getComposition();
-        this.productFamily = productFormData.getProductFamily();
-        this.cleaningInst = productFormData.getCleaningInst();
+        this.curtainType = CurtainType.valueOf(productCreationFormData.getCurtainType());
+        this.productDesc = productCreationFormData.getProductDesc();
+        this.itemNumber = productCreationFormData.getItemNumber();
+        this.width = productCreationFormData.getWidth();
+        this.height = productCreationFormData.getHeight();
+        this.patternRep = productCreationFormData.getPatternRep();
+        this.price = productCreationFormData.getPrice();
+        this.composition = productCreationFormData.getComposition();
+        this.productFamily = productCreationFormData.getProductFamily();
+        this.cleaningInst = productCreationFormData.getCleaningInst();
     }
 
     public Curtain(ExcelData excelData, KeyHolder keyHolder) {

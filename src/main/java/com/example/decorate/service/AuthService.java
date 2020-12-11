@@ -7,7 +7,7 @@ import com.example.decorate.domain.VerificationToken;
 import com.example.decorate.domain.dto.AuthenticationResponse;
 import com.example.decorate.domain.dto.LoginRequest;
 import com.example.decorate.domain.dto.RegisterRequest;
-import com.example.decorate.exceptions.DecorateBackendException;
+import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repository.DecorateUserRepository;
 import com.example.decorate.repository.VerificationTokenRepository;
 import com.example.decorate.security.JwtProvider;

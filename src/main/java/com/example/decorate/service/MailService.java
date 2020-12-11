@@ -1,7 +1,7 @@
 package com.example.decorate.service;
 
 import com.example.decorate.domain.NotificationEmail;
-import com.example.decorate.exceptions.DecorateBackendException;
+import com.example.decorate.exception.DecorateBackendException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;

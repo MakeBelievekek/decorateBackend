@@ -3,38 +3,36 @@ package com.example.decorate.service;
 import com.example.decorate.domain.Attribute;
 import com.example.decorate.domain.AttributeListItem;
 import com.example.decorate.domain.KeyHolder;
-import com.example.decorate.domain.dto.AttributeFormData;
-import com.example.decorate.domain.dto.AttributeFormListItem;
+import com.example.decorate.domain.dto.AttributeCreationFormData;
+import com.example.decorate.domain.dto.AttributeModel;
 import com.example.decorate.domain.dto.AttributeListItemData;
 import com.example.decorate.domain.dto.FormData;
+import com.example.decorate.exception.DecorateBackendException;
+import com.example.decorate.exception.ExceptionMessages;
 import com.example.decorate.repository.AttributeListItemRepository;
 import com.example.decorate.repository.AttributeRepository;
 import com.example.decorate.repository.KeyHolderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
+@AllArgsConstructor
 @Service
 @Transactional
 public class AttributeService {
 
-    private AttributeRepository attributeRepository;
-    private AttributeListItemRepository attributeListItemRepository;
-    private KeyHolderRepository keyHolderRepository;
+    private final AttributeRepository attributeRepository;
+    private final AttributeListItemRepository attributeListItemRepository;
+    private final KeyHolderRepository keyHolderRepository;
 
-    @Autowired
-    public AttributeService(AttributeRepository attributeRepository, AttributeListItemRepository attributeListItemRepository, KeyHolderRepository keyHolderRepository) {
-        this.attributeRepository = attributeRepository;
-        this.attributeListItemRepository = attributeListItemRepository;
-        this.keyHolderRepository = keyHolderRepository;
-    }
-
-    public void saveAttribute(AttributeFormData attributeFormData) {
-        Attribute attribute = new Attribute(attributeFormData);
+    public void saveAttribute(AttributeCreationFormData attributeCreationFormData) {
+        Attribute attribute = new Attribute(attributeCreationFormData);
         Object exist = attributeRepository.findByDescription(attribute.getDescription());
         System.out.println(exist);
         if (exist == null) {
@@ -42,26 +40,45 @@ public class AttributeService {
         }
     }
 
+    public void deleteAttributeListItem(AttributeListItem attributeListItem) {
+        attributeListItemRepository.findById(attributeListItem.getId())
+                .orElseThrow(() -> new DecorateBackendException(ExceptionMessages.ATTRIBUTE_LIST_ITEM_NOT_EXISTS.getMessage()));
+        attributeListItemRepository.delete(attributeListItem);
+    }
+
     public void saveAttributeListItem(List<AttributeListItemData> attributeListItemDataList, Long prodId) {
+        if (attributeListItemDataList.isEmpty()) {
+            throw new DecorateBackendException("You must fill out the product attribute list!");
+        }
+
         for (AttributeListItemData attributeListItemData : attributeListItemDataList) {
-            Long id = (long) attributeListItemData.getId();
-            Optional<Attribute> optAttribute = attributeRepository.findById(id);
-            Optional<KeyHolder> keyHolder = keyHolderRepository.findById(prodId);
-            if (optAttribute.isPresent()) {
-                if (keyHolder.isPresent()) {
-                    AttributeListItem attributeListItem = new AttributeListItem(keyHolder.get(), optAttribute.get());
-                    attributeListItemRepository.save(attributeListItem);
-                }
-            }
+            Long id = attributeListItemData.getId();
+
+            Attribute attribute = attributeRepository
+                    .findById(id)
+                    .orElseThrow(() -> new DecorateBackendException("Attribute dose not exists!"));
+            KeyHolder keyHolder = keyHolderRepository
+                    .findById(prodId)
+                    .orElseThrow(() -> new DecorateBackendException("Desired product dose not exists!"));
+
+            AttributeListItem attributeListItem = AttributeListItem.builder()
+                    .attribute(attribute)
+                    .key(keyHolder)
+                    .build();
+            attributeListItemRepository.save(attributeListItem);
         }
     }
 
     public FormData getAll() {
-        List<AttributeFormListItem> attributeFormListItems = new ArrayList<>();
+        List<AttributeModel> attributeModels = new ArrayList<>();
         for (Attribute attribute : attributeRepository.findAll()) {
-            attributeFormListItems.add(new AttributeFormListItem(attribute));
+            attributeModels.add(new AttributeModel(attribute));
         }
-        return new FormData(attributeFormListItems);
+        return new FormData(attributeModels);
+    }
+
+    public List<AttributeListItem> findProductAllAttribute(Long productId) {
+        return attributeListItemRepository.findAllByKey_Id(productId);
     }
 
 }

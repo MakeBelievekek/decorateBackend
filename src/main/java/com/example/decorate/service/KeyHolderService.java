@@ -7,6 +7,8 @@ import com.example.decorate.repository.CurtainRepository;
 import com.example.decorate.repository.ImageRepository;
 import com.example.decorate.repository.KeyHolderRepository;
 import com.example.decorate.repository.WallpaperRepository;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,25 +20,17 @@ import java.util.Optional;
 import static com.example.decorate.domain.ProductType.CURTAIN;
 import static com.example.decorate.domain.ProductType.WALLPAPER;
 
+@AllArgsConstructor
+@Slf4j
 @Service
 @Transactional
 
 public class KeyHolderService {
 
-    private KeyHolderRepository keyHolderRepository;
-    private CurtainRepository curtainRepository;
-    private WallpaperRepository wallpaperRepository;
-    private ImageRepository imageRepository;
-
-
-    @Autowired
-    public KeyHolderService(KeyHolderRepository keyHolderRepository, CurtainRepository curtainRepository, WallpaperRepository wallpaperRepository, ImageRepository imageRepository) {
-        this.keyHolderRepository = keyHolderRepository;
-
-        this.curtainRepository = curtainRepository;
-        this.wallpaperRepository = wallpaperRepository;
-        this.imageRepository = imageRepository;
-    }
+    private final KeyHolderRepository keyHolderRepository;
+    private final CurtainRepository curtainRepository;
+    private final WallpaperRepository wallpaperRepository;
+    private final ImageRepository imageRepository;
 
     public KeyHolder saveKey(KeyHolder keyHolder, ProductType productType) {
         keyHolder.setType(productType);
@@ -53,8 +47,7 @@ public class KeyHolderService {
             productsLong.add(Long.parseLong(s));
         }
 
-        productsLong.stream().map(id -> keyHolderRepository
-                .findById(id))
+        productsLong.stream().map(keyHolderRepository::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .forEach(keyHolders::add);
@@ -85,7 +78,6 @@ public class KeyHolderService {
                 .map(Optional::get)
                 .map(wallpaper -> new ProductListItem(wallpaper, new ImageData(imageRepository.findByProdKeyAndImageType(wallpaper.getId(), ImageType.PRIMARY_KEY))))
                 .forEach(items::add);
-        System.out.println("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
         keys.stream().filter(keyHolder -> keyHolder.getType() == CURTAIN)
                 .map(keyHolder -> this.curtainRepository.findById(keyHolder.getId()))
                 .filter(Optional::isPresent)
