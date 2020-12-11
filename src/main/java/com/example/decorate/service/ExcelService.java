@@ -1,11 +1,10 @@
 package com.example.decorate.service;
 
-import com.example.decorate.domain.Curtain;
-import com.example.decorate.domain.KeyHolder;
-import com.example.decorate.domain.ProductType;
-import com.example.decorate.domain.Wallpaper;
+import com.example.decorate.domain.*;
 import com.example.decorate.domain.dto.ExcelData;
 import com.example.decorate.repository.CurtainRepository;
+import com.example.decorate.repository.CurtainTypeListItemRepository;
+import com.example.decorate.repository.FurnitureRepository;
 import com.example.decorate.repository.WallpaperRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,22 +24,27 @@ public class ExcelService {
     KeyHolderService keyHolderService;
     ImageService imageService;
     AttributeService attributeService;
+    FurnitureRepository furnitureRepository;
+    CurtainTypeListItemRepository curtainTypeListItemRepository;
 
     @Autowired
     public ExcelService(CurtainRepository curtainRepository, WallpaperRepository wallpaperRepository,
-                        KeyHolderService keyHolderService, ImageService imageService, AttributeService attributeService) {
+                        KeyHolderService keyHolderService, ImageService imageService,
+                        AttributeService attributeService, FurnitureRepository furnitureRepository,
+                        CurtainTypeListItemRepository curtainTypeListItemRepository) {
         this.curtainRepository = curtainRepository;
+        this.curtainTypeListItemRepository = curtainTypeListItemRepository;
         this.wallpaperRepository = wallpaperRepository;
         this.keyHolderService = keyHolderService;
         this.imageService = imageService;
         this.attributeService = attributeService;
+        this.furnitureRepository = furnitureRepository;
     }
 
     public void save(MultipartFile file) {
         try {
             List<ExcelData> products = ExcelHelper.excelToTutorials(file.getInputStream());
-            System.out.println(products);
-            for (ExcelData product : products) {
+          /*  for (ExcelData product : products) {
                 KeyHolder keyHolder = new KeyHolder();
                 switch (product.getTypeOfProduct()) {
                     case "WALLPAPER":
@@ -52,16 +56,39 @@ public class ExcelService {
                         break;
                     case "CURTAIN":
                         keyHolderService.saveKey(keyHolder, ProductType.CURTAIN);
+                        System.out.println(keyHolder);
+                        System.out.println("---------------------------------------------------------------------------------");
+                        System.out.println(product);
+                        System.out.println("---------------------------------------------------------------------------------");
                         Curtain curtain = new Curtain(product, keyHolder);
                         curtainRepository.save(curtain);
                         imageService.saveImageList(product.getImageList(), curtain.getId(), ProductType.CURTAIN);
                         attributeService.saveAttributesFromExcel(product.getAttributes(), keyHolder);
+                        for (String curtainType : product.getCurtainTypes()) {
+                            curtainTypeListItemRepository.save(new CurtainTypeListItem(keyHolder,getCurtainType(curtainType)));
+                        }
+                        break;
+                    case "FURNITURE":
+                        keyHolderService.saveKey(keyHolder, ProductType.FURNITURE);
+                        FurnitureFabric furnitureFabric = new FurnitureFabric(product, keyHolder);
+                        furnitureRepository.save(furnitureFabric);
+                        imageService.saveImageList(product.getImageList(), furnitureFabric.getId(), ProductType.FURNITURE);
+                        attributeService.saveAttributesFromExcel(product.getAttributes(), keyHolder);
                         break;
                 }
-            }
+            }*/
         } catch (IOException e) {
             throw new RuntimeException("fail to store excel data: " + e.getMessage());
         }
+    }
+
+    public CurtainType getCurtainType(String type) {
+        for (CurtainType curtain : CurtainType.values()) {
+            if (curtain.getType().equals(type)) {
+                return curtain;
+            }
+        }
+        return null;
     }
 
 }

@@ -23,13 +23,13 @@ public class ExcelData {
 
     private int height;
 
-    private int patternRep;
+    private double patternRep;
 
     private int price;
 
     private String composition;
 
-    private String curtainType;
+    private List<String> curtainTypes = new ArrayList<>();
 
     private String cleaningInst;
 
@@ -44,5 +44,5 @@ public class ExcelData {
     private String recommendedGlue;
 
     private String typeOfSize;
-    private String AbrasionResistance;
+    private int AbrasionResistance;
 }

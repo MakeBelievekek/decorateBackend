@@ -1,8 +1,6 @@
 package com.example.decorate.service;
 
-import com.example.decorate.domain.Attribute;
-import com.example.decorate.domain.AttributeListItem;
-import com.example.decorate.domain.KeyHolder;
+import com.example.decorate.domain.*;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.AttributeListItemData;
 import com.example.decorate.domain.dto.AttributeModel;
@@ -88,9 +86,17 @@ public class AttributeService {
     public void saveAttributesFromExcel(List<AttributeCreationFormData> attributes, KeyHolder keyHolder) {
         for (AttributeCreationFormData attribute : attributes) {
             if (attributeRepository.findByDescription(attribute.getDescription()) != null) {
-                saveListItem(new Attribute(attribute), keyHolder);
+                saveListItem(attributeRepository.findByDescription(attribute.getDescription()), keyHolder);
             } else {
-                saveListItem(attributeRepository.save(new Attribute(attribute)), keyHolder);
+                Attribute attr = new Attribute();
+                for (AttributeType attributeType : AttributeType.values()) {
+                    if (attributeType.getType().equals(attribute.getType())) {
+                       attr.setDescription(attribute.getDescription());
+                       attr.setType(attributeType);
+                    }
+                }
+                attributeRepository.save(attr);
+                saveListItem(attr, keyHolder);
             }
         }
 

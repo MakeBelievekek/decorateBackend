@@ -1,7 +1,13 @@
 package com.example.decorate.service;
 
-import com.example.decorate.domain.*;
-import com.example.decorate.domain.dto.*;
+import com.example.decorate.domain.AttributeListItem;
+import com.example.decorate.domain.Curtain;
+import com.example.decorate.domain.Image;
+import com.example.decorate.domain.KeyHolder;
+import com.example.decorate.domain.dto.AttributeModel;
+import com.example.decorate.domain.dto.CurtainModel;
+import com.example.decorate.domain.dto.ImageData;
+import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repository.CurtainRepository;
 import lombok.AllArgsConstructor;
@@ -87,7 +93,7 @@ public class CurtainService {
     private void setCurtainUpdatedValues(Curtain curtain, CurtainModel curtainModel) {
         curtain.setName(curtainModel.getName());
         curtain.setProductDesc(curtainModel.getProductDesc());
-        curtain.setCurtainType(CurtainType.valueOf(curtainModel.getCurtainType()));
+        // curtain.setCurtainType(CurtainType.valueOf(curtainModel.getCurtainType()));
         curtain.setWidth(curtainModel.getWidth());
         curtain.setHeight(curtainModel.getHeight());
         curtain.setItemNumber(curtainModel.getItemNumber());
@@ -138,4 +144,5 @@ public class CurtainService {
         }
         return images;
     }
+
 }

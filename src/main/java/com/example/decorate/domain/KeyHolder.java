@@ -24,4 +24,7 @@ public class KeyHolder {
 
     @OneToMany(mappedBy = "key")
     private List<AttributeListItem> attributeListItems;
+
+    @OneToMany(mappedBy = "key")
+    private List<CurtainTypeListItem> curtainTypeListItem;
 }

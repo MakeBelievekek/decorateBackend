@@ -1,5 +1,6 @@
 package com.example.decorate.controller;
 
+import com.example.decorate.domain.Curtain;
 import com.example.decorate.domain.dto.AttributeListItemData;
 import com.example.decorate.domain.dto.CurtainModel;
 import com.example.decorate.domain.dto.ImageData;
@@ -7,7 +8,6 @@ import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.service.CurtainService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @AllArgsConstructor
@@ -114,4 +112,5 @@ public class CurtainController {
                         .typeOfSize("nagy")
                         .build());
     }
+
 }

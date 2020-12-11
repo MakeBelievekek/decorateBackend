@@ -22,7 +22,7 @@ public class CurtainModel {
     private int width;
     private int height;
     private String itemNumber;
-    private int patternRep;
+    private double patternRep;
     private int price;
     private String composition;
     private String productFamily;
@@ -35,8 +35,8 @@ public class CurtainModel {
         id = curtain.getId();
         name = curtain.getName();
         productDesc = curtain.getProductDesc();
-        System.out.println(curtain.getCurtainType().toString());
-        curtainType = curtain.getCurtainType().toString();
+     //   System.out.println(curtain.getCurtainType().toString());
+      //  curtainType = curtain.getCurtainType().toString();
         width = curtain.getWidth();
         height = curtain.getHeight();
         itemNumber = curtain.getItemNumber();

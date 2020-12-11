@@ -23,7 +23,7 @@ public class ProductCreationFormData {
 
     private int height;
 
-    private int patternRep;
+    private double patternRep;
 
     private int price;
 

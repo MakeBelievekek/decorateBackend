@@ -25,14 +25,14 @@ public class Curtain {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description",columnDefinition = "text")
     private String productDesc;
 
 
-    @Column(name = "curtain_type")
+   /* @Column(name = "curtain_type")
     @Enumerated(EnumType.STRING)
     private CurtainType curtainType;
-
+*/
     @Column(name = "width")
     private int width;
 
@@ -43,7 +43,7 @@ public class Curtain {
     private String itemNumber;
 
     @Column(name = "pattern")
-    private int patternRep;
+    private double patternRep;
 
     @Column(name = "price")
     private int price;
@@ -62,12 +62,12 @@ public class Curtain {
         this.key = keyHolder;
         this.id = keyHolder.getId();
         this.name = productCreationFormData.getName();
-        for (CurtainType curtain : CurtainType.values()) {
+     /*   for (CurtainType curtain : CurtainType.values()) {
             if (curtain.getType().equals(productCreationFormData.getCurtainType())) {
                 this.curtainType = curtain;
             }
         }
-        this.curtainType = CurtainType.valueOf(productCreationFormData.getCurtainType());
+        this.curtainType = CurtainType.valueOf(productCreationFormData.getCurtainType());*/
         this.productDesc = productCreationFormData.getProductDesc();
         this.itemNumber = productCreationFormData.getItemNumber();
         this.width = productCreationFormData.getWidth();
@@ -83,11 +83,11 @@ public class Curtain {
         this.key = keyHolder;
         this.id = keyHolder.getId();
         this.name = excelData.getName();
-        for (CurtainType curtain : CurtainType.values()) {
+       /* for (CurtainType curtain : CurtainType.values()) {
             if (curtain.getType().equals(excelData.getCurtainType())) {
                 this.curtainType = curtain;
             }
-        }
+        }*/
         this.productDesc = excelData.getProductDesc();
         this.itemNumber = excelData.getItemNumber();
         this.width = excelData.getWidth();
@@ -97,6 +97,7 @@ public class Curtain {
         this.composition = excelData.getComposition();
         this.productFamily = excelData.getProductFamily();
         this.cleaningInst = excelData.getCleaningInst();
+        this.typeOfSize = excelData.getTypeOfSize();
     }
 
 }

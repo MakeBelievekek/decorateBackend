@@ -1,13 +1,9 @@
 package com.example.decorate.service;
 
 import com.example.decorate.domain.dto.AttributeCreationFormData;
-import com.example.decorate.domain.dto.AttributeListItemData;
 import com.example.decorate.domain.dto.ExcelData;
 import com.example.decorate.domain.dto.ImageData;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,88 +51,115 @@ public class ExcelHelper {
                     Cell currentCell = cellsInRow.next();
                     switch (cellIdx) {
                         case 0:
+                            System.out.println(cellIdx);
+                            currentCell.setCellType(CellType.STRING);
                             excelData.setName(currentCell.getStringCellValue());
+
                             System.out.println(currentCell.getStringCellValue());
                             break;
                         case 1:
+                            currentCell.setCellType(CellType.STRING);
                             excelData.setItemNumber(currentCell.getStringCellValue());
                             System.out.println(currentCell.getStringCellValue());
                             break;
                         case 2:
+                            currentCell.setCellType(CellType.NUMERIC);
                             excelData.setPrice((int) currentCell.getNumericCellValue());
-                            System.out.println((int) currentCell.getNumericCellValue());
+                            System.out.println(currentCell.getNumericCellValue());
                             break;
                         case 3:
+                            currentCell.setCellType(CellType.STRING);
                             excelData.setTypeOfProduct(currentCell.getStringCellValue());
                             System.out.println(currentCell.getStringCellValue());
                             break;
                         case 4:
-                            excelData.setCurtainType(currentCell.getStringCellValue());
+                            System.out.println(cellIdx);
+                            for (String s : curtainTypeSlicer(currentCell.getStringCellValue())) {
+                                excelData.getCurtainTypes().add(s);
+                            }
                             System.out.println(currentCell.getStringCellValue());
                             break;
                         case 5:
+                            System.out.println(cellIdx);
+                            currentCell.setCellType(CellType.STRING);
                             excelData.setProductFamily(currentCell.getStringCellValue());
                             System.out.println(currentCell.getStringCellValue());
                             break;
                         case 6:
+                            currentCell.setCellType(CellType.STRING);
                             excelData.setProductDesc(currentCell.getStringCellValue());
-                            System.out.println(currentCell.getStringCellValue());
+                            System.out.println(excelData.getProductDesc());
                             break;
                         case 7:
+                            currentCell.setCellType(CellType.STRING);
                             excelData.setComposition(currentCell.getStringCellValue());
-                            System.out.println(currentCell.getStringCellValue());
+                            System.out.println(excelData.getComposition());
                             break;
                         case 8:
+                            currentCell.setCellType(CellType.NUMERIC);
                             excelData.setHeight((int) currentCell.getNumericCellValue());
-                            System.out.println((int) currentCell.getNumericCellValue());
+                            System.out.println(currentCell.getNumericCellValue());
                             break;
                         case 9:
+                            currentCell.setCellType(CellType.NUMERIC);
                             excelData.setWidth((int) currentCell.getNumericCellValue());
-                            System.out.println((int) currentCell.getNumericCellValue());
+                            System.out.println(currentCell.getNumericCellValue());
                             break;
                         case 10:
-                            excelData.setPatternRep((int) currentCell.getNumericCellValue());
-                            System.out.println((int) currentCell.getNumericCellValue());
+                            currentCell.setCellType(CellType.NUMERIC);
+                            excelData.setPatternRep(currentCell.getNumericCellValue());
+                            System.out.println(currentCell.getNumericCellValue());
                             break;
                         case 11:
+                            currentCell.setCellType(CellType.STRING);
                             excelData.setTypeOfSize(currentCell.getStringCellValue());
                             System.out.println(currentCell.getStringCellValue());
                             break;
                         case 12:
+                            currentCell.setCellType(CellType.STRING);
                             excelData.setCleaningInst(currentCell.getStringCellValue());
                             System.out.println(currentCell.getStringCellValue());
                             break;
                         case 13:
+                            currentCell.setCellType(CellType.STRING);
                             excelData.setRecommendedGlue(currentCell.getStringCellValue());
                             System.out.println(currentCell.getStringCellValue());
+                            break;
                         case 14:
+                            currentCell.setCellType(CellType.STRING);
                             excelData.setAnnotation(currentCell.getStringCellValue());
                             System.out.println(currentCell.getStringCellValue());
+                            break;
                         case 15:
-                            excelData.setAbrasionResistance(currentCell.getStringCellValue());
-                            System.out.println(currentCell.getStringCellValue());
+                            currentCell.setCellType(CellType.NUMERIC);
+                            excelData.setAbrasionResistance((int) currentCell.getNumericCellValue());
+
+                            break;
                         case 16:
+                            currentCell.setCellType(CellType.STRING);
                             excelData.getImageList().add(new ImageData("PRIMARY_KEY", currentCell.getStringCellValue()));
-                            System.out.println(currentCell.getStringCellValue());
+
                             break;
                         case 17:
-                            if (currentCell.getStringCellValue() != null) {
-                                for (ImageData imageData : imageSlicer(currentCell.getStringCellValue())) {
-                                    excelData.getImageList().add(imageData);
-                                    System.out.println(imageData);
-                                }
-                                System.out.println(currentCell.getStringCellValue());
+                            currentCell.setCellType(CellType.STRING);
+                            for (ImageData imageData : imageSlicer(currentCell.getStringCellValue())) {
+                                excelData.getImageList().add(imageData);
                             }
+                            System.out.println(currentCell.getStringCellValue());
                             break;
                         case 18:
+                            currentCell.setCellType(CellType.STRING);
                             setAttributes(excelData, currentCell.getStringCellValue(), cellIdx);
+
                             System.out.println(currentCell.getStringCellValue());
                             break;
                         case 19:
+                            currentCell.setCellType(CellType.STRING);
                             setAttributes(excelData, currentCell.getStringCellValue(), cellIdx);
                             System.out.println(currentCell.getStringCellValue());
                             break;
                         case 20:
+                            currentCell.setCellType(CellType.STRING);
                             setAttributes(excelData, currentCell.getStringCellValue(), cellIdx);
                             System.out.println(currentCell.getStringCellValue());
                             break;
@@ -163,6 +186,11 @@ public class ExcelHelper {
             secImages.add(new ImageData("SECONDARY_KEY", url));
         }
         return secImages;
+    }
+
+    public static List<String> curtainTypeSlicer(String types) {
+        List<String> list = Arrays.asList(types.split(","));
+        return list;
     }
 
     public static void setAttributes(ExcelData excelData, String stringCellValue, int cellIndex) {

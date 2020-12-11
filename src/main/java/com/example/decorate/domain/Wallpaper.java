@@ -22,13 +22,13 @@ public class Wallpaper {
     @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "key_id")
     private KeyHolder key;
 
-    @Column(name = "name")
+    @Column(name = "name",columnDefinition = "text")
     private String name;
 
-    @Column(name = " description")
+    @Column(name = " description",columnDefinition = "text")
     private String productDesc;
 
-    @Column(name = "itemNo")
+    @Column(name = "itemNo",columnDefinition = "text")
     private String itemNumber;
 
     @Column(name = "width")
@@ -37,18 +37,18 @@ public class Wallpaper {
     private int height;
 
     @Column(name = "pattern")
-    private int patternRep;
+    private double patternRep;
 
     @Column(name = "price")
     private int price;
 
-    @Column(name = "composition")
+    @Column(name = "composition",columnDefinition = "text")
     private String composition;
-
+    @Column(columnDefinition = "text")
     private String productFamily;
-
+    @Column(columnDefinition = "text")
     private String annotation;
-
+    @Column(columnDefinition = "text")
     private String recommendedGlue;
 
     @Column(name = "date")
