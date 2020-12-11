@@ -40,6 +40,7 @@ public class KeyHolderService {
 
     public KeyHolder saveKey(KeyHolder keyHolder, ProductType productType) {
         keyHolder.setType(productType);
+        System.out.println(keyHolder);
         keyHolderRepository.save(keyHolder);
         return keyHolder;
     }

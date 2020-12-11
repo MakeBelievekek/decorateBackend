@@ -34,9 +34,4 @@ public class AdminController {
         return new ResponseEntity(attributeService.getAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/excelData")
-    public ResponseEntity<FormData> saveExcelData(@RequestBody List<ProductFormData> products) {
-        System.out.println(products);
-        return new ResponseEntity(HttpStatus.OK);
-    }
 }

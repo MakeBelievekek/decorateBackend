@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -31,9 +33,9 @@ public class ExcelData {
 
     private String cleaningInst;
 
-    private List<AttributeListItemData> attributeListItemData;
+    private List<AttributeListItemData> attributeListItemData = new ArrayList<>();
 
-    private List<ImageData> imageList;
+    private List<ImageData> imageList = new ArrayList<>();
 
     private String productFamily;
 

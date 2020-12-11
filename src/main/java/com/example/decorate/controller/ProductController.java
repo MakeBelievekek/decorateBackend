@@ -10,10 +10,7 @@ import com.example.decorate.service.WallpaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +30,14 @@ public class ProductController {
         this.wallpaperService = wallpaperService;
         this.curtainService = curtainService;
         this.shippingOptionService = shippingOptionService;
+    }
+
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity getProducts(@RequestParam String productCategory,
+                                      @RequestParam String attrType, @RequestParam String attr) {
+        System.out.println(attr);
+        return new ResponseEntity(productCategory+"  "+attrType+"  "+attr, HttpStatus.OK);
     }
 
     @GetMapping("/local/{ids}")
