@@ -15,6 +15,8 @@ public class ProductCreationFormData {
 
     private String name;
 
+    private String productType;
+
     private String productDesc;
 
     private String itemNumber;
@@ -44,4 +46,6 @@ public class ProductCreationFormData {
     private String recommendedGlue;
 
     private String typeOfSize;
+
+    private int AbrasionResistance;
 }

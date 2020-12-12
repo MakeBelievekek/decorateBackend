@@ -1,6 +1,8 @@
 package com.example.decorate.controller;
 
 import com.example.decorate.domain.ResponseMessage;
+import com.example.decorate.services.CsvResolver;
+import com.example.decorate.services.CsvService;
 import com.example.decorate.services.ExcelHelper;
 import com.example.decorate.services.ExcelService;
 import lombok.AllArgsConstructor;
@@ -17,15 +19,16 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/api/public/fileupload")
 public class FileUploadController {
     private final ExcelService excelService;
+    private final CsvService csvService;
 
     @PostMapping()
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
         System.out.println("IIIIIIIIIIIIIIIIIIIIIIIIIIITTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
         System.out.println(file.getContentType());
         String message = "";
-        if (ExcelHelper.hasExcelFormat(file)) {
+        if (CsvResolver.hasCSVFormat(file)) {
             try {
-                excelService.save(file);
+                csvService.save(file);
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.status(OK).body(new ResponseMessage(message));
             } catch (Exception e) {
