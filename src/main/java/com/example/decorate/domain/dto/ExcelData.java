@@ -35,7 +35,7 @@ public class ExcelData {
 
     private List<AttributeCreationFormData> attributes = new ArrayList<>();
 
-    private List<ImageData> imageList = new ArrayList<>();
+    private List<ImageModel> imageList;
 
     private String productFamily;
 

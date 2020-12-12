@@ -3,7 +3,7 @@ package com.example.decorate.controller;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.FormData;
 import com.example.decorate.domain.dto.ProductCreationFormData;
-import com.example.decorate.service.AttributeService;
+import com.example.decorate.services.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

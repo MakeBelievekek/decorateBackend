@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,6 +40,9 @@ public class BillingDetails {
 
     private String phoneNumber;
 
+    @Column(name = "time_stamp")
+    private Instant timeStamp;;
+
     public BillingDetails(OrderDto orderDto) {
         this.company = orderDto.getBilling().getCompany();
         this.country = orderDto.getBilling().getCountry();
@@ -47,5 +52,6 @@ public class BillingDetails {
         this.address1 = orderDto.getBilling().getAddress();
         this.address2 = orderDto.getBilling().getAddress2();
         this.phoneNumber = orderDto.getBilling().getPhone();
+        this.timeStamp = Instant.now();
     }
 }

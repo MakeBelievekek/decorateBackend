@@ -1,7 +1,6 @@
 package com.example.decorate.domain.dto;
 
 import com.example.decorate.domain.Curtain;
-import com.example.decorate.domain.CurtainType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +28,7 @@ public class CurtainModel {
     private String cleaningInst;
     private String typeOfSize;
     private List<AttributeModel> attributes;
-    private List<ImageData> imageList;
+    private List<ImageModel> imageList;
 
     public CurtainModel(Curtain curtain) {
         id = curtain.getId();

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -26,4 +28,7 @@ public class ShippingOption {
     private List<PaymentOption> paymentOptionList;
 
     private int price;
+
+    @Column(name = "time_stamp")
+    private Instant timeStamp;
 }

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,6 +43,9 @@ public class ShippingDetails {
 
     private String foxpost;
 
+    @Column(name = "time_stamp")
+    private Instant timeStamp;
+
     public ShippingDetails(OrderDto orderDto) {
         this.company = orderDto.getShipping().getCompany();
         this.country = orderDto.getShipping().getCountry();
@@ -52,5 +57,6 @@ public class ShippingDetails {
         this.shipInfo = orderDto.getShipping().getShipInfo();
         this.shipMethod = orderDto.getShipping().getShipMethod();
         this.foxpost = orderDto.getShipping().getFoxpost();
+        this.timeStamp = Instant.now();
     }
 }

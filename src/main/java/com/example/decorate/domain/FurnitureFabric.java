@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -54,6 +56,9 @@ public class FurnitureFabric {
     @Column(columnDefinition = "text")
     private String typeOfSize;
 
+    @Column(name = "time_stamp")
+    private Instant timeStamp;
+
     public FurnitureFabric(ExcelData excelData, KeyHolder keyHolder) {
         this.key = keyHolder;
         this.id = keyHolder.getId();
@@ -69,5 +74,6 @@ public class FurnitureFabric {
         this.cleaningInst = excelData.getCleaningInst();
         this.typeOfSize = excelData.getTypeOfSize();
         this.abrasionResistance = excelData.getAbrasionResistance();
+        this.timeStamp = Instant.now();
     }
 }

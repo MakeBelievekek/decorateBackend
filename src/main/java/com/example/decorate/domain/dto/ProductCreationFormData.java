@@ -33,9 +33,9 @@ public class ProductCreationFormData {
 
     private String cleaningInst;
 
-    private List<AttributeListItemData> attributeListItemData;
+    private List<AttributeCreationFormData> attributeListItemData;
 
-    private List<ImageData> imageList;
+    private List<ImageModel> imageList;
 
     private String productFamily;
 

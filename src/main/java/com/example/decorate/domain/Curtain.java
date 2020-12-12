@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +29,6 @@ public class Curtain {
 
     @Column(name = "description",columnDefinition = "text")
     private String productDesc;
-
 
    /* @Column(name = "curtain_type")
     @Enumerated(EnumType.STRING)
@@ -58,6 +59,9 @@ public class Curtain {
 
     private String typeOfSize;
 
+    @Column(name = "time_stamp")
+    private Instant timeStamp;
+
     public Curtain(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
         this.key = keyHolder;
         this.id = keyHolder.getId();
@@ -77,7 +81,9 @@ public class Curtain {
         this.composition = productCreationFormData.getComposition();
         this.productFamily = productCreationFormData.getProductFamily();
         this.cleaningInst = productCreationFormData.getCleaningInst();
+        this.timeStamp = Instant.now();
     }
+
 
     public Curtain(ExcelData excelData, KeyHolder keyHolder) {
         this.key = keyHolder;
@@ -98,6 +104,7 @@ public class Curtain {
         this.productFamily = excelData.getProductFamily();
         this.cleaningInst = excelData.getCleaningInst();
         this.typeOfSize = excelData.getTypeOfSize();
+        this.timeStamp = Instant.now();
     }
 
 }

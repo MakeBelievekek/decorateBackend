@@ -1,6 +1,6 @@
 package com.example.decorate.controller;
 
-import com.example.decorate.service.HomeService;
+import com.example.decorate.services.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;

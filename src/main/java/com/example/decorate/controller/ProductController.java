@@ -3,10 +3,10 @@ package com.example.decorate.controller;
 
 import com.example.decorate.domain.KeyHolder;
 import com.example.decorate.domain.dto.ProductListItem;
-import com.example.decorate.service.CurtainService;
-import com.example.decorate.service.KeyHolderService;
-import com.example.decorate.service.ShippingOptionService;
-import com.example.decorate.service.WallpaperService;
+import com.example.decorate.services.curtain.CurtainService;
+import com.example.decorate.services.KeyHolderService;
+import com.example.decorate.services.ShippingOptionService;
+import com.example.decorate.services.wallpaper.WallpaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-public class KeyHolder {
+public class   KeyHolder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +27,8 @@ public class KeyHolder {
     private List<AttributeListItem> attributeListItems;
 
     @OneToMany(mappedBy = "key")
-    private List<CurtainTypeListItem> curtainTypeListItem;
+    private List<CurtainAttribute> curtainAttribute;
+
+    @Column(name = "time_stamp")
+    private Instant timeStamp = Instant.now();
 }
