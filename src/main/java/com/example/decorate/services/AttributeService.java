@@ -11,6 +11,7 @@ import com.example.decorate.repositorys.AttributeListItemRepository;
 import com.example.decorate.repositorys.AttributeRepository;
 import com.example.decorate.repositorys.KeyHolderRepository;
 import com.example.decorate.services.curtain.CurtainAttributeService;
+import com.example.decorate.services.furniture.FurnitureFabricAttributeService;
 import com.example.decorate.services.wallpaper.WallpaperAttributeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,9 @@ public class AttributeService {
     private final KeyHolderRepository keyHolderRepository;
     private final CurtainAttributeService curtainAttributeService;
     private final WallpaperAttributeService wallpaperAttributeService;
+    private final FurnitureFabricAttributeService furnitureFabricAttributeService;
+
+
 
     public List<Attribute> saveAttributes(List<AttributeCreationFormData> attributeCreationFormDataList) {
         List<Attribute> productAttributes = new ArrayList<>();
@@ -202,5 +206,24 @@ public class AttributeService {
     public void deleteProductAttributeItems(Curtain curtain) {
         Long curtainId = curtain.getId();
         curtainAttributeService.deleteAllByCurtainId(curtainId);
+    }
+
+    public void deleteProductAttributeItems(FurnitureFabric furnitureFabric) {
+        Long furnitureFabricId = furnitureFabric.getId();
+        curtainAttributeService.deleteAllByCurtainId(furnitureFabricId);
+    }
+
+    public void createFurnitureFabricAttributes(FurnitureFabric furnitureFabric, List<AttributeCreationFormData> furnitureFabricAttributes) {
+        List<Attribute> attributeList = saveAttributes(furnitureFabricAttributes);
+        furnitureFabricAttributeService.saveFurnitureFabricAttributes(furnitureFabric, attributeList);
+    }
+
+    public List<FurnitureFabricAttribute> fetchAllFurnitureFabricAttributes(Long furnitureFabricId) {
+        return furnitureFabricAttributeService.findAllFurnitureAttributeByFurnitureFabricId(furnitureFabricId);
+    }
+
+    public void updateFurnitureFabricAttributes(FurnitureFabric furnitureFabric, List<AttributeModel> attributes) {
+        List<Attribute> attributeList = updateAttributes(attributes);
+        furnitureFabricAttributeService.updateFurnitureFabricAttributes(furnitureFabric, attributeList);
     }
 }

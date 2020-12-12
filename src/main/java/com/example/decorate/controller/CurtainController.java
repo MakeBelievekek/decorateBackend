@@ -88,6 +88,7 @@ public class CurtainController {
                         .patternRep(15)
                         .price(5000)
                         .composition("bársony")
+                        .abrasionResistance(500)
                         .curtainType("BLACKOUT")
                         .cleaningInst("balek")
                         .attributeCreationFormDataList(Arrays.asList(

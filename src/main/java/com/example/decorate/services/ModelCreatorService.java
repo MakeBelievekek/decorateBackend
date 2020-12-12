@@ -1,8 +1,10 @@
 package com.example.decorate.services;
 
 import com.example.decorate.domain.Curtain;
+import com.example.decorate.domain.FurnitureFabric;
 import com.example.decorate.domain.Wallpaper;
 import com.example.decorate.domain.dto.CurtainModel;
+import com.example.decorate.domain.dto.FurnitureFabricModel;
 import com.example.decorate.domain.dto.WallpaperModel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,5 +32,13 @@ public class ModelCreatorService {
         wallpaperModel.setAttributes(dtoMapperService.getProductAllAttributesModel(wallpaper));
         wallpaperModel.setImageList(dtoMapperService.getProductAllImageModels(wallpaperId));
         return wallpaperModel;
+    }
+
+    public FurnitureFabricModel createFurnitureFabricModel(FurnitureFabric furnitureFabric) {
+        Long furnitureFabricId = furnitureFabric.getId();
+        FurnitureFabricModel furnitureFabricModel = new FurnitureFabricModel(furnitureFabric);
+        furnitureFabricModel.setAttributes(dtoMapperService.getProductAllAttributesModel(furnitureFabric));
+        furnitureFabricModel.setImageList(dtoMapperService.getProductAllImageModels(furnitureFabricId));
+        return furnitureFabricModel;
     }
 }

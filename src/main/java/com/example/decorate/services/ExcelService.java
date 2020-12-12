@@ -4,7 +4,7 @@ import com.example.decorate.domain.*;
 import com.example.decorate.domain.dto.ExcelData;
 import com.example.decorate.repositorys.curtain.CurtainRepository;
 import com.example.decorate.repositorys.curtain.CurtainAttributeRepository;
-import com.example.decorate.repositorys.furniture.FurnitureRepository;
+import com.example.decorate.repositorys.furniture.FurnitureFabricRepository;
 import com.example.decorate.repositorys.wallpaper.WallpaperRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +24,13 @@ public class ExcelService {
     KeyHolderService keyHolderService;
     ImageService imageService;
     AttributeService attributeService;
-    FurnitureRepository furnitureRepository;
+    FurnitureFabricRepository furnitureFabricRepository;
     CurtainAttributeRepository curtainAttributeRepository;
 
     @Autowired
     public ExcelService(CurtainRepository curtainRepository, WallpaperRepository wallpaperRepository,
                         KeyHolderService keyHolderService, ImageService imageService,
-                        AttributeService attributeService, FurnitureRepository furnitureRepository,
+                        AttributeService attributeService, FurnitureFabricRepository furnitureFabricRepository,
                         CurtainAttributeRepository curtainAttributeRepository) {
         this.curtainRepository = curtainRepository;
         this.curtainAttributeRepository = curtainAttributeRepository;
@@ -38,7 +38,7 @@ public class ExcelService {
         this.keyHolderService = keyHolderService;
         this.imageService = imageService;
         this.attributeService = attributeService;
-        this.furnitureRepository = furnitureRepository;
+        this.furnitureFabricRepository = furnitureFabricRepository;
     }
 
     public void save(MultipartFile file) {

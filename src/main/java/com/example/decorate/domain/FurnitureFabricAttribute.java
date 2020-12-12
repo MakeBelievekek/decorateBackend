@@ -13,7 +13,7 @@ import java.time.Instant;
 @Builder
 @Data
 @Entity
-public class FurnitureAttribute {
+public class FurnitureFabricAttribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,4 +32,11 @@ public class FurnitureAttribute {
 
     @Column(name = "time_stamp")
     private Instant timeStamp = Instant.now();
+
+    public FurnitureFabricAttribute(Attribute attribute, FurnitureFabric furnitureFabric, KeyHolder keyHolder) {
+        this.key = keyHolder;
+        this.attribute = attribute;
+        this.furnitureFabric = furnitureFabric;
+        this.timeStamp = Instant.now();
+    }
 }
