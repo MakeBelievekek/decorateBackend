@@ -1,9 +1,6 @@
 package com.example.decorate.domain.dto;
 
-import com.example.decorate.domain.Attribute;
-import com.example.decorate.domain.AttributeListItem;
-import com.example.decorate.domain.CurtainAttribute;
-import com.example.decorate.domain.WallpaperAttribute;
+import com.example.decorate.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,5 +39,12 @@ public class AttributeModel {
         this.type = wallpaperAttribute.getAttribute().getType().toString();
         this.description = wallpaperAttribute.getAttribute().getDescription();
     }
+
+    public AttributeModel(FurnitureFabricAttribute furnitureFabricAttribute) {
+        this.id = furnitureFabricAttribute.getId();
+        this.type = furnitureFabricAttribute.getAttribute().getType().toString();
+        this.description = furnitureFabricAttribute.getAttribute().getDescription();
+    }
+
 
 }

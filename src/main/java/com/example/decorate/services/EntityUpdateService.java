@@ -1,8 +1,10 @@
 package com.example.decorate.services;
 
 import com.example.decorate.domain.Curtain;
+import com.example.decorate.domain.FurnitureFabric;
 import com.example.decorate.domain.Wallpaper;
 import com.example.decorate.domain.dto.CurtainModel;
+import com.example.decorate.domain.dto.FurnitureFabricModel;
 import com.example.decorate.domain.dto.WallpaperModel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,5 +45,21 @@ public class EntityUpdateService {
         wallpaper.setProductFamily(wallpaperModel.getProductFamily());
         wallpaper.setAnnotation(wallpaperModel.getAnnotation());
         wallpaper.setRecommendedGlue(wallpaperModel.getRecommendedGlue());
+    }
+
+    public void setFurnitureFabricUpdatedValues(FurnitureFabric furnitureFabric, FurnitureFabricModel furnitureFabricModel) {
+        furnitureFabric.setId(furnitureFabricModel.getId());
+        furnitureFabric.setName(furnitureFabricModel.getName());
+        furnitureFabric.setProductDesc(furnitureFabricModel.getProductDesc());
+        furnitureFabric.setWidth(furnitureFabricModel.getWidth());
+        furnitureFabric.setHeight(furnitureFabricModel.getHeight());
+        furnitureFabric.setItemNumber(furnitureFabricModel.getItemNumber());
+        furnitureFabric.setPatternRep(furnitureFabricModel.getPatternRep());
+        furnitureFabric.setPrice(furnitureFabricModel.getPrice());
+        furnitureFabric.setComposition(furnitureFabricModel.getComposition());
+        furnitureFabric.setProductFamily(furnitureFabricModel.getProductFamily());
+        furnitureFabric.setCleaningInst(furnitureFabricModel.getCleaningInst());
+        furnitureFabric.setAbrasionResistance(furnitureFabricModel.getAbrasionResistance());
+        furnitureFabric.setTypeOfSize(furnitureFabricModel.getTypeOfSize());
     }
 }

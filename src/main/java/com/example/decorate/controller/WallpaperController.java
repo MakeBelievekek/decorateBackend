@@ -87,6 +87,7 @@ public class WallpaperController {
                         .composition("bársony")
                         .curtainType("BLACKOUT")
                         .cleaningInst("balek")
+                        .abrasionResistance(500)
                         .attributeCreationFormDataList(Collections.singletonList(
                                 AttributeCreationFormData.builder()
                                         .type("COLOR")

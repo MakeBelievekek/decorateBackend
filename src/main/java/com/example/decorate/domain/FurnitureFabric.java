@@ -1,6 +1,7 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ExcelData;
+import com.example.decorate.domain.dto.ProductCreationFormData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -74,6 +75,24 @@ public class FurnitureFabric {
         this.cleaningInst = excelData.getCleaningInst();
         this.typeOfSize = excelData.getTypeOfSize();
         this.abrasionResistance = excelData.getAbrasionResistance();
+        this.timeStamp = Instant.now();
+    }
+
+    public FurnitureFabric(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
+        this.key = keyHolder;
+        this.id = keyHolder.getId();
+        this.name = productCreationFormData.getName();
+        this.productDesc = productCreationFormData.getProductDesc();
+        this.itemNumber = productCreationFormData.getItemNumber();
+        this.width = productCreationFormData.getWidth();
+        this.height = productCreationFormData.getHeight();
+        this.patternRep = productCreationFormData.getPatternRep();
+        this.price = productCreationFormData.getPrice();
+        this.composition = productCreationFormData.getComposition();
+        this.productFamily = productCreationFormData.getProductFamily();
+        this.cleaningInst = productCreationFormData.getCleaningInst();
+        this.typeOfSize = productCreationFormData.getTypeOfSize();
+        this.abrasionResistance = productCreationFormData.getAbrasionResistance();
         this.timeStamp = Instant.now();
     }
 }

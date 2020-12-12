@@ -27,6 +27,8 @@ public class DTOMapperService {
 
         final String curtainClass = Curtain.class.toString();
         final String wallpaperClass = Wallpaper.class.toString();
+        final String furnitureFabricClass = FurnitureFabric.class.toString();
+
         if (productClass.equals(curtainClass)) {
             Curtain curtain = (Curtain) product;
             Long curtainId = curtain.getId();
@@ -37,8 +39,21 @@ public class DTOMapperService {
             Long wallpaperId = wallpaper.getId();
             List<WallpaperAttribute> wallpaperAttributes = attributeService.fetchAllWallpaperAttributes(wallpaperId);
             attributeModels = convertWallpaperAttributesToDTO(wallpaperAttributes);
+        } else if (productClass.equals(furnitureFabricClass)) {
+            FurnitureFabric furnitureFabric = (FurnitureFabric) product;
+            Long furnitureFabricId = furnitureFabric.getId();
+            List<FurnitureFabricAttribute> furnitureFabricAttributes = attributeService.fetchAllFurnitureFabricAttributes(furnitureFabricId);
+            attributeModels = convertFurnitrueFabricAttributesToDTO(furnitureFabricAttributes);
         }
         return attributeModels;
+    }
+
+    private List<AttributeModel> convertFurnitrueFabricAttributesToDTO(List<FurnitureFabricAttribute> furnitureFabricAttributes) {
+        List<AttributeModel> attributes = new ArrayList<>();
+        for (FurnitureFabricAttribute furnitureFabricAttribute : furnitureFabricAttributes) {
+            attributes.add(new AttributeModel(furnitureFabricAttribute));
+        }
+        return attributes;
     }
 
     private List<AttributeModel> convertCurtainAttributesToDTO(List<CurtainAttribute> curtainAttributes) {
