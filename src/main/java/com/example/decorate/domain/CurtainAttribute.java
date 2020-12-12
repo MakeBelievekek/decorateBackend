@@ -1,5 +1,6 @@
 package com.example.decorate.domain;
 
+import com.example.decorate.domain.dto.AttributeModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,6 +37,13 @@ public class CurtainAttribute {
     private Instant timeStamp;
 
     public CurtainAttribute(KeyHolder key, CurtainType curtainType, Attribute attribute) {
+        this.key = key;
+        this.timeStamp = Instant.now();
+    }
+
+    public CurtainAttribute(Attribute attribute, Curtain curtain, KeyHolder key) {
+        this.attribute = attribute;
+        this.curtain = curtain;
         this.key = key;
         this.timeStamp = Instant.now();
     }

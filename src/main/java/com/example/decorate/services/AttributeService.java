@@ -10,6 +10,7 @@ import com.example.decorate.exception.ExceptionMessages;
 import com.example.decorate.repositorys.AttributeListItemRepository;
 import com.example.decorate.repositorys.AttributeRepository;
 import com.example.decorate.repositorys.KeyHolderRepository;
+import com.example.decorate.services.curtain.CurtainAttributeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,18 +32,69 @@ public class AttributeService {
     private final AttributeRepository attributeRepository;
     private final AttributeListItemRepository attributeListItemRepository;
     private final KeyHolderRepository keyHolderRepository;
+    private final CurtainAttributeService curtainAttributeService;
+
+    public List<Attribute> saveAttributes(List<AttributeCreationFormData> attributeCreationFormDataList) {
+        List<Attribute> productAttributes = new ArrayList<>();
+
+        for (AttributeCreationFormData attributeCreationFormData : attributeCreationFormDataList) {
+            String attrType = attributeCreationFormData.getType();
+            String attrDesc = attributeCreationFormData.getDescription();
+            attributeCreationProcess(productAttributes, attrType, attrDesc);
+        }
+        return productAttributes;
+    }
+
+    public List<Attribute> updateAttributes(List<AttributeModel> attributeModels) {
+        List<Attribute> productAttributes = new ArrayList<>();
+
+        for (AttributeModel attributeModel : attributeModels) {
+            String attrType = attributeModel.getType();
+            String attrDesc = attributeModel.getDescription();
+            attributeCreationProcess(productAttributes, attrType, attrDesc);
+        }
+        return productAttributes;
+    }
+
+    public void createCurtainAttributes(Curtain curtain, List<AttributeCreationFormData> attributeCreationFormDataList) {
+        List<Attribute> attributeList = saveAttributes(attributeCreationFormDataList);
+        curtainAttributeService.saveCurtainAttributes(curtain, attributeList);
+    }
+
+    public void updateCurtainAttributes(Curtain curtain, List<AttributeModel> attributeModels) {
+        List<Attribute> attributeList = updateAttributes(attributeModels);
+        curtainAttributeService.updateCurtainAttributes(curtain, attributeList);
+    }
+
+
+    private void attributeCreationProcess(List<Attribute> productAttributes, String attrType, String attrDesc) {
+        Attribute attribute = saveAttribute(attrType, attrDesc);
+        productAttributes.add(attribute);
+    }
 
     public Attribute saveAttribute(AttributeCreationFormData attributeCreationFormData) {
+        Optional<Attribute> attribute = fetchByDescription(attributeCreationFormData.getDescription());
+        return attribute.orElseGet(() -> createAttribute(attributeCreationFormData));
+    }
+
+    public Attribute saveAttribute(String attributeType, String attributeDesc) {
+        Optional<Attribute> attribute = fetchByDescription(attributeDesc);
+        return attribute.orElseGet(() -> createAttribute(attributeType, attributeDesc));
+    }
+
+    private Attribute createAttribute(AttributeCreationFormData attributeCreationFormData) {
         Attribute attributeToSave = new Attribute(attributeCreationFormData);
-        Optional<Attribute> attribute = getByDescription(attributeToSave.getDescription());
-        if (attribute.isPresent()) {
-            return attribute.get();
-        }
         attributeRepository.save(attributeToSave);
         return attributeToSave;
     }
 
-    private Optional<Attribute> getByDescription(String description) {
+    private Attribute createAttribute(String attributeType, String attributeDesc) {
+        Attribute attributeToSave = new Attribute(attributeType, attributeDesc);
+        attributeRepository.save(attributeToSave);
+        return attributeToSave;
+    }
+
+    private Optional<Attribute> fetchByDescription(String description) {
         return attributeRepository
                 .findByDescription(description);
     }
@@ -101,6 +153,7 @@ public class AttributeService {
         List<AttributeListItem> productAllAttributeListItems = findProductAllAttribute(productId);
         attributeListItemRepository.deleteAll(productAllAttributeListItems);
     }
+
     public void saveAttributesFromExcel(List<AttributeCreationFormData> attributes, KeyHolder keyHolder) {
         for (AttributeCreationFormData attribute : attributes) {
             Optional<Attribute> attributeByDesc = attributeRepository.findByDescription(attribute.getDescription());
@@ -110,8 +163,8 @@ public class AttributeService {
                 Attribute attr = new Attribute();
                 for (AttributeType attributeType : AttributeType.values()) {
                     if (attributeType.getType().equals(attribute.getType())) {
-                       attr.setDescription(attribute.getDescription());
-                       attr.setType(attributeType);
+                        attr.setDescription(attribute.getDescription());
+                        attr.setType(attributeType);
                     }
                 }
                 attributeRepository.save(attr);
@@ -119,5 +172,9 @@ public class AttributeService {
             }
         }
 
+    }
+
+    public List<CurtainAttribute> fetchAllCurtainAttributes(Long curtainId) {
+        return curtainAttributeService.findAllCurtainAttributeByCurtainId(curtainId);
     }
 }

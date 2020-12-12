@@ -25,9 +25,19 @@ public class DTOMapperService {
         return convertImagesToDTO(imagesByProductId);
     }
 
-    public List<AttributeModel> getProductAllAttributesModel(Long productId) {
-        List<AttributeListItem> curtainAllAttribute = getProductAllAttribute(productId);
-        return convertAttributesToDTO(curtainAllAttribute);
+    public <T> List<AttributeModel> getProductAllAttributesModel(T product) {
+        List<AttributeModel> attributeModels = null;
+        String productClass = product.getClass().toString();
+
+        final String curtainClass = Curtain.class.toString();
+
+        if (productClass.equals(curtainClass)) {
+            Curtain curtain = (Curtain) product;
+            Long curtainId = curtain.getId();
+            List<CurtainAttribute> curtainAttributes = attributeService.fetchAllCurtainAttributes(curtainId);
+            attributeModels = convertCurtainAttributesToDTO(curtainAttributes);
+        }
+        return attributeModels;
     }
 
     private List<Image> getProductImagesByProductId(Long curtainId) {
@@ -50,6 +60,14 @@ public class DTOMapperService {
         List<AttributeModel> attributes = new ArrayList<>();
         for (AttributeListItem attributeListItem : productAllAttribute) {
             attributes.add(new AttributeModel(attributeListItem));
+        }
+        return attributes;
+    }
+
+    private List<AttributeModel> convertCurtainAttributesToDTO(List<CurtainAttribute> curtainAttributes) {
+        List<AttributeModel> attributes = new ArrayList<>();
+        for (CurtainAttribute curtainAttribute : curtainAttributes) {
+            attributes.add(new AttributeModel(curtainAttribute));
         }
         return attributes;
     }

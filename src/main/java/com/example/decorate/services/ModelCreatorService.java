@@ -19,7 +19,7 @@ public class ModelCreatorService {
     public CurtainModel createCurtainModel(Curtain curtain) {
         Long curtainId = curtain.getId();
         CurtainModel curtainModel = new CurtainModel(curtain);
-        curtainModel.setAttributes(dtoMapperService.getProductAllAttributesModel(curtainId));
+        curtainModel.setAttributes(dtoMapperService.getProductAllAttributesModel(curtain));
         curtainModel.setImageList(dtoMapperService.getProductAllImageModels(curtainId));
         return curtainModel;
     }

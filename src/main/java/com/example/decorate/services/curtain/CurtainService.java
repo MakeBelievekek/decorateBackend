@@ -39,7 +39,7 @@ public class CurtainService {
         curtainRepository.save(curtain);
 
         List<AttributeCreationFormData> curtainAttributes = productCreationFormData.getAttributeListItemData();
-        curtainAttributeService.saveCurtainAttributes(curtain, curtainAttributes, keyHolder);
+        attributeService.createCurtainAttributes(curtain, curtainAttributes);
         imageService.saveImageList(productCreationFormData.getImageList(), keyHolder.getId(), CURTAIN);
 
     }
@@ -64,6 +64,8 @@ public class CurtainService {
         Curtain curtain = getCurtainById(curtainId);
 
         entityUpdateService.setCurtainUpdatedValues(curtain, curtainModel);
+        attributeService.updateCurtainAttributes(curtain, curtainModel.getAttributes());
+        imageService.updateProductImages(curtainId, curtainModel.getImageList());
 
         curtainRepository.save(curtain);
     }

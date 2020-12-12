@@ -4,15 +4,15 @@ import com.example.decorate.domain.Attribute;
 import com.example.decorate.domain.Curtain;
 import com.example.decorate.domain.CurtainAttribute;
 import com.example.decorate.domain.KeyHolder;
-import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.repositorys.curtain.CurtainAttributeRepository;
-import com.example.decorate.services.AttributeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -20,19 +20,39 @@ import java.util.List;
 @Transactional
 public class CurtainAttributeService {
     private final CurtainAttributeRepository curtainAttributeRepository;
-    private final AttributeService attributeService;
 
     public void saveCurtainAttributes(Curtain curtain,
-                                      List<AttributeCreationFormData> attributeListItemData,
-                                      KeyHolder keyHolder) {
-        for (AttributeCreationFormData curtainAttribute : attributeListItemData) {
-            Attribute persistentAttribute = attributeService.saveAttribute(curtainAttribute);
-            CurtainAttribute attribute = CurtainAttribute.builder()
-                    .attribute(persistentAttribute)
-                    .curtain(curtain)
-                    .key(keyHolder)
-                    .build();
-            curtainAttributeRepository.save(attribute);
+                                      List<Attribute> attributes) {
+        KeyHolder keyHolder = curtain.getKey();
+        for (Attribute attribute : attributes) {
+            curtainAttributeRepository.save(new CurtainAttribute(attribute, curtain, keyHolder));
         }
+    }
+
+    public void updateCurtainAttributes(Curtain curtain, List<Attribute> attributes) {
+        List<Long> activeCurtainAttributeIdList = new ArrayList<>();
+        Long curtainId = curtain.getId();
+        for (Attribute attribute : attributes) {
+            KeyHolder key = curtain.getKey();
+            Long attributeId = attribute.getId();
+
+            Optional<CurtainAttribute> curtainAttribute = curtainAttributeRepository
+                    .fetchByAttributeIdAndCurtainId(attributeId, curtainId);
+
+            CurtainAttribute persistentCurtainAttribute = curtainAttribute
+                    .orElseGet(() ->
+                    {
+                        CurtainAttribute curtainAttr = new CurtainAttribute(attribute, curtain, key);
+                        return curtainAttributeRepository.save(curtainAttr);
+                    });
+            activeCurtainAttributeIdList.add(persistentCurtainAttribute.getId());
+        }
+        log.info("lista elemei:"  + activeCurtainAttributeIdList.toString());
+        log.info("curtain id:"  + curtainId);
+        curtainAttributeRepository.deleteCurtainNotUsedAttributes(activeCurtainAttributeIdList, 3L);
+    }
+
+    public List<CurtainAttribute> findAllCurtainAttributeByCurtainId(Long curtainId) {
+        return curtainAttributeRepository.fetchAllByCurtainId(curtainId);
     }
 }

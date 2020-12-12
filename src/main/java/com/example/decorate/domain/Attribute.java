@@ -37,4 +37,9 @@ public class Attribute {
         this.description = attributeCreationFormData.getDescription();
         this.timeStamp = Instant.now();
     }
- }
+
+    public Attribute(String type, String description) {
+        this.type = AttributeType.valueOf(type);
+        this.description = description;
+    }
+}

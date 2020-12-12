@@ -1,5 +1,6 @@
 package com.example.decorate.services;
 
+import com.example.decorate.domain.Curtain;
 import com.example.decorate.domain.Image;
 import com.example.decorate.domain.ImageType;
 import com.example.decorate.domain.ProductType;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.decorate.exception.ExceptionMessages.IMAGE_NOT_EXISTS;
 
@@ -37,7 +40,7 @@ public class ImageService {
                     .timeStamp(Instant.now())
                     .build();
 
-          imageRepository.save(image);
+            imageRepository.save(image);
         }
     }
 
@@ -68,5 +71,20 @@ public class ImageService {
 
     private List<Image> getAllImagesByProdKey(Long productId) {
         return imageRepository.findAllByProdKey(productId);
+    }
+
+    public void updateProductImages(Long productId, List<ImageModel> imageList) {
+        List<Long> activeImagesIdList = new ArrayList<>();
+        for (ImageModel imageModel : imageList) {
+            Long imageId = imageModel.getId();
+            Optional<Image> img = imageRepository.findById(imageId);
+            Image persistentImg = img.orElseGet(() -> {
+                Image imageToSave = new Image(imageModel);
+                imageRepository.save(imageToSave);
+                return imageToSave;
+            });
+            activeImagesIdList.add(persistentImg.getId());
+        }
+        imageRepository.deleteProductInActiveImages(activeImagesIdList, productId);
     }
 }

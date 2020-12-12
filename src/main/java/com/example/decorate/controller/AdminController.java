@@ -25,7 +25,7 @@ public class AdminController {
 
     @PostMapping("/attribute")
     public ResponseEntity saveAttribute(@RequestBody AttributeCreationFormData attributeCreationFormData) {
-        attributeService.saveAttribute(attributeCreationFormData);
+        attributeService.saveAttribute(attributeCreationFormData.getType(), attributeCreationFormData.getDescription());
         return new ResponseEntity(HttpStatus.OK);
     }
 
