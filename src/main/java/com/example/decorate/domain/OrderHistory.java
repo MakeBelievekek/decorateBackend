@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -47,6 +49,9 @@ public class OrderHistory {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Product> products;
 
+    @Column(name = "time_stamp")
+    private Instant timeStamp;
+
     public OrderHistory(OrderDto orderDto, List<Product> products, String orderId, BillingDetails billingDetails, ShippingDetails shippingDetails) {
         this.lastName = orderDto.getUser().getLastname();
         this.firstName = orderDto.getUser().getFirstname();
@@ -56,5 +61,6 @@ public class OrderHistory {
         this.orderId = orderId;
         this.billingDetails = billingDetails;
         this.shippingDetails = shippingDetails;
+        this.timeStamp = Instant.now();
     }
 }

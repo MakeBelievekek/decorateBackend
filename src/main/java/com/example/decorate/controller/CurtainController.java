@@ -1,11 +1,7 @@
 package com.example.decorate.controller;
 
-import com.example.decorate.domain.Curtain;
-import com.example.decorate.domain.dto.AttributeListItemData;
-import com.example.decorate.domain.dto.CurtainModel;
-import com.example.decorate.domain.dto.ImageData;
-import com.example.decorate.domain.dto.ProductCreationFormData;
-import com.example.decorate.service.CurtainService;
+import com.example.decorate.domain.dto.*;
+import com.example.decorate.services.curtain.CurtainService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +20,6 @@ public class CurtainController {
 
     private final CurtainService curtainService;
 
-
     @PostMapping
     public ResponseEntity<String> createCurtain(@RequestBody ProductCreationFormData productCreationFormData) {
         curtainService.saveCurtain(productCreationFormData);
@@ -37,7 +32,7 @@ public class CurtainController {
     }
 
     @GetMapping("/{curtainId}")
-    public ResponseEntity<CurtainModel> getCurtainById(@PathVariable Long curtainId) {
+    public ResponseEntity<CurtainModel> fetchCurtainById(@PathVariable Long curtainId) {
         CurtainModel curtain = curtainService.getCurtain(curtainId);
 
         log.info("Curtain whit id: " + curtainId + " is fetched!");
@@ -48,7 +43,7 @@ public class CurtainController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<CurtainModel>> getAllCurtains() {
+    public ResponseEntity<List<CurtainModel>> fetchAllCurtains() {
         List<CurtainModel> allCurtains = curtainService.getAllCurtains();
 
         log.info(allCurtains.size() + " curtains fetched from database!");
@@ -95,14 +90,15 @@ public class CurtainController {
                         .composition("bársony")
                         .curtainType("BLACKOUT")
                         .cleaningInst("balek")
-                        .attributeListItemData(Arrays.asList(
-                                AttributeListItemData.builder()
-                                        .id(1L)
+                        .attributeCreationFormDataList(Arrays.asList(
+                                AttributeCreationFormData.builder()
+                                        .type("COLOR")
+                                        .description("kek")
                                         .build()
                         ))
                         .imageList(Arrays.asList(
-                                ImageData.builder()
-                                        .imageType("PRIMARY_KEY")
+                                ImageModel.builder()
+                                        .imageType("PRIMARY_IMG")
                                         .imgUrl("valami.hu")
                                         .build()
                         ))

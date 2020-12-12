@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,8 +30,12 @@ public class PaymentHistory {
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
+    @Column(name = "time_stamp")
+    private Instant timeStamp;
+
     public PaymentHistory(OrderHistory orderHistory, PaymentStatus paymentStatus) {
         this.orderHistory = orderHistory;
         this.status = paymentStatus;
+        this.timeStamp = Instant.now();
     }
 }

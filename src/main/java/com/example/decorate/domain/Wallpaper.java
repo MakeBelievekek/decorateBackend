@@ -3,15 +3,19 @@ package com.example.decorate.domain;
 import com.example.decorate.domain.dto.ExcelData;
 import com.example.decorate.domain.dto.ProductCreationFormData;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
+@Builder
 public class Wallpaper {
 
     @Id
@@ -51,8 +55,8 @@ public class Wallpaper {
     @Column(columnDefinition = "text")
     private String recommendedGlue;
 
-    @Column(name = "date")
-    private java.sql.Date date;
+    @Column(name = "time_stamp")
+    private Instant timeStamp;
 
     public Wallpaper(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
         this.key = keyHolder;
@@ -68,6 +72,7 @@ public class Wallpaper {
         this.productFamily = productCreationFormData.getProductFamily();
         this.annotation = productCreationFormData.getAnnotation();
         this.recommendedGlue = productCreationFormData.getRecommendedGlue();
+        this.timeStamp = Instant.now();
     }
 
     public Wallpaper(ExcelData excelData, KeyHolder keyHolder) {
@@ -84,5 +89,6 @@ public class Wallpaper {
         this.productFamily = excelData.getProductFamily();
         this.annotation = excelData.getAnnotation();
         this.recommendedGlue = excelData.getRecommendedGlue();
+        this.timeStamp = Instant.now();
     }
 }

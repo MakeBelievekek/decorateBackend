@@ -1,7 +1,7 @@
 package com.example.decorate.controller;
 
 import com.example.decorate.domain.dto.AttributeCreationFormData;
-import com.example.decorate.service.AttributeService;
+import com.example.decorate.services.AttributeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

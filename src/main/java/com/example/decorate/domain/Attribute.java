@@ -2,14 +2,18 @@ package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 @Entity
 public class Attribute {
 
@@ -25,12 +29,17 @@ public class Attribute {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "time_stamp")
+    private Instant timeStamp;
+
     public Attribute(AttributeCreationFormData attributeCreationFormData) {
-        for (AttributeType attributeType : AttributeType.values()) {
-            if (attributeType.getType().equals(attributeCreationFormData.getType())) {
-                this.type = attributeType;
-            }
-        }
+        this.type = AttributeType.valueOf(attributeCreationFormData.getType());
         this.description = attributeCreationFormData.getDescription();
+        this.timeStamp = Instant.now();
+    }
+
+    public Attribute(String type, String description) {
+        this.type = AttributeType.valueOf(type);
+        this.description = description;
     }
 }

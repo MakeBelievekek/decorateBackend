@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +27,9 @@ public class AttributeListItem {
     @ManyToOne
     @JoinColumn(name = "attribute_id")
     private Attribute attribute;
+
+    @Column(name = "time_stamp")
+    private Instant timeStamp = Instant.now();
 
     public AttributeListItem(KeyHolder key, Attribute attribute) {
         this.key = key;

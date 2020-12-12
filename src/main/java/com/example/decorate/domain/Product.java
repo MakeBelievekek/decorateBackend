@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.time.Instant;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,10 +23,15 @@ public class Product {
 
     private String itemNumber;
 
+    @Column(name = "time_stamp")
+    private Instant timeStamp;
+
     public Product(ProductListItem productListItem, Integer qty) {
         this.name = productListItem.getName();
         this.quantity = qty;
         this.price = productListItem.getPrice();
         this.itemNumber = productListItem.getItemNumber();
+        this.timeStamp = Instant.now();
     }
+
 }

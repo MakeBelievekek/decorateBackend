@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -21,11 +23,13 @@ public class ProductListItem {
 
     private String itemNumber;
 
-    private int price;
+    private Integer price;
 
     private String image;
 
-    public ProductListItem(Wallpaper wallpaper, ImageData image) {
+    private List<ImageModel> images;
+
+    public ProductListItem(Wallpaper wallpaper, ImageModel image) {
         this.id = wallpaper.getId();
         this.productDesc = wallpaper.getProductDesc();
         this.itemNumber = wallpaper.getItemNumber();
@@ -42,7 +46,7 @@ public class ProductListItem {
         this.name = wallpaper.getName();
     }
 
-    public ProductListItem(Curtain curtain, ImageData image) {
+    public ProductListItem(Curtain curtain, ImageModel image) {
         this.id = curtain.getId();
         this.productDesc = curtain.getProductDesc();
         this.itemNumber = curtain.getItemNumber();

@@ -1,45 +1,108 @@
 package com.example.decorate.controller;
 
-import com.example.decorate.domain.KeyHolder;
-import com.example.decorate.domain.ProductType;
-import com.example.decorate.domain.dto.ProductCreationFormData;
-import com.example.decorate.service.AttributeService;
-import com.example.decorate.service.ImageService;
-import com.example.decorate.service.KeyHolderService;
-import com.example.decorate.service.WallpaperService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.decorate.domain.dto.*;
+import com.example.decorate.services.wallpaper.WallpaperService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
+
+import static org.springframework.http.HttpStatus.*;
+
+@AllArgsConstructor
+@Slf4j
 @RestController
 @RequestMapping("/api/public/wallpaper")
 
 public class WallpaperController {
-    private WallpaperService wallpaperService;
-    private KeyHolderService keyHolderService;
-    private AttributeService attributeService;
-    private ImageService imageService;
-
-    @Autowired
-    public WallpaperController(WallpaperService wallpaperService, KeyHolderService keyHolderService, AttributeService attributeService, ImageService imageService) {
-        this.wallpaperService = wallpaperService;
-        this.keyHolderService = keyHolderService;
-        this.attributeService = attributeService;
-        this.imageService = imageService;
-    }
+    private final WallpaperService wallpaperService;
 
     @PostMapping
-    public ProductCreationFormData saveWallpaper(@RequestBody ProductCreationFormData productCreationFormData) {
-        System.out.println(productCreationFormData);
-        KeyHolder keyholder = new KeyHolder();
-        keyHolderService.saveKey(keyholder, ProductType.WALLPAPER);
-        wallpaperService.saveWallpaper(productCreationFormData, keyholder);
-        attributeService.saveAttributeListItem(productCreationFormData.getAttributeListItemData(), keyholder.getId());
-        imageService.saveImageList(productCreationFormData.getImageList(), keyholder.getId(),ProductType.WALLPAPER);
-        return new ProductCreationFormData();
+    public ResponseEntity<String> createWallpaper(@RequestBody ProductCreationFormData productCreationFormData) {
+        wallpaperService.saveWallpaper(productCreationFormData);
+        return ResponseEntity
+                .status(CREATED)
+                .body("Wallpaper successfully created!");
     }
 
+    @GetMapping("/{wallpaperId}")
+    public ResponseEntity<WallpaperModel> fetchWallpaperById(@PathVariable Long wallpaperId) {
+        WallpaperModel wallpaper = wallpaperService.getWallpaper(wallpaperId);
 
+        log.info("Wallpaper whit id: " + wallpaperId + " is fetched!");
+
+        return ResponseEntity
+                .status(OK)
+                .body(wallpaper);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<WallpaperModel>> fetchAllWallpapers() {
+        List<WallpaperModel> allWallpapers = wallpaperService.getAllWallpapers();
+
+        log.info(allWallpapers.size() + " wallpapers fetched from database!");
+
+        return ResponseEntity
+                .status(OK)
+                .body(allWallpapers);
+    }
+
+    @PutMapping("/update/{wallpaperId}")
+    public ResponseEntity<String> updateCurtain(@RequestBody WallpaperModel wallpaperModel, @PathVariable Long wallpaperId) {
+        wallpaperService.updateWallpaper(wallpaperId, wallpaperModel);
+
+        log.info("Curtain successfully updated whit id: " + wallpaperId);
+
+        return ResponseEntity
+                .status(ACCEPTED)
+                .body("Wallpaper update accepted!");
+    }
+
+    @DeleteMapping("/delete/{wallpaperId}")
+    public ResponseEntity<String> deleteWallpaper(@PathVariable Long wallpaperId) {
+        wallpaperService.deleteWallpaper(wallpaperId);
+
+        log.info("Wallpaper successfully deleted whit id: " + wallpaperId);
+
+        return ResponseEntity
+                .status(ACCEPTED)
+                .body("Curtain has been deleted!");
+    }
+
+    @GetMapping
+    public ResponseEntity<ProductCreationFormData> controllDto() {
+        return ResponseEntity
+                .status(OK)
+                .body(ProductCreationFormData.builder()
+                        .name("japan black")
+                        .productDesc("hosszu és kimeritő szöveg")
+                        .itemNumber("1345")
+                        .width(325)
+                        .height(500)
+                        .patternRep(15)
+                        .price(5000)
+                        .composition("bársony")
+                        .curtainType("BLACKOUT")
+                        .cleaningInst("balek")
+                        .attributeCreationFormDataList(Collections.singletonList(
+                                AttributeCreationFormData.builder()
+                                        .type("COLOR")
+                                        .description("szép")
+                                        .build()
+                        ))
+                        .imageList(Collections.singletonList(
+                                ImageModel.builder()
+                                        .imageType("PRIMARY_IMG")
+                                        .imgUrl("valami.hu")
+                                        .build()
+                        ))
+                        .productFamily("japan")
+                        .annotation("kockás")
+                        .recommendedGlue("erős")
+                        .typeOfSize("nagy")
+                        .build());
+    }
 }
