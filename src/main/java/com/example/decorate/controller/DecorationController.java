@@ -1,7 +1,7 @@
 package com.example.decorate.controller;
 
 import com.example.decorate.domain.dto.*;
-import com.example.decorate.services.wallpaper.WallpaperService;
+import com.example.decorate.services.decoration.DecorationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -12,64 +12,64 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
-@AllArgsConstructor
 @Slf4j
+@AllArgsConstructor
 @RestController
-@RequestMapping("/api/public/wallpaper")
-
-public class WallpaperController {
-    private final WallpaperService wallpaperService;
+@RequestMapping("/api/public/decoration")
+public class DecorationController {
+    private final DecorationService decorationService;
 
     @PostMapping
-    public ResponseEntity<String> createWallpaper(@RequestBody ProductCreationFormData productCreationFormData) {
-        wallpaperService.saveWallpaper(productCreationFormData);
+    public ResponseEntity<String> createDecoration(@RequestBody ProductCreationFormData productCreationFormData) {
+        decorationService.saveDecoration(productCreationFormData);
         return ResponseEntity
                 .status(CREATED)
-                .body("Wallpaper successfully created!");
+                .body("Decoration successfully created!");
     }
 
-    @GetMapping("/{wallpaperId}")
-    public ResponseEntity<WallpaperModel> fetchWallpaperById(@PathVariable Long wallpaperId) {
-        WallpaperModel wallpaper = wallpaperService.getWallpaper(wallpaperId);
+    @GetMapping("/{decorationId}")
+    public ResponseEntity<DecorationModel> fetchDecorationById(@PathVariable Long decorationId) {
+        DecorationModel decoration = decorationService.getDecoration(decorationId);
 
-        log.info("Wallpaper whit id: " + wallpaperId + " is fetched!");
+        log.info("Decoration whit id: " + decorationId + " is fetched!");
 
         return ResponseEntity
                 .status(OK)
-                .body(wallpaper);
+                .body(decoration);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<WallpaperModel>> fetchAllWallpapers() {
-        List<WallpaperModel> allWallpapers = wallpaperService.getAllWallpapers();
+    public ResponseEntity<List<DecorationModel>> fetchAllDecorations() {
+        List<DecorationModel> allDecorations = decorationService.getAllDecorations();
 
-        log.info(allWallpapers.size() + " wallpapers fetched from database!");
+        log.info(allDecorations.size() + " decoration fetched from database!");
 
         return ResponseEntity
                 .status(OK)
-                .body(allWallpapers);
+                .body(allDecorations);
     }
 
-    @PutMapping("/update/{wallpaperId}")
-    public ResponseEntity<String> updateWallpaper(@RequestBody WallpaperModel wallpaperModel, @PathVariable Long wallpaperId) {
-        wallpaperService.updateWallpaper(wallpaperId, wallpaperModel);
+    @PutMapping("/update/{decorationId}")
+    public ResponseEntity<String> updateDecoration(@RequestBody DecorationModel decorationModel,
+                                                   @PathVariable Long decorationId) {
+        decorationService.updateDecoration(decorationId, decorationModel);
 
-        log.info("Wallpaper successfully updated whit id: " + wallpaperId);
+        log.info("Decoration successfully updated whit id: " + decorationId);
 
         return ResponseEntity
                 .status(ACCEPTED)
-                .body("Wallpaper update accepted!");
+                .body("Decoration update accepted!");
     }
 
-    @DeleteMapping("/delete/{wallpaperId}")
-    public ResponseEntity<String> deleteWallpaper(@PathVariable Long wallpaperId) {
-        wallpaperService.deleteWallpaper(wallpaperId);
+    @DeleteMapping("/delete/{decorationId}")
+    public ResponseEntity<String> deleteDecoration(@PathVariable Long decorationId) {
+        decorationService.deleteDecoration(decorationId);
 
-        log.info("Wallpaper successfully deleted whit id: " + wallpaperId);
+        log.info("Decoration successfully deleted whit id: " + decorationId);
 
         return ResponseEntity
                 .status(ACCEPTED)
-                .body("Wallpaper has been deleted!");
+                .body("Decoration has been deleted!");
     }
 
     @GetMapping

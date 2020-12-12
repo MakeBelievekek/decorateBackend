@@ -1,5 +1,6 @@
 package com.example.decorate.domain;
 
+import com.example.decorate.domain.dto.ProductCreationFormData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -56,4 +57,21 @@ public class Decoration {
 
     @Column(name = "created")
     private Instant created = Instant.now();
+
+    public Decoration(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
+        this.key = keyHolder;
+        this.id = keyHolder.getId();
+        this.name = productCreationFormData.getName();
+        this.productDesc = productCreationFormData.getProductDesc();
+        this.itemNumber = productCreationFormData.getItemNumber();
+        this.width = productCreationFormData.getWidth();
+        this.height = productCreationFormData.getHeight();
+        this.patternRep = productCreationFormData.getPatternRep();
+        this.price = productCreationFormData.getPrice();
+        this.composition = productCreationFormData.getComposition();
+        this.productFamily = productCreationFormData.getProductFamily();
+        this.annotation = productCreationFormData.getAnnotation();
+        this.recommendedGlue = productCreationFormData.getRecommendedGlue();
+        this.created = Instant.now();
+    }
 }

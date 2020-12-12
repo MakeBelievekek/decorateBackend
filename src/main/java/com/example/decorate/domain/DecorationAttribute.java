@@ -36,4 +36,9 @@ public class DecorationAttribute {
     @Column(name = "created")
     private Instant created = Instant.now();
 
+    public DecorationAttribute(Attribute attribute, Decoration decoration, KeyHolder keyHolder) {
+        this.key = keyHolder;
+        this.attribute = attribute;
+        this.decoration = decoration;
+    }
 }

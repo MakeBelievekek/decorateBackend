@@ -11,6 +11,7 @@ import com.example.decorate.repositorys.AttributeListItemRepository;
 import com.example.decorate.repositorys.AttributeRepository;
 import com.example.decorate.repositorys.KeyHolderRepository;
 import com.example.decorate.services.curtain.CurtainAttributeService;
+import com.example.decorate.services.decoration.DecorationAttributeService;
 import com.example.decorate.services.furniture.FurnitureFabricAttributeService;
 import com.example.decorate.services.wallpaper.WallpaperAttributeService;
 import lombok.AllArgsConstructor;
@@ -37,8 +38,7 @@ public class AttributeService {
     private final CurtainAttributeService curtainAttributeService;
     private final WallpaperAttributeService wallpaperAttributeService;
     private final FurnitureFabricAttributeService furnitureFabricAttributeService;
-
-
+    private final DecorationAttributeService decorationAttributeService;
 
     public List<Attribute> saveAttributes(List<AttributeCreationFormData> attributeCreationFormDataList) {
         List<Attribute> productAttributes = new ArrayList<>();
@@ -218,6 +218,11 @@ public class AttributeService {
         furnitureFabricAttributeService.saveFurnitureFabricAttributes(furnitureFabric, attributeList);
     }
 
+    public void createDecorationAttributes(Decoration decoration, List<AttributeCreationFormData> DecorationAttributes) {
+        List<Attribute> attributeList = saveAttributes(DecorationAttributes);
+        decorationAttributeService.saveDecorationAttributes(decoration, attributeList);
+    }
+
     public List<FurnitureFabricAttribute> fetchAllFurnitureFabricAttributes(Long furnitureFabricId) {
         return furnitureFabricAttributeService.findAllFurnitureAttributeByFurnitureFabricId(furnitureFabricId);
     }
@@ -225,5 +230,20 @@ public class AttributeService {
     public void updateFurnitureFabricAttributes(FurnitureFabric furnitureFabric, List<AttributeModel> attributes) {
         List<Attribute> attributeList = updateAttributes(attributes);
         furnitureFabricAttributeService.updateFurnitureFabricAttributes(furnitureFabric, attributeList);
+    }
+
+    public List<DecorationAttribute> fetchAllDecorationAttributes(Long decorationId) {
+        return decorationAttributeService.findAllDecorationAttributeByDecorationId(decorationId);
+
+    }
+
+    public void updateDecorationAttributes(Decoration decoration, List<AttributeModel> attributes) {
+        List<Attribute> attributeList = updateAttributes(attributes);
+        decorationAttributeService.updateDecorateAttributes(decoration, attributeList);
+    }
+
+    public void deleteProductAttributeItems(Decoration decoration) {
+        Long decorationId = decoration.getId();
+        decorationAttributeService.deleteAllByDecorationId(decorationId);
     }
 }

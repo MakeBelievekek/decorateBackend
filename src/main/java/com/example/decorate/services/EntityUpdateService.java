@@ -1,9 +1,11 @@
 package com.example.decorate.services;
 
 import com.example.decorate.domain.Curtain;
+import com.example.decorate.domain.Decoration;
 import com.example.decorate.domain.FurnitureFabric;
 import com.example.decorate.domain.Wallpaper;
 import com.example.decorate.domain.dto.CurtainModel;
+import com.example.decorate.domain.dto.DecorationModel;
 import com.example.decorate.domain.dto.FurnitureFabricModel;
 import com.example.decorate.domain.dto.WallpaperModel;
 import lombok.AllArgsConstructor;
@@ -66,5 +68,21 @@ public class EntityUpdateService {
         furnitureFabric.setAbrasionResistance(furnitureFabricModel.getAbrasionResistance());
         furnitureFabric.setTypeOfSize(furnitureFabricModel.getTypeOfSize());
         furnitureFabric.setModified(Instant.now());
+    }
+
+    public void setDecorationUpdatedValues(Decoration decoration, DecorationModel decorationModel) {
+        decoration.setId(decorationModel.getId());
+        decoration.setName(decorationModel.getName());
+        decoration.setProductDesc(decorationModel.getProductDesc());
+        decoration.setItemNumber(decorationModel.getItemNumber());
+        decoration.setWidth(decorationModel.getWidth());
+        decoration.setHeight(decorationModel.getHeight());
+        decoration.setPatternRep(decorationModel.getPatternRep());
+        decoration.setPrice(decorationModel.getPrice());
+        decoration.setComposition(decorationModel.getComposition());
+        decoration.setProductFamily(decorationModel.getProductFamily());
+        decoration.setAnnotation(decorationModel.getAnnotation());
+        decoration.setRecommendedGlue(decorationModel.getRecommendedGlue());
+        decoration.setModified(Instant.now());
     }
 }
