@@ -60,18 +60,32 @@ public class CsvResolver {
                 System.out.println(csvRecord.get("Leírás"));
                 product.setComposition(csvRecord.get("Összetétel"));
                 System.out.println(csvRecord.get("Összetétel"));
-                System.out.println("ez a magasság" + csvRecord.get("Magasság"));
-                product.setHeight(Integer.parseInt(csvRecord.get("Magasság")));
-
-                product.setWidth(Integer.parseInt(csvRecord.get("Szélesség")));
-                System.out.println(Integer.parseInt(csvRecord.get("Szélesség")));
-                product.setPatternRep(Double.parseDouble(csvRecord.get("Mintaismétlődés")));
-                System.out.println(Double.parseDouble(csvRecord.get("Mintaismétlődés")));
+                if (csvRecord.get("Magasság").equals("")){
+                    product.setHeight(0);
+                    System.out.println(product.getHeight());
+                }
+                else{
+                    product.setHeight(Integer.parseInt(csvRecord.get("Magasság")));
+                }
+                if (csvRecord.get("Szélesség").equals("")){
+                    product.setWidth(0);
+                }
+                else{
+                    product.setWidth(Integer.parseInt(csvRecord.get("Szélesség")));
+                }
+                if (csvRecord.get("Mintaismétlődés").equals("")){
+                    product.setPatternRep(0);
+                }
+                else{
+                    product.setPatternRep(Double.parseDouble(csvRecord.get("Mintaismétlődés")));
+                }
                 product.setTypeOfSize(csvRecord.get("Mértékegység"));
+                System.out.println(csvRecord.get("Mértékegység"));
                 product.setCleaningInst(csvRecord.get("Tisztítási útmutató"));
                 product.setRecommendedGlue(csvRecord.get("Ajánlott Ragasztó"));
                 product.setAnnotation(csvRecord.get("Falra felrakás módja"));
-                product.setAbrasionResistance(Integer.parseInt(csvRecord.get("Kopásállóság")));
+                if (csvRecord.get("Kopásállóság").equals("")){
+                product.setAbrasionResistance(Integer.parseInt(csvRecord.get("Kopásállóság")));}
                 String colors = csvRecord.get("Szín");
                 String patterns = csvRecord.get("Minta");
                 String styles = csvRecord.get("Stílus");
