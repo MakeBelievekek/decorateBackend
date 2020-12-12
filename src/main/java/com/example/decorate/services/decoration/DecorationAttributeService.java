@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,9 +43,14 @@ public class DecorationAttributeService {
             DecorationAttribute persistentDecorationAttribute = decorationAttribute
                     .orElseGet(() ->
                     {
-                        DecorationAttribute decorationAttr = new DecorationAttribute(attribute, decoration, key);
-                        return decorationAttributeRepository.save(decorationAttr);
+                        DecorationAttribute decorationAttr = new DecorationAttribute();
+                        decorationAttributeRepository.save(decorationAttr);
+                        return decorationAttr;
                     });
+            persistentDecorationAttribute.setAttribute(attribute);
+            persistentDecorationAttribute.setDecoration(decoration);
+            persistentDecorationAttribute.setKey(key);
+            persistentDecorationAttribute.setModified(Instant.now());
             activeDecorationAttributeIdList.add(persistentDecorationAttribute.getId());
         }
         decorationAttributeRepository.deleteDecorationNotUsedAttributes(activeDecorationAttributeIdList, decorationId);

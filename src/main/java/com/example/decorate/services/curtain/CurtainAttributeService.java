@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,9 +42,14 @@ public class CurtainAttributeService {
             CurtainAttribute persistentCurtainAttribute = curtainAttribute
                     .orElseGet(() ->
                     {
-                        CurtainAttribute curtainAttr = new CurtainAttribute(attribute, curtain, key);
-                        return curtainAttributeRepository.save(curtainAttr);
+                        CurtainAttribute curtainAttr = new CurtainAttribute();
+                        curtainAttributeRepository.save(curtainAttr);
+                        return curtainAttr;
                     });
+            persistentCurtainAttribute.setAttribute(attribute);
+            persistentCurtainAttribute.setCurtain(curtain);
+            persistentCurtainAttribute.setKey(key);
+            persistentCurtainAttribute.setModified(Instant.now());
             activeCurtainAttributeIdList.add(persistentCurtainAttribute.getId());
         }
         curtainAttributeRepository.deleteCurtainNotUsedAttributes(activeCurtainAttributeIdList, curtainId);

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,6 @@ import java.util.Optional;
 @Transactional
 public class FurnitureFabricAttributeService {
     private final FurnitureFabricAttributeRepository furnitureFabricAttributeRepository;
-
 
     public void saveFurnitureFabricAttributes(FurnitureFabric furnitureFabric, List<Attribute> attributes) {
         KeyHolder keyHolder = furnitureFabric.getKey();
@@ -43,10 +43,15 @@ public class FurnitureFabricAttributeService {
             FurnitureFabricAttribute persistentCurtainAttribute = furnitureFabricAttribute
                     .orElseGet(() ->
                     {
-                        FurnitureFabricAttribute furnitureFabricAttr = new FurnitureFabricAttribute(attribute, furnitureFabric, key);
+                        FurnitureFabricAttribute furnitureFabricAttr = new FurnitureFabricAttribute();
                         furnitureFabricAttributeRepository.save(furnitureFabricAttr);
                         return furnitureFabricAttr;
                     });
+            persistentCurtainAttribute.setAttribute(attribute);
+            persistentCurtainAttribute.setFurnitureFabric(furnitureFabric);
+            persistentCurtainAttribute.setKey(key);
+            persistentCurtainAttribute.setModified(Instant.now());
+
             activeCurtainAttributeIdList.add(persistentCurtainAttribute.getId());
         }
         furnitureFabricAttributeRepository.deleteFurnitureFabricNotUsedAttributes(activeCurtainAttributeIdList, curtainId);

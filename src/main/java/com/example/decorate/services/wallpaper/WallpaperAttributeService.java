@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,10 @@ public class WallpaperAttributeService {
                         wallpaperAttributeRepository.save(wallpaperAttr);
                         return wallpaperAttr;
                     });
+            persistentWallpaperAttribute.setAttribute(attribute);
+            persistentWallpaperAttribute.setWallpaper(wallpaper);
+            persistentWallpaperAttribute.setKey(key);
+            persistentWallpaperAttribute.setModified(Instant.now());
             activeWallpaperAttributeIdList.add(persistentWallpaperAttribute.getId());
         }
         wallpaperAttributeRepository.deleteWallpaperNotUsedAttributes(activeWallpaperAttributeIdList, wallpaperId);
