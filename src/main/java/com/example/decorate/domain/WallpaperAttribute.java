@@ -30,13 +30,16 @@ public class WallpaperAttribute {
     @JoinColumn(name = "wallpaper_id")
     private Wallpaper wallpaper;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp = Instant.now();
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 
     public WallpaperAttribute(Attribute attribute, Wallpaper wallpaper, KeyHolder keyHolder) {
         this.key = keyHolder;
         this.attribute = attribute;
         this.wallpaper = wallpaper;
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 }

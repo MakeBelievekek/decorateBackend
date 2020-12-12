@@ -51,6 +51,9 @@ public class Decoration {
     @Column(columnDefinition = "text")
     private String recommendedGlue;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp;
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 }

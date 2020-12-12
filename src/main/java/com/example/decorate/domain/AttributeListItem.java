@@ -28,8 +28,11 @@ public class AttributeListItem {
     @JoinColumn(name = "attribute_id")
     private Attribute attribute;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp = Instant.now();
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 
     public AttributeListItem(KeyHolder key, Attribute attribute) {
         this.key = key;

@@ -30,13 +30,16 @@ public class FurnitureFabricAttribute {
     @JoinColumn(name = "furniture_id")
     private FurnitureFabric furnitureFabric;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp = Instant.now();
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 
     public FurnitureFabricAttribute(Attribute attribute, FurnitureFabric furnitureFabric, KeyHolder keyHolder) {
         this.key = keyHolder;
         this.attribute = attribute;
         this.furnitureFabric = furnitureFabric;
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 }

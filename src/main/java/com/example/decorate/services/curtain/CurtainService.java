@@ -65,7 +65,7 @@ public class CurtainService {
 
         entityUpdateService.setCurtainUpdatedValues(curtain, curtainModel);
         attributeService.updateCurtainAttributes(curtain, curtainModel.getAttributes());
-        imageService.updateProductImages(curtainId, curtainModel.getImageList());
+        imageService.updateProductImages(curtainId, curtainModel.getImageList(), CURTAIN);
 
         curtainRepository.save(curtain);
     }

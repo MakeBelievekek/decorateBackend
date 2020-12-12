@@ -29,6 +29,9 @@ public class   KeyHolder {
     @OneToMany(mappedBy = "key")
     private List<CurtainAttribute> curtainAttribute;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp = Instant.now();
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 }

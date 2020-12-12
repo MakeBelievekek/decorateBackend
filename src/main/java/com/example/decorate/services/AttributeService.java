@@ -210,7 +210,7 @@ public class AttributeService {
 
     public void deleteProductAttributeItems(FurnitureFabric furnitureFabric) {
         Long furnitureFabricId = furnitureFabric.getId();
-        curtainAttributeService.deleteAllByCurtainId(furnitureFabricId);
+        furnitureFabricAttributeService.deleteAllByFurnitureFabricId(furnitureFabricId);
     }
 
     public void createFurnitureFabricAttributes(FurnitureFabric furnitureFabric, List<AttributeCreationFormData> furnitureFabricAttributes) {

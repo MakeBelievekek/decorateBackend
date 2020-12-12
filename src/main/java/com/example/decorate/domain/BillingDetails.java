@@ -40,8 +40,11 @@ public class BillingDetails {
 
     private String phoneNumber;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp;;
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 
     public BillingDetails(OrderDto orderDto) {
         this.company = orderDto.getBilling().getCompany();
@@ -52,6 +55,6 @@ public class BillingDetails {
         this.address1 = orderDto.getBilling().getAddress();
         this.address2 = orderDto.getBilling().getAddress2();
         this.phoneNumber = orderDto.getBilling().getPhone();
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 }

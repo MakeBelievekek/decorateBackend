@@ -59,8 +59,11 @@ public class Curtain {
 
     private String typeOfSize;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp;
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 
     public Curtain(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
         this.key = keyHolder;
@@ -81,7 +84,7 @@ public class Curtain {
         this.composition = productCreationFormData.getComposition();
         this.productFamily = productCreationFormData.getProductFamily();
         this.cleaningInst = productCreationFormData.getCleaningInst();
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 
 
@@ -104,7 +107,7 @@ public class Curtain {
         this.productFamily = excelData.getProductFamily();
         this.cleaningInst = excelData.getCleaningInst();
         this.typeOfSize = excelData.getTypeOfSize();
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 
 }

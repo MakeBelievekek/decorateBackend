@@ -43,8 +43,11 @@ public class ShippingDetails {
 
     private String foxpost;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp;
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 
     public ShippingDetails(OrderDto orderDto) {
         this.company = orderDto.getShipping().getCompany();
@@ -57,6 +60,6 @@ public class ShippingDetails {
         this.shipInfo = orderDto.getShipping().getShipInfo();
         this.shipMethod = orderDto.getShipping().getShipMethod();
         this.foxpost = orderDto.getShipping().getFoxpost();
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 }

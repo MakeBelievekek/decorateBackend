@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+
 @Slf4j
 @AllArgsConstructor
 @Service
@@ -30,6 +32,7 @@ public class EntityUpdateService {
         curtain.setProductFamily(curtainModel.getProductFamily());
         curtain.setCleaningInst(curtainModel.getCleaningInst());
         curtain.setTypeOfSize(curtainModel.getTypeOfSize());
+        curtain.setModified(Instant.now());
     }
 
     public void setWallpaperUpdateValues(Wallpaper wallpaper, WallpaperModel wallpaperModel) {
@@ -45,6 +48,7 @@ public class EntityUpdateService {
         wallpaper.setProductFamily(wallpaperModel.getProductFamily());
         wallpaper.setAnnotation(wallpaperModel.getAnnotation());
         wallpaper.setRecommendedGlue(wallpaperModel.getRecommendedGlue());
+        wallpaper.setModified(Instant.now());
     }
 
     public void setFurnitureFabricUpdatedValues(FurnitureFabric furnitureFabric, FurnitureFabricModel furnitureFabricModel) {
@@ -61,5 +65,6 @@ public class EntityUpdateService {
         furnitureFabric.setCleaningInst(furnitureFabricModel.getCleaningInst());
         furnitureFabric.setAbrasionResistance(furnitureFabricModel.getAbrasionResistance());
         furnitureFabric.setTypeOfSize(furnitureFabricModel.getTypeOfSize());
+        furnitureFabric.setModified(Instant.now());
     }
 }

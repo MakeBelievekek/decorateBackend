@@ -22,6 +22,9 @@ public class Home {
 
     private String type;
 
-    @Column(name = "time_stamp")
-    private Date timeStamp;
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 }

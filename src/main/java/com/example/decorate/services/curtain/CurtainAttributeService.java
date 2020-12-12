@@ -56,4 +56,5 @@ public class CurtainAttributeService {
     public void deleteAllByCurtainId(Long curtainId) {
         curtainAttributeRepository.deleteAllByCurtainId(curtainId);
     }
+
 }

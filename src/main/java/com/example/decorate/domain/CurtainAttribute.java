@@ -33,18 +33,22 @@ public class CurtainAttribute {
     @JoinColumn(name = "curtain_id")
     private Curtain curtain;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp = Instant.now();
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
+
 
     public CurtainAttribute(KeyHolder key, CurtainType curtainType, Attribute attribute) {
         this.key = key;
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 
     public CurtainAttribute(Attribute attribute, Curtain curtain, KeyHolder key) {
         this.attribute = attribute;
         this.curtain = curtain;
         this.key = key;
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 }

@@ -3,6 +3,7 @@ package com.example.decorate.services.wallpaper;
 
 import com.example.decorate.domain.Attribute;
 import com.example.decorate.domain.KeyHolder;
+import com.example.decorate.domain.ProductType;
 import com.example.decorate.domain.Wallpaper;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.ImageModel;
@@ -71,7 +72,7 @@ public class WallpaperService {
 
         entityUpdateService.setWallpaperUpdateValues(wallpaper, wallpaperModel);
         attributeService.updateWallpaperAttributes(wallpaper, wallpaperModel.getAttributes());
-        imageService.updateProductImages(wallpaperId, wallpaperModel.getImageList());
+        imageService.updateProductImages(wallpaperId, wallpaperModel.getImageList(), WALLPAPER);
 
         wallpaperRepository.save(wallpaper);
     }
