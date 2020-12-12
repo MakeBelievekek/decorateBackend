@@ -3,8 +3,10 @@ package com.example.decorate.repositorys;
 import com.example.decorate.domain.Image;
 import com.example.decorate.domain.ImageType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +26,11 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     Optional<Image> findById(Long imgId);
 
     void deleteById(Long imgId);
+
+    @Transactional
+    @Modifying
     @Query("DELETE FROM Image image " +
             "WHERE image.prodKey =:productId AND " +
             "image.id NOT IN :activeImagesIdList")
-    void deleteProductInActiveImages(List<Long> activeImagesIdList, Long productId);
+    void deleteProductInActiveImages(Long productId);
 }

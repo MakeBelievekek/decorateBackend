@@ -34,7 +34,7 @@ public class CurtainAttribute {
     private Curtain curtain;
 
     @Column(name = "time_stamp")
-    private Instant timeStamp;
+    private Instant timeStamp = Instant.now();
 
     public CurtainAttribute(KeyHolder key, CurtainType curtainType, Attribute attribute) {
         this.key = key;

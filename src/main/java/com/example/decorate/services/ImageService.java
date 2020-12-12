@@ -74,7 +74,7 @@ public class ImageService {
     }
 
     public void updateProductImages(Long productId, List<ImageModel> imageList) {
-        List<Long> activeImagesIdList = new ArrayList<>();
+      /*  List<Long> activeImagesIdList = new ArrayList<>();
         for (ImageModel imageModel : imageList) {
             Long imageId = imageModel.getId();
             Optional<Image> img = imageRepository.findById(imageId);
@@ -85,6 +85,6 @@ public class ImageService {
             });
             activeImagesIdList.add(persistentImg.getId());
         }
-        imageRepository.deleteProductInActiveImages(activeImagesIdList, productId);
+        imageRepository.deleteProductInActiveImages(productId);*/
     }
 }

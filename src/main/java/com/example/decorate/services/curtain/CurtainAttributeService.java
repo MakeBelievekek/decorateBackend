@@ -49,7 +49,7 @@ public class CurtainAttributeService {
         }
         log.info("lista elemei:"  + activeCurtainAttributeIdList.toString());
         log.info("curtain id:"  + curtainId);
-        curtainAttributeRepository.deleteCurtainNotUsedAttributes(activeCurtainAttributeIdList, 3L);
+        curtainAttributeRepository.deleteCurtainNotUsedAttributes(activeCurtainAttributeIdList, curtainId);
     }
 
     public List<CurtainAttribute> findAllCurtainAttributeByCurtainId(Long curtainId) {
