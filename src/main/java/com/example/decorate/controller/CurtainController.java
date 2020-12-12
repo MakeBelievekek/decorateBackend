@@ -90,7 +90,7 @@ public class CurtainController {
                         .composition("bársony")
                         .curtainType("BLACKOUT")
                         .cleaningInst("balek")
-                        .attributeListItemData(Arrays.asList(
+                        .attributeCreationFormDataList(Arrays.asList(
                                 AttributeCreationFormData.builder()
                                         .type("COLOR")
                                         .description("kek")

@@ -11,6 +11,7 @@ import com.example.decorate.repositorys.AttributeListItemRepository;
 import com.example.decorate.repositorys.AttributeRepository;
 import com.example.decorate.repositorys.KeyHolderRepository;
 import com.example.decorate.services.curtain.CurtainAttributeService;
+import com.example.decorate.services.wallpaper.WallpaperAttributeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class AttributeService {
     private final AttributeListItemRepository attributeListItemRepository;
     private final KeyHolderRepository keyHolderRepository;
     private final CurtainAttributeService curtainAttributeService;
+    private final WallpaperAttributeService wallpaperAttributeService;
 
     public List<Attribute> saveAttributes(List<AttributeCreationFormData> attributeCreationFormDataList) {
         List<Attribute> productAttributes = new ArrayList<>();
@@ -61,9 +63,9 @@ public class AttributeService {
         curtainAttributeService.saveCurtainAttributes(curtain, attributeList);
     }
 
-    public void updateCurtainAttributes(Curtain curtain, List<AttributeModel> attributeModels) {
-        List<Attribute> attributeList = updateAttributes(attributeModels);
-        curtainAttributeService.updateCurtainAttributes(curtain, attributeList);
+    public void createWallpaperAttributes(Wallpaper wallpaper, List<AttributeCreationFormData> attributeCreationFormDataList) {
+        List<Attribute> attributeList = saveAttributes(attributeCreationFormDataList);
+        wallpaperAttributeService.saveWallpaperAttributes(wallpaper, attributeList);
     }
 
 
@@ -176,5 +178,29 @@ public class AttributeService {
 
     public List<CurtainAttribute> fetchAllCurtainAttributes(Long curtainId) {
         return curtainAttributeService.findAllCurtainAttributeByCurtainId(curtainId);
+    }
+
+    public List<WallpaperAttribute> fetchAllWallpaperAttributes(Long wallpaperId) {
+        return wallpaperAttributeService.findAllWallpaperAttributeByWallpaperId(wallpaperId);
+    }
+
+    public void updateWallpaperAttributes(Wallpaper wallpaper, List<AttributeModel> attributeModels) {
+        List<Attribute> attributeList = updateAttributes(attributeModels);
+        wallpaperAttributeService.updateWallpaperAttributes(wallpaper, attributeList);
+    }
+
+    public void updateCurtainAttributes(Curtain curtain, List<AttributeModel> attributeModels) {
+        List<Attribute> attributeList = updateAttributes(attributeModels);
+        curtainAttributeService.updateCurtainAttributes(curtain, attributeList);
+    }
+
+    public void deleteProductAttributeItems(Wallpaper wallpaper) {
+        Long wallpaperId = wallpaper.getId();
+        wallpaperAttributeService.deleteAllByWallpaperId(wallpaperId);
+    }
+
+    public void deleteProductAttributeItems(Curtain curtain) {
+        Long curtainId = curtain.getId();
+        curtainAttributeService.deleteAllByCurtainId(curtainId);
     }
 }

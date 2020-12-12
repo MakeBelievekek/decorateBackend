@@ -1,8 +1,11 @@
 package com.example.decorate.services.wallpaper;
 
 
+import com.example.decorate.domain.Attribute;
 import com.example.decorate.domain.KeyHolder;
 import com.example.decorate.domain.Wallpaper;
+import com.example.decorate.domain.dto.AttributeCreationFormData;
+import com.example.decorate.domain.dto.ImageModel;
 import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.domain.dto.WallpaperModel;
 import com.example.decorate.exception.DecorateBackendException;
@@ -37,14 +40,15 @@ public class WallpaperService {
     public void saveWallpaper(ProductCreationFormData productCreationFormData) {
         KeyHolder keyHolder = new KeyHolder();
         keyHolderService.saveKey(keyHolder, WALLPAPER);
-        Long keyHolderId = keyHolder.getId();
 
         Wallpaper wallpaper = new Wallpaper(productCreationFormData, keyHolder);
         wallpaperRepository.save(wallpaper);
 
-       // attributeService.saveAttributeListItem(productCreationFormData.getAttributeListItemData(), keyHolderId);
+        List<AttributeCreationFormData> attributeCreationFormDataList = productCreationFormData.getAttributeCreationFormDataList();
+        attributeService.createWallpaperAttributes(wallpaper, attributeCreationFormDataList);
 
-        imageService.saveImageList(productCreationFormData.getImageList(), keyHolderId, WALLPAPER);
+        List<ImageModel> imageList = productCreationFormData.getImageList();
+        imageService.saveImageList(imageList, keyHolder.getId(), WALLPAPER);
     }
 
     public WallpaperModel getWallpaper(Long wallpaperId) {
@@ -66,6 +70,8 @@ public class WallpaperService {
         Wallpaper wallpaper = getWallpaperById(wallpaperId);
 
         entityUpdateService.setWallpaperUpdateValues(wallpaper, wallpaperModel);
+        attributeService.updateWallpaperAttributes(wallpaper, wallpaperModel.getAttributes());
+        imageService.updateProductImages(wallpaperId, wallpaperModel.getImageList());
 
         wallpaperRepository.save(wallpaper);
     }
@@ -74,7 +80,7 @@ public class WallpaperService {
         Wallpaper wallpaper = getWallpaperById(wallpaperId);
 
         imageService.deleteProductImages(wallpaperId);
-        attributeService.deleteProductAttributeListItems(wallpaperId);
+        attributeService.deleteProductAttributeItems(wallpaper);
         keyHolderService.deleteKeyHolder(wallpaperId);
 
         wallpaperRepository.delete(wallpaper);
@@ -84,5 +90,6 @@ public class WallpaperService {
         return wallpaperRepository.findById(wallpaperId)
                 .orElseThrow(() -> new DecorateBackendException(WALLPAPER_NOT_EXISTS.getMessage()));
     }
+
 
 }

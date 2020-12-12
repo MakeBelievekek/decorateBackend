@@ -33,7 +33,7 @@ public class ProductCreationFormData {
 
     private String cleaningInst;
 
-    private List<AttributeCreationFormData> attributeListItemData;
+    private List<AttributeCreationFormData> attributeCreationFormDataList;
 
     private List<ImageModel> imageList;
 

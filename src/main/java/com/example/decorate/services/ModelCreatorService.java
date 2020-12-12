@@ -27,7 +27,7 @@ public class ModelCreatorService {
     public WallpaperModel createWallpaperModel(Wallpaper wallpaper) {
         Long wallpaperId = wallpaper.getId();
         WallpaperModel wallpaperModel = new WallpaperModel(wallpaper);
-        wallpaperModel.setAttributes(dtoMapperService.getProductAllAttributesModel(wallpaperId));
+        wallpaperModel.setAttributes(dtoMapperService.getProductAllAttributesModel(wallpaper));
         wallpaperModel.setImageList(dtoMapperService.getProductAllImageModels(wallpaperId));
         return wallpaperModel;
     }

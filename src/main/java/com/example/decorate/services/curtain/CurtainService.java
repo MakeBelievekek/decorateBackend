@@ -38,7 +38,7 @@ public class CurtainService {
         Curtain curtain = new Curtain(productCreationFormData, keyHolder);
         curtainRepository.save(curtain);
 
-        List<AttributeCreationFormData> curtainAttributes = productCreationFormData.getAttributeListItemData();
+        List<AttributeCreationFormData> curtainAttributes = productCreationFormData.getAttributeCreationFormDataList();
         attributeService.createCurtainAttributes(curtain, curtainAttributes);
         imageService.saveImageList(productCreationFormData.getImageList(), keyHolder.getId(), CURTAIN);
 
@@ -74,7 +74,7 @@ public class CurtainService {
         Curtain curtain = getCurtainById(curtainId);
 
         imageService.deleteProductImages(curtainId);
-        attributeService.deleteProductAttributeListItems(curtainId);
+        attributeService.deleteProductAttributeItems(curtain);
         keyHolderService.deleteKeyHolder(curtainId);
 
         curtainRepository.delete(curtain);

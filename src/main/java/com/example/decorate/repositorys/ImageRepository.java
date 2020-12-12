@@ -32,5 +32,12 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     @Query("DELETE FROM Image image " +
             "WHERE image.prodKey =:productId AND " +
             "image.id NOT IN :activeImagesIdList")
-    void deleteProductInActiveImages(Long productId);
+    void deleteProductInActiveImages(List<Long> activeImagesIdList, Long productId);
+
+    @Query("SELECT image.prodKey FROM Image image " +
+            "WHERE image.prodKey =:productId AND " +
+            "image.imageType = 'PRIMARY_IMG' " +
+            "GROUP BY image.prodKey " +
+            "HAVING COUNT(image.prodKey) > 1")
+    List<Long> findImagesWhitMultiplePrimaryImgs(Long productId);
 }

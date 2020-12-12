@@ -40,11 +40,14 @@ public class Image {
     private Instant timeStamp = Instant.now();
 
     public Image(ImageModel imageModel) {
-        for (ImageType imageType : ImageType.values()) {
-            if (imageType.toString().equals(imageModel.getImageType())) {
-                this.imageType = imageType;
-            }
-        }
+        this.imageType = ImageType.valueOf(imageModel.getImageType());
+        this.imgUrl = imageModel.getImgUrl();
+        this.timeStamp = Instant.now();
+    }
+
+    public Image(ImageModel imageModel, Long productId) {
+        this.prodKey = productId;
+        this.imageType = ImageType.valueOf(imageModel.getImageType());
         this.imgUrl = imageModel.getImgUrl();
         this.timeStamp = Instant.now();
     }

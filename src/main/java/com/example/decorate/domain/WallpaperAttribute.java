@@ -32,4 +32,11 @@ public class WallpaperAttribute {
 
     @Column(name = "time_stamp")
     private Instant timeStamp = Instant.now();
+
+    public WallpaperAttribute(Attribute attribute, Wallpaper wallpaper, KeyHolder keyHolder) {
+        this.key = keyHolder;
+        this.attribute = attribute;
+        this.wallpaper = wallpaper;
+        this.timeStamp = Instant.now();
+    }
 }

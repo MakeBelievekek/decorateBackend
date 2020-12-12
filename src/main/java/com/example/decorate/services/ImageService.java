@@ -1,6 +1,5 @@
 package com.example.decorate.services;
 
-import com.example.decorate.domain.Curtain;
 import com.example.decorate.domain.Image;
 import com.example.decorate.domain.ImageType;
 import com.example.decorate.domain.ProductType;
@@ -9,6 +8,7 @@ import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repositorys.ImageRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.LazyToOne;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.decorate.exception.ExceptionMessages.IMAGE_NOT_EXISTS;
+import static com.example.decorate.exception.ExceptionMessages.MULTIPLE_PRIMARY_IMG_EXISTS;
 
 @Service
 @AllArgsConstructor
@@ -41,6 +42,7 @@ public class ImageService {
                     .build();
 
             imageRepository.save(image);
+            checkForDuplicatePrimaryImg(prodId);
         }
     }
 
@@ -74,17 +76,37 @@ public class ImageService {
     }
 
     public void updateProductImages(Long productId, List<ImageModel> imageList) {
-      /*  List<Long> activeImagesIdList = new ArrayList<>();
+        List<Long> activeImagesIdList = new ArrayList<>();
         for (ImageModel imageModel : imageList) {
-            Long imageId = imageModel.getId();
+            Long imageId = createValidImageId(imageModel.getId());
             Optional<Image> img = imageRepository.findById(imageId);
             Image persistentImg = img.orElseGet(() -> {
-                Image imageToSave = new Image(imageModel);
+                Image imageToSave = new Image();
                 imageRepository.save(imageToSave);
                 return imageToSave;
             });
+            persistentImg.setImageType(ImageType.valueOf(imageModel.getImageType()));
+            persistentImg.setImgUrl(imageModel.getImgUrl());
+            persistentImg.setProdKey(productId);
+            persistentImg.setTimeStamp(Instant.now());
             activeImagesIdList.add(persistentImg.getId());
         }
-        imageRepository.deleteProductInActiveImages(productId);*/
+        imageRepository.deleteProductInActiveImages(activeImagesIdList, productId);
+        checkForDuplicatePrimaryImg(productId);
+    }
+
+    private void checkForDuplicatePrimaryImg(Long productId) {
+        List<Long> imageIdsWhitMultiplePrimaryImgs = imageRepository.findImagesWhitMultiplePrimaryImgs(productId);
+        if (!imageIdsWhitMultiplePrimaryImgs.isEmpty()) {
+            throw new DecorateBackendException(MULTIPLE_PRIMARY_IMG_EXISTS.getMessage());
+        }
+    }
+
+    private Long createValidImageId(Long imageId) {
+        if (imageId == null) {
+            return -1L;
+        } else {
+            return imageId;
+        }
     }
 }

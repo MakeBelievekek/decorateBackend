@@ -7,6 +7,7 @@ public enum ExceptionMessages {
     WALLPAPER_NOT_EXISTS ("Wallpaper dose not exists!"),
     ATTRIBUTE_NOT_EXISTS ("Attribute dose not exists!"),
     ATTRIBUTE_LIST_EMPTY ("You must fill out the product attribute list!"),
+    MULTIPLE_PRIMARY_IMG_EXISTS ("Multiple PRIMARY_IMG exists!"),
     PRODUCT_NOT_EXISTS ("Desired product dose not exists!");
 
     private final String message;

@@ -32,7 +32,7 @@ public class WallpaperController {
     public ResponseEntity<WallpaperModel> fetchWallpaperById(@PathVariable Long wallpaperId) {
         WallpaperModel wallpaper = wallpaperService.getWallpaper(wallpaperId);
 
-        log.info("Curtain whit id: " + wallpaperId + " is fetched!");
+        log.info("Wallpaper whit id: " + wallpaperId + " is fetched!");
 
         return ResponseEntity
                 .status(OK)
@@ -65,7 +65,7 @@ public class WallpaperController {
     public ResponseEntity<String> deleteWallpaper(@PathVariable Long wallpaperId) {
         wallpaperService.deleteWallpaper(wallpaperId);
 
-        log.info("Curtain successfully deleted whit id: " + wallpaperId);
+        log.info("Wallpaper successfully deleted whit id: " + wallpaperId);
 
         return ResponseEntity
                 .status(ACCEPTED)
@@ -87,7 +87,7 @@ public class WallpaperController {
                         .composition("bársony")
                         .curtainType("BLACKOUT")
                         .cleaningInst("balek")
-                        .attributeListItemData(Collections.singletonList(
+                        .attributeCreationFormDataList(Collections.singletonList(
                                 AttributeCreationFormData.builder()
                                         .type("COLOR")
                                         .description("szép")

@@ -20,24 +20,46 @@ public class DTOMapperService {
     private final AttributeService attributeService;
     private final ImageService imageService;
 
-    public List<ImageModel> getProductAllImageModels(Long productId) {
-        List<Image> imagesByProductId = getProductImagesByProductId(productId);
-        return convertImagesToDTO(imagesByProductId);
-    }
-
-    public <T> List<AttributeModel> getProductAllAttributesModel(T product) {
+    public <V> List<AttributeModel> getProductAllAttributesModel(V product) {
         List<AttributeModel> attributeModels = null;
+
         String productClass = product.getClass().toString();
 
         final String curtainClass = Curtain.class.toString();
-
+        final String wallpaperClass = Wallpaper.class.toString();
         if (productClass.equals(curtainClass)) {
             Curtain curtain = (Curtain) product;
             Long curtainId = curtain.getId();
             List<CurtainAttribute> curtainAttributes = attributeService.fetchAllCurtainAttributes(curtainId);
             attributeModels = convertCurtainAttributesToDTO(curtainAttributes);
+        } else if (productClass.equals(wallpaperClass)) {
+            Wallpaper wallpaper = (Wallpaper) product;
+            Long wallpaperId = wallpaper.getId();
+            List<WallpaperAttribute> wallpaperAttributes = attributeService.fetchAllWallpaperAttributes(wallpaperId);
+            attributeModels = convertWallpaperAttributesToDTO(wallpaperAttributes);
         }
         return attributeModels;
+    }
+
+    private List<AttributeModel> convertCurtainAttributesToDTO(List<CurtainAttribute> curtainAttributes) {
+        List<AttributeModel> attributes = new ArrayList<>();
+        for (CurtainAttribute curtainAttribute : curtainAttributes) {
+            attributes.add(new AttributeModel(curtainAttribute));
+        }
+        return attributes;
+    }
+
+    private List<AttributeModel> convertWallpaperAttributesToDTO(List<WallpaperAttribute> wallpaperAttributes) {
+        List<AttributeModel> attributes = new ArrayList<>();
+        for (WallpaperAttribute wallpaperAttribute : wallpaperAttributes) {
+            attributes.add(new AttributeModel(wallpaperAttribute));
+        }
+        return attributes;
+    }
+
+    public List<ImageModel> getProductAllImageModels(Long productId) {
+        List<Image> imagesByProductId = getProductImagesByProductId(productId);
+        return convertImagesToDTO(imagesByProductId);
     }
 
     private List<Image> getProductImagesByProductId(Long curtainId) {
@@ -50,25 +72,5 @@ public class DTOMapperService {
             images.add(new ImageModel(image));
         }
         return images;
-    }
-
-    private List<AttributeListItem> getProductAllAttribute(Long curtainId) {
-        return attributeService.findProductAllAttribute(curtainId);
-    }
-
-    private List<AttributeModel> convertAttributesToDTO(List<AttributeListItem> productAllAttribute) {
-        List<AttributeModel> attributes = new ArrayList<>();
-        for (AttributeListItem attributeListItem : productAllAttribute) {
-            attributes.add(new AttributeModel(attributeListItem));
-        }
-        return attributes;
-    }
-
-    private List<AttributeModel> convertCurtainAttributesToDTO(List<CurtainAttribute> curtainAttributes) {
-        List<AttributeModel> attributes = new ArrayList<>();
-        for (CurtainAttribute curtainAttribute : curtainAttributes) {
-            attributes.add(new AttributeModel(curtainAttribute));
-        }
-        return attributes;
     }
 }

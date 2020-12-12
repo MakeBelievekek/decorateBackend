@@ -28,4 +28,10 @@ public interface CurtainAttributeRepository extends JpaRepository<CurtainAttribu
     @Query("SELECT curAttr FROM CurtainAttribute curAttr " +
             "WHERE curAttr.curtain.id =:curtainId")
     List<CurtainAttribute> fetchAllByCurtainId(Long curtainId);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM CurtainAttribute curAttr " +
+            "WHERE curAttr.curtain.id = :curtainId")
+    void deleteAllByCurtainId(Long curtainId);
 }

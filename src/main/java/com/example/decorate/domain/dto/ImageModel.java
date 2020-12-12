@@ -19,6 +19,7 @@ public class ImageModel {
     private String imgUrl;
 
     public ImageModel(Image image) {
+        this.id = image.getId();
         this.imageType = image.getImageType().toString();
         this.imgUrl = image.getImgUrl();
     }

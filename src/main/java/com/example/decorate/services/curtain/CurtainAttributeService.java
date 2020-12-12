@@ -21,8 +21,7 @@ import java.util.Optional;
 public class CurtainAttributeService {
     private final CurtainAttributeRepository curtainAttributeRepository;
 
-    public void saveCurtainAttributes(Curtain curtain,
-                                      List<Attribute> attributes) {
+    public void saveCurtainAttributes(Curtain curtain, List<Attribute> attributes) {
         KeyHolder keyHolder = curtain.getKey();
         for (Attribute attribute : attributes) {
             curtainAttributeRepository.save(new CurtainAttribute(attribute, curtain, keyHolder));
@@ -47,12 +46,14 @@ public class CurtainAttributeService {
                     });
             activeCurtainAttributeIdList.add(persistentCurtainAttribute.getId());
         }
-        log.info("lista elemei:"  + activeCurtainAttributeIdList.toString());
-        log.info("curtain id:"  + curtainId);
         curtainAttributeRepository.deleteCurtainNotUsedAttributes(activeCurtainAttributeIdList, curtainId);
     }
 
     public List<CurtainAttribute> findAllCurtainAttributeByCurtainId(Long curtainId) {
         return curtainAttributeRepository.fetchAllByCurtainId(curtainId);
+    }
+
+    public void deleteAllByCurtainId(Long curtainId) {
+        curtainAttributeRepository.deleteAllByCurtainId(curtainId);
     }
 }
