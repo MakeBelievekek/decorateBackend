@@ -41,19 +41,26 @@ public class WallpaperAttributeService {
                     .fetchByAttributeIdAndWallpaperId(attributeId, wallpaperId);
 
             WallpaperAttribute persistentWallpaperAttribute = wallpaperAttribute
-                    .orElseGet(() ->
-                    {
-                        WallpaperAttribute wallpaperAttr = new WallpaperAttribute(attribute, wallpaper, key);
-                        wallpaperAttributeRepository.save(wallpaperAttr);
-                        return wallpaperAttr;
-                    });
-            persistentWallpaperAttribute.setAttribute(attribute);
-            persistentWallpaperAttribute.setWallpaper(wallpaper);
-            persistentWallpaperAttribute.setKey(key);
-            persistentWallpaperAttribute.setModified(Instant.now());
-            activeWallpaperAttributeIdList.add(persistentWallpaperAttribute.getId());
+                    .orElseGet(this::createNewPersistentWallpaperAttribute);
+            updateWallpaperAttribute(wallpaper, attribute, key, persistentWallpaperAttribute);
+
+            Long activeWallpaperAttributeId = persistentWallpaperAttribute.getId();
+            activeWallpaperAttributeIdList.add(activeWallpaperAttributeId);
         }
         wallpaperAttributeRepository.deleteWallpaperNotUsedAttributes(activeWallpaperAttributeIdList, wallpaperId);
+    }
+
+    private void updateWallpaperAttribute(Wallpaper wallpaper, Attribute attribute, KeyHolder key, WallpaperAttribute persistentWallpaperAttribute) {
+        persistentWallpaperAttribute.setAttribute(attribute);
+        persistentWallpaperAttribute.setWallpaper(wallpaper);
+        persistentWallpaperAttribute.setKey(key);
+        persistentWallpaperAttribute.setModified(Instant.now());
+    }
+
+    private WallpaperAttribute createNewPersistentWallpaperAttribute() {
+        WallpaperAttribute wallpaperAttribute = new WallpaperAttribute();
+        wallpaperAttributeRepository.save(wallpaperAttribute);
+        return wallpaperAttribute;
     }
 
     public void deleteAllByWallpaperId(Long wallpaperId) {

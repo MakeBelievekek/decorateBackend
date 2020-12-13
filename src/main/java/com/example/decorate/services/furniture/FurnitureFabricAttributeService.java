@@ -34,27 +34,32 @@ public class FurnitureFabricAttributeService {
         List<Long> activeCurtainAttributeIdList = new ArrayList<>();
         Long curtainId = furnitureFabric.getId();
         for (Attribute attribute : attributes) {
-            KeyHolder key = furnitureFabric.getKey();
+            KeyHolder furnitureFabricKey = furnitureFabric.getKey();
             Long attributeId = attribute.getId();
 
             Optional<FurnitureFabricAttribute> furnitureFabricAttribute = furnitureFabricAttributeRepository
                     .fetchByAttributeIdAndCurtainId(attributeId, curtainId);
 
             FurnitureFabricAttribute persistentCurtainAttribute = furnitureFabricAttribute
-                    .orElseGet(() ->
-                    {
-                        FurnitureFabricAttribute furnitureFabricAttr = new FurnitureFabricAttribute();
-                        furnitureFabricAttributeRepository.save(furnitureFabricAttr);
-                        return furnitureFabricAttr;
-                    });
-            persistentCurtainAttribute.setAttribute(attribute);
-            persistentCurtainAttribute.setFurnitureFabric(furnitureFabric);
-            persistentCurtainAttribute.setKey(key);
-            persistentCurtainAttribute.setModified(Instant.now());
+                    .orElseGet(this::createNewPersistentFurnitureFabricAttribute);
+            updateFurnitureFabricAttribute(furnitureFabric, attribute, furnitureFabricKey, persistentCurtainAttribute);
 
             activeCurtainAttributeIdList.add(persistentCurtainAttribute.getId());
         }
         furnitureFabricAttributeRepository.deleteFurnitureFabricNotUsedAttributes(activeCurtainAttributeIdList, curtainId);
+    }
+
+    private void updateFurnitureFabricAttribute(FurnitureFabric furnitureFabric, Attribute attribute, KeyHolder key, FurnitureFabricAttribute persistentCurtainAttribute) {
+        persistentCurtainAttribute.setAttribute(attribute);
+        persistentCurtainAttribute.setFurnitureFabric(furnitureFabric);
+        persistentCurtainAttribute.setKey(key);
+        persistentCurtainAttribute.setModified(Instant.now());
+    }
+
+    private FurnitureFabricAttribute createNewPersistentFurnitureFabricAttribute() {
+        FurnitureFabricAttribute furnitureFabricAttr = new FurnitureFabricAttribute();
+        furnitureFabricAttributeRepository.save(furnitureFabricAttr);
+        return furnitureFabricAttr;
     }
 
     public void deleteAllByFurnitureFabricId(Long curtainId) {

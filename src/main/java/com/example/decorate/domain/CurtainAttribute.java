@@ -21,15 +21,17 @@ public class CurtainAttribute {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY,
+            targetEntity = KeyHolder.class)
     @JoinColumn(name = "key_id")
     private KeyHolder key;
 
-    @ManyToOne
-    @JoinColumn(name = "attribute_id")
+    @ManyToOne(fetch = FetchType.LAZY,
+            targetEntity = Attribute.class)
     private Attribute attribute;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY,
+            targetEntity = Curtain.class)
     @JoinColumn(name = "curtain_id")
     private Curtain curtain;
 

@@ -1,16 +1,16 @@
 package com.example.decorate.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 public class   KeyHolder {
 
@@ -23,15 +23,22 @@ public class   KeyHolder {
     @Column(name = "type")
     private ProductType type;
 
-    @OneToMany(mappedBy = "key")
-    private List<AttributeListItem> attributeListItems;
-
-    @OneToMany(mappedBy = "key")
-    private List<CurtainAttribute> curtainAttribute;
-
     @Column(name = "modified")
     private Instant modified;
 
     @Column(name = "created")
     private Instant created = Instant.now();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KeyHolder keyHolder = (KeyHolder) o;
+        return id.equals(keyHolder.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

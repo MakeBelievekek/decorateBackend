@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.example.decorate.exception.ExceptionMessages.*;
 
@@ -71,7 +72,6 @@ public class AttributeService {
         List<Attribute> attributeList = saveAttributes(attributeCreationFormDataList);
         wallpaperAttributeService.saveWallpaperAttributes(wallpaper, attributeList);
     }
-
 
     private void attributeCreationProcess(List<Attribute> productAttributes, String attrType, String attrDesc) {
         Attribute attribute = saveAttribute(attrType, attrDesc);
@@ -245,5 +245,16 @@ public class AttributeService {
     public void deleteProductAttributeItems(Decoration decoration) {
         Long decorationId = decoration.getId();
         decorationAttributeService.deleteAllByDecorationId(decorationId);
+    }
+
+    public List<Curtain> findCurtainAttributeByAttributesAndCurtain(List<AttributeModel> attributes, Long curtainId) {
+        List<Long> attributeIdList = new ArrayList<>();
+        for (AttributeModel attribute : attributes) {
+            attributeIdList.add(attribute.getId());
+        }
+        List<Attribute> allAttributeToSearchFor = attributeRepository.findAllById(attributeIdList);
+        List<CurtainAttribute> curtainAttributeByAttributes = curtainAttributeService.findCurtainAttributeByAttributes(allAttributeToSearchFor, curtainId);
+
+        return curtainAttributeByAttributes.stream().map(CurtainAttribute::getCurtain).collect(Collectors.toList());
     }
 }

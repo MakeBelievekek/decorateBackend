@@ -1,5 +1,6 @@
 package com.example.decorate.repositorys.curtain;
 
+import com.example.decorate.domain.Attribute;
 import com.example.decorate.domain.CurtainAttribute;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -34,4 +35,11 @@ public interface CurtainAttributeRepository extends JpaRepository<CurtainAttribu
     @Query("DELETE FROM CurtainAttribute curAttr " +
             "WHERE curAttr.curtain.id = :curtainId")
     void deleteAllByCurtainId(Long curtainId);
+
+    @Query("SELECT curtAttr FROM CurtainAttribute curtAttr " +
+            "WHERE curtAttr.curtain.id = :curtainId AND " +
+            "curtAttr.attribute IN :attributes " +
+            "GROUP BY curtAttr " +
+            "HAVING COUNT(curtAttr) > :numberOfConditions")
+    List<CurtainAttribute> findCurtainAttributeByAttributesAndCurtain(List<Attribute> attributes, Long numberOfConditions, Long curtainId);
 }

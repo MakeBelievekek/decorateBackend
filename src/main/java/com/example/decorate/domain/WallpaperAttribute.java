@@ -1,17 +1,17 @@
 package com.example.decorate.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 public class WallpaperAttribute {
     @Id
@@ -41,5 +41,18 @@ public class WallpaperAttribute {
         this.attribute = attribute;
         this.wallpaper = wallpaper;
         this.created = Instant.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WallpaperAttribute that = (WallpaperAttribute) o;
+        return key.equals(that.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
     }
 }
