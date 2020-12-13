@@ -1,5 +1,6 @@
 package com.example.decorate.controller;
 
+import com.example.decorate.domain.Curtain;
 import com.example.decorate.domain.dto.*;
 import com.example.decorate.services.curtain.CurtainService;
 import lombok.AllArgsConstructor;
@@ -108,6 +109,10 @@ public class CurtainController {
                         .recommendedGlue("erős")
                         .typeOfSize("nagy")
                         .build());
+    }
+    @GetMapping("/dummyAttr")
+    public ResponseEntity<List<Curtain>> getCurtainsByAttr(){
+        return ResponseEntity.status(OK).body(curtainService.getCurtainByAttr());
     }
 
 }

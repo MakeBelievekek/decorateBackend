@@ -1,7 +1,10 @@
 package com.example.decorate.services.curtain;
 
-import com.example.decorate.domain.*;
-import com.example.decorate.domain.dto.*;
+import com.example.decorate.domain.Curtain;
+import com.example.decorate.domain.KeyHolder;
+import com.example.decorate.domain.dto.AttributeCreationFormData;
+import com.example.decorate.domain.dto.CurtainModel;
+import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repositorys.curtain.CurtainRepository;
 import com.example.decorate.services.*;
@@ -83,5 +86,9 @@ public class CurtainService {
     private Curtain getCurtainById(Long curtainId) {
         return curtainRepository.findById(curtainId)
                 .orElseThrow(() -> new DecorateBackendException(CURTAIN_NOT_EXISTS.getMessage()));
+    }
+
+    public List<Curtain> getCurtainByAttr() {
+        return curtainRepository.getCurtainsByAttributes("Bézs");
     }
 }
