@@ -22,6 +22,8 @@ public class ProductCreationFormData {
 
     private String itemNumber;
 
+    private String productType;
+
     private int width;
 
     private int height;

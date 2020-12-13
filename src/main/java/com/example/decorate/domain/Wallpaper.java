@@ -55,8 +55,12 @@ public class Wallpaper {
     @Column(columnDefinition = "text")
     private String recommendedGlue;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp;
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
+
 
     public Wallpaper(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
         this.key = keyHolder;
@@ -72,7 +76,7 @@ public class Wallpaper {
         this.productFamily = productCreationFormData.getProductFamily();
         this.annotation = productCreationFormData.getAnnotation();
         this.recommendedGlue = productCreationFormData.getRecommendedGlue();
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 
     public Wallpaper(ExcelData excelData, KeyHolder keyHolder) {
@@ -89,6 +93,6 @@ public class Wallpaper {
         this.productFamily = excelData.getProductFamily();
         this.annotation = excelData.getAnnotation();
         this.recommendedGlue = excelData.getRecommendedGlue();
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 }

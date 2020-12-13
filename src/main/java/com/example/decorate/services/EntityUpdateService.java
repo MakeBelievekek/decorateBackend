@@ -1,15 +1,19 @@
 package com.example.decorate.services;
 
 import com.example.decorate.domain.Curtain;
+import com.example.decorate.domain.Decoration;
 import com.example.decorate.domain.FurnitureFabric;
 import com.example.decorate.domain.Wallpaper;
 import com.example.decorate.domain.dto.CurtainModel;
+import com.example.decorate.domain.dto.DecorationModel;
 import com.example.decorate.domain.dto.FurnitureFabricModel;
 import com.example.decorate.domain.dto.WallpaperModel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 @Slf4j
 @AllArgsConstructor
@@ -30,6 +34,7 @@ public class EntityUpdateService {
         curtain.setProductFamily(curtainModel.getProductFamily());
         curtain.setCleaningInst(curtainModel.getCleaningInst());
         curtain.setTypeOfSize(curtainModel.getTypeOfSize());
+        curtain.setModified(Instant.now());
     }
 
     public void setWallpaperUpdateValues(Wallpaper wallpaper, WallpaperModel wallpaperModel) {
@@ -45,6 +50,7 @@ public class EntityUpdateService {
         wallpaper.setProductFamily(wallpaperModel.getProductFamily());
         wallpaper.setAnnotation(wallpaperModel.getAnnotation());
         wallpaper.setRecommendedGlue(wallpaperModel.getRecommendedGlue());
+        wallpaper.setModified(Instant.now());
     }
 
     public void setFurnitureFabricUpdatedValues(FurnitureFabric furnitureFabric, FurnitureFabricModel furnitureFabricModel) {
@@ -61,5 +67,22 @@ public class EntityUpdateService {
         furnitureFabric.setCleaningInst(furnitureFabricModel.getCleaningInst());
         furnitureFabric.setAbrasionResistance(furnitureFabricModel.getAbrasionResistance());
         furnitureFabric.setTypeOfSize(furnitureFabricModel.getTypeOfSize());
+        furnitureFabric.setModified(Instant.now());
+    }
+
+    public void setDecorationUpdatedValues(Decoration decoration, DecorationModel decorationModel) {
+        decoration.setId(decorationModel.getId());
+        decoration.setName(decorationModel.getName());
+        decoration.setProductDesc(decorationModel.getProductDesc());
+        decoration.setItemNumber(decorationModel.getItemNumber());
+        decoration.setWidth(decorationModel.getWidth());
+        decoration.setHeight(decorationModel.getHeight());
+        decoration.setPatternRep(decorationModel.getPatternRep());
+        decoration.setPrice(decorationModel.getPrice());
+        decoration.setComposition(decorationModel.getComposition());
+        decoration.setProductFamily(decorationModel.getProductFamily());
+        decoration.setAnnotation(decorationModel.getAnnotation());
+        decoration.setRecommendedGlue(decorationModel.getRecommendedGlue());
+        decoration.setModified(Instant.now());
     }
 }

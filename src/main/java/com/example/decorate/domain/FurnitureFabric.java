@@ -57,8 +57,11 @@ public class FurnitureFabric {
     @Column(columnDefinition = "text")
     private String typeOfSize;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp;
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 
     public FurnitureFabric(ExcelData excelData, KeyHolder keyHolder) {
         this.key = keyHolder;
@@ -75,7 +78,7 @@ public class FurnitureFabric {
         this.cleaningInst = excelData.getCleaningInst();
         this.typeOfSize = excelData.getTypeOfSize();
         this.abrasionResistance = excelData.getAbrasionResistance();
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 
     public FurnitureFabric(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
@@ -93,6 +96,6 @@ public class FurnitureFabric {
         this.cleaningInst = productCreationFormData.getCleaningInst();
         this.typeOfSize = productCreationFormData.getTypeOfSize();
         this.abrasionResistance = productCreationFormData.getAbrasionResistance();
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 }

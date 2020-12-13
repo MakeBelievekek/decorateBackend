@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -46,5 +48,9 @@ public class AttributeModel {
         this.description = furnitureFabricAttribute.getAttribute().getDescription();
     }
 
-
+    public AttributeModel(DecorationAttribute decorationAttribute) {
+        this.id = decorationAttribute.getId();
+        this.type = decorationAttribute.getAttribute().getType().toString();
+        this.description = decorationAttribute.getAttribute().getDescription();
+    }
 }

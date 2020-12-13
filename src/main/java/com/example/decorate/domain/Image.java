@@ -36,19 +36,22 @@ public class Image {
     @Column(name = "img_url")
     private String imgUrl;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp = Instant.now();
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 
     public Image(ImageModel imageModel) {
         this.imageType = ImageType.valueOf(imageModel.getImageType());
         this.imgUrl = imageModel.getImgUrl();
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 
     public Image(ImageModel imageModel, Long productId) {
         this.prodKey = productId;
         this.imageType = ImageType.valueOf(imageModel.getImageType());
         this.imgUrl = imageModel.getImgUrl();
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 }

@@ -29,9 +29,15 @@ public class DecorateUser {
 
     private String email;
 
+    @Column(name = "modified")
+    private Instant modified;
+
     private Instant created;
 
     private boolean enabled;
 
     private String authority;
+
+
+
 }

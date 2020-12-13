@@ -1,7 +1,7 @@
 package com.example.decorate.controller;
 
 import com.example.decorate.domain.dto.*;
-import com.example.decorate.services.wallpaper.WallpaperService;
+import com.example.decorate.services.furniture.FurnitureFabricService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,61 +15,61 @@ import static org.springframework.http.HttpStatus.*;
 @AllArgsConstructor
 @Slf4j
 @RestController
-@RequestMapping("/api/public/wallpaper")
-
-public class WallpaperController {
-    private final WallpaperService wallpaperService;
+@RequestMapping("/api/public/furniture")
+public class FurnitureFabricController {
+    private final FurnitureFabricService furnitureFabricService;
 
     @PostMapping
-    public ResponseEntity<String> createWallpaper(@RequestBody ProductCreationFormData productCreationFormData) {
-        wallpaperService.saveWallpaper(productCreationFormData);
+    public ResponseEntity<String> createFurnitureFabric(@RequestBody ProductCreationFormData productCreationFormData) {
+        furnitureFabricService.saveFurnitureFabric(productCreationFormData);
         return ResponseEntity
                 .status(CREATED)
-                .body("Wallpaper successfully created!");
+                .body("Furniture fabric successfully created!");
     }
 
-    @GetMapping("/{wallpaperId}")
-    public ResponseEntity<WallpaperModel> fetchWallpaperById(@PathVariable Long wallpaperId) {
-        WallpaperModel wallpaper = wallpaperService.getWallpaper(wallpaperId);
+    @GetMapping("/{furnitureFabricId}")
+    public ResponseEntity<FurnitureFabricModel> fetchFurnitureFabricById(@PathVariable Long furnitureFabricId) {
+        FurnitureFabricModel furnitureFabric = furnitureFabricService.getFurnitureFabric(furnitureFabricId);
 
-        log.info("Wallpaper whit id: " + wallpaperId + " is fetched!");
+        log.info("Furniture whit id: " + furnitureFabricId + " is fetched!");
 
         return ResponseEntity
                 .status(OK)
-                .body(wallpaper);
+                .body(furnitureFabric);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<WallpaperModel>> fetchAllWallpapers() {
-        List<WallpaperModel> allWallpapers = wallpaperService.getAllWallpapers();
+    public ResponseEntity<List<FurnitureFabricModel>> fetchAllFurnitureFabric() {
+        List<FurnitureFabricModel> allFurnitureFabrics = furnitureFabricService.getAllFurnitureFabrics();
 
-        log.info(allWallpapers.size() + " wallpapers fetched from database!");
+        log.info(allFurnitureFabrics.size() + " wallpapers fetched from database!");
 
         return ResponseEntity
                 .status(OK)
-                .body(allWallpapers);
+                .body(allFurnitureFabrics);
     }
 
-    @PutMapping("/update/{wallpaperId}")
-    public ResponseEntity<String> updateWallpaper(@RequestBody WallpaperModel wallpaperModel, @PathVariable Long wallpaperId) {
-        wallpaperService.updateWallpaper(wallpaperId, wallpaperModel);
+    @PutMapping("/update/{furnitureFabricId}")
+    public ResponseEntity<String> updateCurtain(@RequestBody FurnitureFabricModel furnitureFabricModel,
+                                                @PathVariable Long furnitureFabricId) {
+        furnitureFabricService.updateFurnitureFabric(furnitureFabricId, furnitureFabricModel);
 
-        log.info("Wallpaper successfully updated whit id: " + wallpaperId);
+        log.info("Furniture fabric successfully updated whit id: " + furnitureFabricId);
 
         return ResponseEntity
                 .status(ACCEPTED)
-                .body("Wallpaper update accepted!");
+                .body("Furniture fabric update accepted!");
     }
 
-    @DeleteMapping("/delete/{wallpaperId}")
-    public ResponseEntity<String> deleteWallpaper(@PathVariable Long wallpaperId) {
-        wallpaperService.deleteWallpaper(wallpaperId);
+    @DeleteMapping("/delete/{furnitureFabricId}")
+    public ResponseEntity<String> deleteWallpaper(@PathVariable Long furnitureFabricId) {
+        furnitureFabricService.deleteFurnitureFabric(furnitureFabricId);
 
-        log.info("Wallpaper successfully deleted whit id: " + wallpaperId);
+        log.info("Furniture fabric successfully deleted whit id: " + furnitureFabricId);
 
         return ResponseEntity
                 .status(ACCEPTED)
-                .body("Wallpaper has been deleted!");
+                .body("Curtain has been deleted!");
     }
 
     @GetMapping

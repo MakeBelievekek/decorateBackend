@@ -28,6 +28,7 @@ public class DTOMapperService {
         final String curtainClass = Curtain.class.toString();
         final String wallpaperClass = Wallpaper.class.toString();
         final String furnitureFabricClass = FurnitureFabric.class.toString();
+        final String decorationClass = Decoration.class.toString();
 
         if (productClass.equals(curtainClass)) {
             Curtain curtain = (Curtain) product;
@@ -36,16 +37,35 @@ public class DTOMapperService {
             attributeModels = convertCurtainAttributesToDTO(curtainAttributes);
         } else if (productClass.equals(wallpaperClass)) {
             Wallpaper wallpaper = (Wallpaper) product;
+
             Long wallpaperId = wallpaper.getId();
             List<WallpaperAttribute> wallpaperAttributes = attributeService.fetchAllWallpaperAttributes(wallpaperId);
+
             attributeModels = convertWallpaperAttributesToDTO(wallpaperAttributes);
         } else if (productClass.equals(furnitureFabricClass)) {
             FurnitureFabric furnitureFabric = (FurnitureFabric) product;
+
             Long furnitureFabricId = furnitureFabric.getId();
             List<FurnitureFabricAttribute> furnitureFabricAttributes = attributeService.fetchAllFurnitureFabricAttributes(furnitureFabricId);
+
             attributeModels = convertFurnitrueFabricAttributesToDTO(furnitureFabricAttributes);
+        } else if (productClass.equals(decorationClass)) {
+            Decoration decoration = (Decoration) product;
+
+            Long decorationId = decoration.getId();
+            List<DecorationAttribute> decorationAttributes = attributeService.fetchAllDecorationAttributes(decorationId);
+
+            attributeModels = convertDecorationAttributesToDTO(decorationAttributes);
         }
         return attributeModels;
+    }
+
+    private List<AttributeModel> convertDecorationAttributesToDTO(List<DecorationAttribute> decorationAttributes) {
+        List<AttributeModel> attributes = new ArrayList<>();
+        for (DecorationAttribute decorationAttribute : decorationAttributes) {
+            attributes.add(new AttributeModel(decorationAttribute));
+        }
+        return attributes;
     }
 
     private List<AttributeModel> convertFurnitrueFabricAttributesToDTO(List<FurnitureFabricAttribute> furnitureFabricAttributes) {

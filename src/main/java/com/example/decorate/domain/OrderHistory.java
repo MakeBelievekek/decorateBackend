@@ -49,8 +49,11 @@ public class OrderHistory {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Product> products;
 
-    @Column(name = "time_stamp")
-    private Instant timeStamp;
+    @Column(name = "modified")
+    private Instant modified;
+
+    @Column(name = "created")
+    private Instant created = Instant.now();
 
     public OrderHistory(OrderDto orderDto, List<Product> products, String orderId, BillingDetails billingDetails, ShippingDetails shippingDetails) {
         this.lastName = orderDto.getUser().getLastname();
@@ -61,6 +64,6 @@ public class OrderHistory {
         this.orderId = orderId;
         this.billingDetails = billingDetails;
         this.shippingDetails = shippingDetails;
-        this.timeStamp = Instant.now();
+        this.created = Instant.now();
     }
 }

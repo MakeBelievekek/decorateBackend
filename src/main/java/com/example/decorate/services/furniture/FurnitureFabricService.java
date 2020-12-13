@@ -1,11 +1,8 @@
 package com.example.decorate.services.furniture;
 
-import com.example.decorate.domain.Attribute;
 import com.example.decorate.domain.FurnitureFabric;
-import com.example.decorate.domain.FurnitureFabricAttribute;
 import com.example.decorate.domain.KeyHolder;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
-import com.example.decorate.domain.dto.CurtainModel;
 import com.example.decorate.domain.dto.FurnitureFabricModel;
 import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.exception.DecorateBackendException;
@@ -69,7 +66,7 @@ public class FurnitureFabricService {
 
         entityUpdateService.setFurnitureFabricUpdatedValues(furnitureFabric, furnitureFabricModel);
         attributeService.updateFurnitureFabricAttributes(furnitureFabric, furnitureFabricModel.getAttributes());
-        imageService.updateProductImages(furnitureFabricId, furnitureFabricModel.getImageList());
+        imageService.updateProductImages(furnitureFabricId, furnitureFabricModel.getImageList(), FURNITURE_FABRIC);
 
         furnitureFabricRepository.save(furnitureFabric);
     }

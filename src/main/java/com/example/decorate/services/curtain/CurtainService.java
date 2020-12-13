@@ -29,7 +29,6 @@ public class CurtainService {
     private final ImageService imageService;
     private final ModelCreatorService modelCreatorService;
     private final EntityUpdateService entityUpdateService;
-    private final CurtainAttributeService curtainAttributeService;
 
     public void saveCurtain(ProductCreationFormData productCreationFormData) {
         KeyHolder keyHolder = new KeyHolder();
@@ -65,7 +64,7 @@ public class CurtainService {
 
         entityUpdateService.setCurtainUpdatedValues(curtain, curtainModel);
         attributeService.updateCurtainAttributes(curtain, curtainModel.getAttributes());
-        imageService.updateProductImages(curtainId, curtainModel.getImageList());
+        imageService.updateProductImages(curtainId, curtainModel.getImageList(), CURTAIN);
 
         curtainRepository.save(curtain);
     }

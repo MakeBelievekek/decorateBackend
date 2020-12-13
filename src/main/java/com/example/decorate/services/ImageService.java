@@ -38,7 +38,7 @@ public class ImageService {
                     .prodKey(prodId)
                     .imgUrl(imgUrl)
                     .imageType(ImageType.valueOf(strImageType))
-                    .timeStamp(Instant.now())
+                    .created(Instant.now())
                     .build();
 
             imageRepository.save(image);
@@ -75,7 +75,7 @@ public class ImageService {
         return imageRepository.findAllByProdKey(productId);
     }
 
-    public void updateProductImages(Long productId, List<ImageModel> imageList) {
+    public void updateProductImages(Long productId, List<ImageModel> imageList, ProductType productType) {
         List<Long> activeImagesIdList = new ArrayList<>();
         for (ImageModel imageModel : imageList) {
             Long imageId = createValidImageId(imageModel.getId());
@@ -88,7 +88,8 @@ public class ImageService {
             persistentImg.setImageType(ImageType.valueOf(imageModel.getImageType()));
             persistentImg.setImgUrl(imageModel.getImgUrl());
             persistentImg.setProdKey(productId);
-            persistentImg.setTimeStamp(Instant.now());
+            persistentImg.setProductType(productType);
+            persistentImg.setModified(Instant.now());
             activeImagesIdList.add(persistentImg.getId());
         }
         imageRepository.deleteProductInActiveImages(activeImagesIdList, productId);
