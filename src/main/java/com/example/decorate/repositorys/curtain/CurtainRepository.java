@@ -20,4 +20,6 @@ public interface CurtainRepository extends JpaRepository<Curtain, Long>{
             "WHERE c.key.id = ca.key.id AND " +
             "ca.attribute.description in ('kek')")
     List<Curtain> findwhateva();
+
+    /*asdsa*/
 }
