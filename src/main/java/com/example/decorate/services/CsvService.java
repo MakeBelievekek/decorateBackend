@@ -3,6 +3,7 @@ package com.example.decorate.services;
 import com.example.decorate.domain.ProductType;
 import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.services.curtain.CurtainService;
+import com.example.decorate.services.decoration.DecorationService;
 import com.example.decorate.services.furniture.FurnitureFabricService;
 import com.example.decorate.services.wallpaper.WallpaperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,15 @@ public class CsvService {
     WallpaperService wallpaperService;
     CurtainService curtainService;
     FurnitureFabricService furnitureFabricService;
+    DecorationService decorationService;
 
     @Autowired
-    public CsvService(WallpaperService wallpaperService, CurtainService curtainService, FurnitureFabricService furnitureFabricService) {
+    public CsvService(WallpaperService wallpaperService, CurtainService curtainService,
+                      FurnitureFabricService furnitureFabricService, DecorationService decorationService) {
         this.wallpaperService = wallpaperService;
         this.curtainService = curtainService;
         this.furnitureFabricService = furnitureFabricService;
+        this.decorationService = decorationService;
     }
 
     public void save(MultipartFile file) {
@@ -38,6 +42,8 @@ public class CsvService {
                     curtainService.saveCurtain(product);
                 if (product.getProductType().equals(ProductType.FURNITURE_FABRIC.toString()))
                     furnitureFabricService.saveFurnitureFabric(product);
+                if (product.getProductType().equals(ProductType.DECORATION.toString()))
+                    decorationService.saveDecoration(product);
             }
         } catch (IOException e) {
             throw new RuntimeException("fail to store csv data: " + e.getMessage());
