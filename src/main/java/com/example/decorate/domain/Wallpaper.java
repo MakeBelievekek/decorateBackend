@@ -1,6 +1,5 @@
 package com.example.decorate.domain;
 
-import com.example.decorate.domain.dto.ExcelData;
 import com.example.decorate.domain.dto.ProductCreationFormData;
 import lombok.*;
 
@@ -61,6 +60,7 @@ public class Wallpaper {
     @Column(name = "created")
     private Instant created = Instant.now();
 
+    private String typeOfSize;
 
     public Wallpaper(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
         this.key = keyHolder;
@@ -76,23 +76,7 @@ public class Wallpaper {
         this.productFamily = productCreationFormData.getProductFamily();
         this.annotation = productCreationFormData.getAnnotation();
         this.recommendedGlue = productCreationFormData.getRecommendedGlue();
-        this.created = Instant.now();
-    }
-
-    public Wallpaper(ExcelData excelData, KeyHolder keyHolder) {
-        this.key = keyHolder;
-        this.id = keyHolder.getId();
-        this.name = excelData.getName();
-        this.productDesc = excelData.getProductDesc();
-        this.itemNumber = excelData.getItemNumber();
-        this.width = excelData.getWidth();
-        this.height = excelData.getHeight();
-        this.patternRep = excelData.getPatternRep();
-        this.price = excelData.getPrice();
-        this.composition = excelData.getComposition();
-        this.productFamily = excelData.getProductFamily();
-        this.annotation = excelData.getAnnotation();
-        this.recommendedGlue = excelData.getRecommendedGlue();
+        this.typeOfSize = productCreationFormData.getTypeOfSize();
         this.created = Instant.now();
     }
 

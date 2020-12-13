@@ -1,5 +1,6 @@
 package com.example.decorate.services;
 
+import com.example.decorate.domain.AttributeType;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.ImageModel;
 import com.example.decorate.domain.dto.ProductCreationFormData;
@@ -31,10 +32,8 @@ public class CsvResolver {
         if (!TYPE.equals(file.getContentType())) {
             return false;
         }
-
         return true;
     }
-
     public static List<ProductCreationFormData> csvPars(InputStream is) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
              CSVParser csvParser = new CSVParser(fileReader,
@@ -52,26 +51,26 @@ public class CsvResolver {
                 System.out.println(csvRecord.get("Terméknév"));
                 product.setItemNumber(csvRecord.get("Cikkszám"));
                 System.out.println(csvRecord.get("Cikkszám"));
-                product.setPrice(Integer.parseInt(csvRecord.get("Ár")));
+                product.setPrice(csvRecord.get("Ár").equals("") ? 0 :Integer.parseInt(csvRecord.get("Ár")));
                 System.out.println(Integer.parseInt(csvRecord.get("Ár")));
-                product.setProductType(csvRecord.get("Termékcsalád"));
+                product.setProductFamily(csvRecord.get("Termékcsalád"));
                 System.out.println(csvRecord.get("Termékcsalád"));
                 product.setProductDesc(csvRecord.get("Leírás"));
                 System.out.println(csvRecord.get("Leírás"));
                 product.setComposition(csvRecord.get("Összetétel"));
                 System.out.println(csvRecord.get("Összetétel"));
-                System.out.println("ez a magasság" + csvRecord.get("Magasság"));
-                product.setHeight(Integer.parseInt(csvRecord.get("Magasság")));
-
-                product.setWidth(Integer.parseInt(csvRecord.get("Szélesség")));
-                System.out.println(Integer.parseInt(csvRecord.get("Szélesség")));
-                product.setPatternRep(Double.parseDouble(csvRecord.get("Mintaismétlődés")));
-                System.out.println(Double.parseDouble(csvRecord.get("Mintaismétlődés")));
+                product.setHeight(csvRecord.get("Magasság").equals("") ? 0 : Integer.parseInt(csvRecord.get("Magasság")));
+                System.out.println(product.getHeight());
+                product.setWidth(csvRecord.get("Szélesség").equals("") ? 0 : Integer.parseInt(csvRecord.get("Szélesség")));
+                product.setAbrasionResistance(csvRecord.get("Kopásállóság").equals("") ? 0 : Integer.parseInt(csvRecord.get("Kopásállóság")));
+                product.setPatternRep(csvRecord.get("Mintaismétlődés").equals("") ? 0 : Double.parseDouble(csvRecord.get("Mintaismétlődés")));
+                System.out.println(product.getWidth());
+                System.out.println(product.getPatternRep());
                 product.setTypeOfSize(csvRecord.get("Mértékegység"));
+                System.out.println(csvRecord.get("Mértékegység"));
                 product.setCleaningInst(csvRecord.get("Tisztítási útmutató"));
                 product.setRecommendedGlue(csvRecord.get("Ajánlott Ragasztó"));
                 product.setAnnotation(csvRecord.get("Falra felrakás módja"));
-                product.setAbrasionResistance(Integer.parseInt(csvRecord.get("Kopásállóság")));
                 String colors = csvRecord.get("Szín");
                 String patterns = csvRecord.get("Minta");
                 String styles = csvRecord.get("Stílus");
@@ -91,9 +90,11 @@ public class CsvResolver {
     }
 
     public static void imageSlicer(ProductCreationFormData product, String images) {
-        String[] urls = images.split(",");
-        for (String url : urls) {
-            product.getImageList().add(new ImageModel(SECONDARY_IMG.toString(), url));
+        if (!images.equals("")) {
+            String[] urls = images.split(",");
+            for (String url : urls) {
+                product.getImageList().add(new ImageModel(SECONDARY_IMG.toString(), url));
+            }
         }
     }
 
@@ -118,7 +119,7 @@ public class CsvResolver {
             product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(STYLE.toString(), s));
         }
         for (String t : typeList) {
-            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(TYPE.toString(), t));
+            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(AttributeType.TYPE.toString(), t));
         }
     }
 

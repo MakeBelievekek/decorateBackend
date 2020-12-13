@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -17,9 +18,9 @@ public class ProductCreationFormData {
 
     private String productDesc;
 
-    private String itemNumber;
-
     private String productType;
+
+    private String itemNumber;
 
     private int width;
 
@@ -35,9 +36,9 @@ public class ProductCreationFormData {
 
     private String cleaningInst;
 
-    private List<AttributeCreationFormData> attributeCreationFormDataList;
+    private List<AttributeCreationFormData> attributeCreationFormDataList = new ArrayList<>();
 
-    private List<ImageModel> imageList;
+    private List<ImageModel> imageList = new ArrayList<>();
 
     private String productFamily;
 
