@@ -23,13 +23,13 @@ public class Decoration {
     @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "key_id")
     private KeyHolder key;
 
-    @Column(name = "name",columnDefinition = "text")
+    @Column(name = "name")
     private String name;
 
     @Column(name = " description",columnDefinition = "text")
     private String productDesc;
 
-    @Column(name = "itemNo",columnDefinition = "text")
+    @Column(name = "itemNo")
     private String itemNumber;
 
     @Column(name = "width")
@@ -43,13 +43,13 @@ public class Decoration {
     @Column(name = "price")
     private int price;
 
-    @Column(name = "composition",columnDefinition = "text")
+    @Column(name = "composition")
     private String composition;
-    @Column(columnDefinition = "text")
+
     private String productFamily;
-    @Column(columnDefinition = "text")
+
     private String annotation;
-    @Column(columnDefinition = "text")
+
     private String recommendedGlue;
 
     @Column(name = "modified")

@@ -39,6 +39,7 @@ public class CurtainService {
 
         List<AttributeCreationFormData> curtainAttributes = productCreationFormData.getAttributeCreationFormDataList();
         attributeService.createCurtainAttributes(curtain, curtainAttributes);
+
         imageService.saveImageList(productCreationFormData.getImageList(), keyHolder.getId(), CURTAIN);
 
     }

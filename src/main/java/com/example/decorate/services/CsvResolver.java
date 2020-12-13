@@ -1,5 +1,6 @@
 package com.example.decorate.services;
 
+import com.example.decorate.domain.AttributeType;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.ImageModel;
 import com.example.decorate.domain.dto.ProductCreationFormData;
@@ -118,7 +119,7 @@ public class CsvResolver {
             product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(STYLE.toString(), s));
         }
         for (String t : typeList) {
-            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(TYPE.toString(), t));
+            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(AttributeType.TYPE.toString(), t));
         }
     }
 
