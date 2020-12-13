@@ -1,6 +1,5 @@
 package com.example.decorate.controller;
 
-import com.example.decorate.domain.ResponseMessage;
 import com.example.decorate.services.CsvResolver;
 import com.example.decorate.services.CsvService;
 import lombok.AllArgsConstructor;
@@ -19,23 +18,22 @@ public class FileUploadController {
     private final CsvService csvService;
 
     @PostMapping()
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
-        System.out.println("IIIIIIIIIIIIIIIIIIIIIIIIIIITTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-        System.out.println(file.getContentType());
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+
         String message = "";
         if (CsvResolver.hasCSVFormat(file)) {
             try {
                 csvService.save(file);
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
-                return ResponseEntity.status(OK).body(new ResponseMessage(message));
+                return ResponseEntity.status(OK).body(message);
             } catch (Exception e) {
                 message = "Could not upload the file: " + file.getOriginalFilename() + "!";
                 System.out.println(message);
-                return ResponseEntity.status(EXPECTATION_FAILED).body(new ResponseMessage(message));
+                return ResponseEntity.status(EXPECTATION_FAILED).body(message);
             }
         }
         message = "Please upload an excel file!";
-        return ResponseEntity.status(BAD_REQUEST).body(new ResponseMessage(message));
+        return ResponseEntity.status(BAD_REQUEST).body(message);
     }
 
     @GetMapping()
