@@ -2,18 +2,18 @@ package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ExcelData;
 import com.example.decorate.domain.dto.ProductCreationFormData;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Builder
 public class Wallpaper {
@@ -94,5 +94,18 @@ public class Wallpaper {
         this.annotation = excelData.getAnnotation();
         this.recommendedGlue = excelData.getRecommendedGlue();
         this.created = Instant.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Wallpaper wallpaper = (Wallpaper) o;
+        return key.equals(wallpaper.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
     }
 }

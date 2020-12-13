@@ -1,6 +1,8 @@
 package com.example.decorate.controller;
 
+import com.example.decorate.domain.Curtain;
 import com.example.decorate.domain.dto.*;
+import com.example.decorate.repositorys.curtain.CurtainRepository;
 import com.example.decorate.services.curtain.CurtainService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
@@ -19,6 +22,7 @@ import static org.springframework.http.HttpStatus.*;
 public class CurtainController {
 
     private final CurtainService curtainService;
+    private final CurtainRepository curtainRepository;
 
     @PostMapping
     public ResponseEntity<String> createCurtain(@RequestBody ProductCreationFormData productCreationFormData) {
@@ -75,6 +79,28 @@ public class CurtainController {
                 .body("Curtain has been deleted!");
     }
 
+    @PostMapping("/search")
+    public ResponseEntity<List<CurtainModel>> search(@RequestBody SearchModel searchModel) {
+        List<CurtainModel> curtainModelsForList = curtainService.getCurtainModelsForList(searchModel);
+
+        log.info("Curtain successfully created!");
+
+        return ResponseEntity
+                .status(OK)
+                .body(curtainModelsForList);
+    }
+
+    @GetMapping("/dummy")
+    public ResponseEntity<List<Curtain>> search() {
+        List<Curtain> findwhateva = curtainRepository.findwhateva();
+
+        log.info("Curtain successfully created!");
+
+        return ResponseEntity
+                .status(OK)
+                .body(findwhateva);
+    }
+
     @GetMapping
     public ResponseEntity<ProductCreationFormData> controllDto() {
         return ResponseEntity
@@ -108,6 +134,22 @@ public class CurtainController {
                         .recommendedGlue("erős")
                         .typeOfSize("nagy")
                         .build());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<SearchModel> xxx() {
+        List<AttributeModel> build = Collections.singletonList(AttributeModel.builder()
+                .description("kek")
+                .type("COLOR")
+                .id(1L)
+                .build());
+        SearchModel retek = SearchModel.builder()
+                .productId(1L)
+                .attributes(build)
+                .build();
+        return ResponseEntity
+                .status(OK)
+                .body(retek);
     }
 
 }

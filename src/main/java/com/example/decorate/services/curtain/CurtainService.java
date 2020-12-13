@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.decorate.domain.ProductType.CURTAIN;
 import static com.example.decorate.exception.ExceptionMessages.CURTAIN_NOT_EXISTS;
@@ -77,6 +78,11 @@ public class CurtainService {
         keyHolderService.deleteKeyHolder(curtainId);
 
         curtainRepository.delete(curtain);
+    }
+
+    public List<CurtainModel> getCurtainModelsForList(SearchModel searchModel) {
+
+        return attributeService.findCurtainAttributeByAttributesAndCurtain(searchModel.getAttributes(), searchModel.getProductId()).stream().map(modelCreatorService::createCurtainModel).collect(Collectors.toList());
     }
 
     private Curtain getCurtainById(Long curtainId) {

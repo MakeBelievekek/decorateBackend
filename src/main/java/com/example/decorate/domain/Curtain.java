@@ -2,17 +2,19 @@ package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ExcelData;
 import com.example.decorate.domain.dto.ProductCreationFormData;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 public class Curtain {
 
@@ -110,4 +112,16 @@ public class Curtain {
         this.created = Instant.now();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Curtain curtain = (Curtain) o;
+        return key.equals(curtain.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
+    }
 }

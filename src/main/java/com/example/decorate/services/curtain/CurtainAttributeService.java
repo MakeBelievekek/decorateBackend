@@ -32,25 +32,21 @@ public class CurtainAttributeService {
     public void updateCurtainAttributes(Curtain curtain, List<Attribute> attributes) {
         List<Long> activeCurtainAttributeIdList = new ArrayList<>();
         Long curtainId = curtain.getId();
+
         for (Attribute attribute : attributes) {
-            KeyHolder key = curtain.getKey();
+            KeyHolder curtainKey = curtain.getKey();
             Long attributeId = attribute.getId();
 
             Optional<CurtainAttribute> curtainAttribute = curtainAttributeRepository
                     .fetchByAttributeIdAndCurtainId(attributeId, curtainId);
 
             CurtainAttribute persistentCurtainAttribute = curtainAttribute
-                    .orElseGet(() ->
-                    {
-                        CurtainAttribute curtainAttr = new CurtainAttribute();
-                        curtainAttributeRepository.save(curtainAttr);
-                        return curtainAttr;
-                    });
-            persistentCurtainAttribute.setAttribute(attribute);
-            persistentCurtainAttribute.setCurtain(curtain);
-            persistentCurtainAttribute.setKey(key);
-            persistentCurtainAttribute.setModified(Instant.now());
-            activeCurtainAttributeIdList.add(persistentCurtainAttribute.getId());
+                    .orElseGet(this::createNewPersistentCurtainAttribute);
+
+            updateCurtainAttribute(curtain, attribute, curtainKey, persistentCurtainAttribute);
+
+            Long activeCurtainAttributeId = persistentCurtainAttribute.getId();
+            activeCurtainAttributeIdList.add(activeCurtainAttributeId);
         }
         curtainAttributeRepository.deleteCurtainNotUsedAttributes(activeCurtainAttributeIdList, curtainId);
     }
@@ -59,8 +55,27 @@ public class CurtainAttributeService {
         return curtainAttributeRepository.fetchAllByCurtainId(curtainId);
     }
 
+    public List<CurtainAttribute> findCurtainAttributeByAttributes(List<Attribute> attributes, Long curtainId) {
+        Long numberOfConditions = (long) attributes.size();
+        return curtainAttributeRepository.findCurtainAttributeByAttributesAndCurtain(attributes,
+                numberOfConditions,
+                curtainId);
+    }
+
     public void deleteAllByCurtainId(Long curtainId) {
         curtainAttributeRepository.deleteAllByCurtainId(curtainId);
     }
 
+    private void updateCurtainAttribute(Curtain curtain, Attribute attribute, KeyHolder key, CurtainAttribute persistentCurtainAttribute) {
+        persistentCurtainAttribute.setAttribute(attribute);
+        persistentCurtainAttribute.setCurtain(curtain);
+        persistentCurtainAttribute.setKey(key);
+        persistentCurtainAttribute.setModified(Instant.now());
+    }
+
+    private CurtainAttribute createNewPersistentCurtainAttribute() {
+        CurtainAttribute curtainAttr = new CurtainAttribute();
+        curtainAttributeRepository.save(curtainAttr);
+        return curtainAttr;
+    }
 }

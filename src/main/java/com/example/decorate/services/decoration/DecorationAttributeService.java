@@ -34,26 +34,33 @@ public class DecorationAttributeService {
         List<Long> activeDecorationAttributeIdList = new ArrayList<>();
         Long decorationId = decoration.getId();
         for (Attribute attribute : attributeList) {
-            KeyHolder key = decoration.getKey();
+            KeyHolder decorationKey = decoration.getKey();
             Long attributeId = attribute.getId();
 
             Optional<DecorationAttribute> decorationAttribute = decorationAttributeRepository
                     .fetchByAttributeIdAndDecorationId(attributeId, decorationId);
 
             DecorationAttribute persistentDecorationAttribute = decorationAttribute
-                    .orElseGet(() ->
-                    {
-                        DecorationAttribute decorationAttr = new DecorationAttribute();
-                        decorationAttributeRepository.save(decorationAttr);
-                        return decorationAttr;
-                    });
-            persistentDecorationAttribute.setAttribute(attribute);
-            persistentDecorationAttribute.setDecoration(decoration);
-            persistentDecorationAttribute.setKey(key);
-            persistentDecorationAttribute.setModified(Instant.now());
-            activeDecorationAttributeIdList.add(persistentDecorationAttribute.getId());
+                    .orElseGet(this::createNewPersistentDecorationAttribute);
+            updateDecorationAttribute(decoration, attribute, decorationKey, persistentDecorationAttribute);
+
+            Long decorationAttributeId = persistentDecorationAttribute.getId();
+            activeDecorationAttributeIdList.add(decorationAttributeId);
         }
         decorationAttributeRepository.deleteDecorationNotUsedAttributes(activeDecorationAttributeIdList, decorationId);
+    }
+
+    private void updateDecorationAttribute(Decoration decoration, Attribute attribute, KeyHolder key, DecorationAttribute persistentDecorationAttribute) {
+        persistentDecorationAttribute.setAttribute(attribute);
+        persistentDecorationAttribute.setDecoration(decoration);
+        persistentDecorationAttribute.setKey(key);
+        persistentDecorationAttribute.setModified(Instant.now());
+    }
+
+    private DecorationAttribute createNewPersistentDecorationAttribute() {
+        DecorationAttribute decorationAttr = new DecorationAttribute();
+        decorationAttributeRepository.save(decorationAttr);
+        return decorationAttr;
     }
 
     public void deleteAllByDecorationId(Long decorationId) {
