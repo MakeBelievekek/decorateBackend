@@ -21,5 +21,8 @@ public interface CurtainRepository extends JpaRepository<Curtain, Long>{
             "ca.attribute.description in ('kek')")
     List<Curtain> findwhateva();
 
-    /*asdsa*/
+    /*asdsasdasdasd
+    *
+    *
+    * */
 }
