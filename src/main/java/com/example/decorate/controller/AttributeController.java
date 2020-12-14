@@ -23,7 +23,7 @@ public class AttributeController {
 
     @PostMapping
     public ResponseEntity<String> saveAttribute(@RequestBody AttributeCreationFormData attributeCreationFormData) {
-        attributeService.saveAttribute(attributeCreationFormData);
+        attributeService.saveAttribute(attributeCreationFormData.getType(), attributeCreationFormData.getDescription());
 
         log.info("Attribute form data saved. Parameters: " + attributeCreationFormData.toString());
 

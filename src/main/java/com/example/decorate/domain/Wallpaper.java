@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Date;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -22,8 +21,8 @@ public class Wallpaper {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "key_id")
-    private KeyHolder key;
+    @PrimaryKeyJoinColumn(name = "product_id", referencedColumnName = "key_id")
+    private ProductKey productKey;
 
     @Column(name = "name",columnDefinition = "text")
     private String name;
@@ -62,9 +61,9 @@ public class Wallpaper {
 
     private String typeOfSize;
 
-    public Wallpaper(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
-        this.key = keyHolder;
-        this.id = keyHolder.getId();
+    public Wallpaper(ProductCreationFormData productCreationFormData, ProductKey productKey) {
+        this.productKey = productKey;
+        this.id = productKey.getId();
         this.name = productCreationFormData.getName();
         this.productDesc = productCreationFormData.getProductDesc();
         this.itemNumber = productCreationFormData.getItemNumber();
@@ -85,11 +84,11 @@ public class Wallpaper {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Wallpaper wallpaper = (Wallpaper) o;
-        return key.equals(wallpaper.key);
+        return productKey.equals(wallpaper.productKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key);
+        return Objects.hash(productKey);
     }
 }

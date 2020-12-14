@@ -2,6 +2,7 @@ package com.example.decorate.repositorys;
 
 import com.example.decorate.domain.Image;
 import com.example.decorate.domain.ImageType;
+import com.example.decorate.domain.ProductKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,14 +15,12 @@ import java.util.Optional;
 @Repository
 public interface ImageRepository extends JpaRepository<Image, Long> {
 
-    Image findByProdKeyAndImageType(Long id, ImageType type);
-
     @Query("SELECT img FROM Image img " +
             "WHERE img.imageType ='PRIMARY_IMG' " +
-            "AND img.prodKey=:productId")
-    Optional<Image> findProductPrimaryImage(Long productId);
+            "AND img.productKey=:productKey")
+    Optional<Image> findProductPrimaryImage(ProductKey productKey);
 
-    List<Image> findAllByProdKey(Long productId);
+    List<Image> findAllByProductKey(ProductKey productKey);
 
     Optional<Image> findById(Long imgId);
 
@@ -30,14 +29,14 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     @Transactional
     @Modifying
     @Query("DELETE FROM Image image " +
-            "WHERE image.prodKey =:productId AND " +
+            "WHERE image.productKey =:productKey AND " +
             "image.id NOT IN :activeImagesIdList")
-    void deleteProductInActiveImages(List<Long> activeImagesIdList, Long productId);
+    void deleteProductInActiveImages(List<Long> activeImagesIdList, ProductKey productKey);
 
-    @Query("SELECT image.prodKey FROM Image image " +
-            "WHERE image.prodKey =:productId AND " +
+    @Query("SELECT image.productKey.id FROM Image image " +
+            "WHERE image.productKey =:productKey AND " +
             "image.imageType = 'PRIMARY_IMG' " +
-            "GROUP BY image.prodKey " +
-            "HAVING COUNT(image.prodKey) > 1")
-    List<Long> findImagesWhitMultiplePrimaryImgs(Long productId);
+            "GROUP BY image.productKey " +
+            "HAVING COUNT(image.productKey) > 1")
+    List<Long> findImagesWhitMultiplePrimaryImages(ProductKey productKey);
 }

@@ -4,7 +4,7 @@ import com.example.decorate.domain.OrderHistory;
 import com.example.decorate.domain.dto.ProductListItem;
 import com.example.decorate.domain.dto.order.ItemAndQty;
 import com.example.decorate.domain.dto.order.OrderDto;
-import com.example.decorate.services.KeyHolderService;
+import com.example.decorate.services.ProductKeyService;
 import com.example.decorate.services.OrderService;
 import com.example.decorate.services.PaymentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,13 +25,13 @@ import java.util.List;
 public class PaymentController {
 
     private PaymentService paymentService;
-    private KeyHolderService keyHolderService;
+    private ProductKeyService productKeyService;
     private OrderService orderService;
 
     @Autowired
-    public PaymentController(PaymentService paymentService, KeyHolderService keyHolderService, OrderService orderService) {
+    public PaymentController(PaymentService paymentService, ProductKeyService productKeyService, OrderService orderService) {
         this.paymentService = paymentService;
-        this.keyHolderService = keyHolderService;
+        this.productKeyService = productKeyService;
         this.orderService = orderService;
     }
 
@@ -56,7 +56,7 @@ public class PaymentController {
         for (ItemAndQty itemAndQty : orderDto.getItemId()) {
             ids.add(itemAndQty.getId());
         }
-        List<ProductListItem> items = this.keyHolderService.getProducts(this.keyHolderService.getKeyholders(ids));
+        List<ProductListItem> items = this.productKeyService.getProducts(this.productKeyService.getKeyholders(ids));
         orderDatabaseId = this.orderService.saveOrder(orderDto, orderId);
         return new ResponseEntity(this.paymentService.processOrder(orderDto, items, orderId, paymentId, orderDatabaseId), HttpStatus.OK);
     }

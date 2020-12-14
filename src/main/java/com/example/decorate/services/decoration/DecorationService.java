@@ -1,7 +1,7 @@
 package com.example.decorate.services.decoration;
 
 import com.example.decorate.domain.Decoration;
-import com.example.decorate.domain.KeyHolder;
+import com.example.decorate.domain.ProductKey;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.DecorationModel;
 import com.example.decorate.domain.dto.ProductCreationFormData;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.decorate.domain.ProductType.CURTAIN;
 import static com.example.decorate.domain.ProductType.DECORATION;
 import static com.example.decorate.exception.ExceptionMessages.DECORATION_NOT_EXISTS;
 
@@ -25,7 +24,7 @@ import static com.example.decorate.exception.ExceptionMessages.DECORATION_NOT_EX
 @Service
 @Transactional
 public class DecorationService {
-    private final KeyHolderService keyHolderService;
+    private final ProductKeyService productKeyService;
     private final DecorationRepository decorationRepository;
     private final AttributeService attributeService;
     private final ImageService imageService;
@@ -33,15 +32,15 @@ public class DecorationService {
     private final EntityUpdateService entityUpdateService;
 
     public void saveDecoration(ProductCreationFormData productCreationFormData) {
-        KeyHolder keyHolder = new KeyHolder();
-        keyHolderService.saveKey(keyHolder, DECORATION);
+        ProductKey decorationProductKey = new ProductKey();
+        productKeyService.saveKey(decorationProductKey, DECORATION);
 
-        Decoration decoration = new Decoration(productCreationFormData, keyHolder);
+        Decoration decoration = new Decoration(productCreationFormData, decorationProductKey);
         decorationRepository.save(decoration);
 
         List<AttributeCreationFormData> decorationAttributes = productCreationFormData.getAttributeCreationFormDataList();
-        attributeService.createDecorationAttributes(decoration, decorationAttributes);
-        imageService.saveImageList(productCreationFormData.getImageList(), keyHolder.getId(), DECORATION);
+        attributeService.createProductAttributeItems(decorationAttributes, decorationProductKey);
+        imageService.saveImageList(productCreationFormData.getImageList(), decorationProductKey);
     }
 
     public DecorationModel getDecoration(Long decorationId) {
@@ -62,20 +61,22 @@ public class DecorationService {
 
     public void updateDecoration(Long decorationId, DecorationModel decorationModel) {
         Decoration decoration = getDecorationById(decorationId);
+        ProductKey decorationProductKey = decoration.getProductKey();
 
         entityUpdateService.setDecorationUpdatedValues(decoration, decorationModel);
-        attributeService.updateDecorationAttributes(decoration, decorationModel.getAttributes());
-        imageService.updateProductImages(decorationId, decorationModel.getImageList(), CURTAIN);
+        attributeService.updateProductAttributes(decorationProductKey, decorationModel.getAttributes());
+        imageService.updateProductImages(decorationProductKey, decorationModel.getImageList());
 
         decorationRepository.save(decoration);
     }
 
     public void deleteDecoration(Long decorationId) {
         Decoration decoration = getDecorationById(decorationId);
+        ProductKey decorationProductKey = decoration.getProductKey();
 
-        imageService.deleteProductImages(decorationId);
-        attributeService.deleteProductAttributeItems(decoration);
-        keyHolderService.deleteKeyHolder(decorationId);
+        imageService.deleteProductImages(decorationProductKey);
+        attributeService.deleteProductAttributeItems(decorationProductKey);
+        productKeyService.deleteKeyHolder(decorationProductKey);
 
         decorationRepository.delete(decoration);
     }

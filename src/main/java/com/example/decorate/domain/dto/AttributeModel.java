@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -26,33 +24,9 @@ public class AttributeModel {
         this.description = attribute.getDescription();
     }
 
-    public AttributeModel(AttributeListItem attributeListItem) {
-        this.id = attributeListItem.getId();
-        this.type = attributeListItem.getAttribute().getType().toString();
-        this.description = attributeListItem.getAttribute().getDescription();
-    }
-
-    public AttributeModel(CurtainAttribute curtainAttribute) {
-        this.id = curtainAttribute.getId();
-        this.type = curtainAttribute.getAttribute().getType().toString();
-        this.description = curtainAttribute.getAttribute().getDescription();
-    }
-
-    public AttributeModel(WallpaperAttribute wallpaperAttribute) {
-        this.id = wallpaperAttribute.getId();
-        this.type = wallpaperAttribute.getAttribute().getType().toString();
-        this.description = wallpaperAttribute.getAttribute().getDescription();
-    }
-
-    public AttributeModel(FurnitureFabricAttribute furnitureFabricAttribute) {
-        this.id = furnitureFabricAttribute.getId();
-        this.type = furnitureFabricAttribute.getAttribute().getType().toString();
-        this.description = furnitureFabricAttribute.getAttribute().getDescription();
-    }
-
-    public AttributeModel(DecorationAttribute decorationAttribute) {
-        this.id = decorationAttribute.getId();
-        this.type = decorationAttribute.getAttribute().getType().toString();
-        this.description = decorationAttribute.getAttribute().getDescription();
+    public AttributeModel(AttributeItem attributeItem) {
+        this.id = attributeItem.getId();
+        this.type = attributeItem.getAttribute().getType().toString();
+        this.description = attributeItem.getAttribute().getDescription();
     }
 }

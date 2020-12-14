@@ -1,18 +1,20 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.order.OrderDto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
+@Builder
 @Table(name = "billingDetails")
 public class BillingDetails {
 
@@ -56,5 +58,18 @@ public class BillingDetails {
         this.address2 = orderDto.getBilling().getAddress2();
         this.phoneNumber = orderDto.getBilling().getPhone();
         this.created = Instant.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BillingDetails that = (BillingDetails) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

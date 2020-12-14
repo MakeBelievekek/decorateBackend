@@ -1,9 +1,7 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.order.OrderDto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,10 +9,15 @@ import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
+@Builder
 public class OrderHistory {
 
     @Id
@@ -65,5 +68,18 @@ public class OrderHistory {
         this.billingDetails = billingDetails;
         this.shippingDetails = shippingDetails;
         this.created = Instant.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderHistory that = (OrderHistory) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

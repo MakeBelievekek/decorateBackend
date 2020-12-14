@@ -1,9 +1,7 @@
 package com.example.decorate.services.wallpaper;
 
 
-import com.example.decorate.domain.Attribute;
-import com.example.decorate.domain.KeyHolder;
-import com.example.decorate.domain.ProductType;
+import com.example.decorate.domain.ProductKey;
 import com.example.decorate.domain.Wallpaper;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.ImageModel;
@@ -33,23 +31,23 @@ public class WallpaperService {
     private final WallpaperRepository wallpaperRepository;
     private final ImageService imageService;
     private final AttributeService attributeService;
-    private final KeyHolderService keyHolderService;
+    private final ProductKeyService productKeyService;
     private final ModelCreatorService modelCreatorService;
     private final EntityUpdateService entityUpdateService;
 
 
     public void saveWallpaper(ProductCreationFormData productCreationFormData) {
-        KeyHolder keyHolder = new KeyHolder();
-        keyHolderService.saveKey(keyHolder, WALLPAPER);
+        ProductKey wallpaperProductKey = new ProductKey();
+        productKeyService.saveKey(wallpaperProductKey, WALLPAPER);
 
-        Wallpaper wallpaper = new Wallpaper(productCreationFormData, keyHolder);
+        Wallpaper wallpaper = new Wallpaper(productCreationFormData, wallpaperProductKey);
         wallpaperRepository.save(wallpaper);
 
         List<AttributeCreationFormData> attributeCreationFormDataList = productCreationFormData.getAttributeCreationFormDataList();
-        attributeService.createWallpaperAttributes(wallpaper, attributeCreationFormDataList);
+        attributeService.createProductAttributeItems(attributeCreationFormDataList, wallpaperProductKey);
 
         List<ImageModel> imageList = productCreationFormData.getImageList();
-        imageService.saveImageList(imageList, keyHolder.getId(), WALLPAPER);
+        imageService.saveImageList(imageList, wallpaperProductKey);
     }
 
     public WallpaperModel getWallpaper(Long wallpaperId) {
@@ -69,20 +67,22 @@ public class WallpaperService {
 
     public void updateWallpaper(Long wallpaperId, WallpaperModel wallpaperModel) {
         Wallpaper wallpaper = getWallpaperById(wallpaperId);
+        ProductKey wallpaperProductKey = wallpaper.getProductKey();
 
         entityUpdateService.setWallpaperUpdateValues(wallpaper, wallpaperModel);
-        attributeService.updateWallpaperAttributes(wallpaper, wallpaperModel.getAttributes());
-        imageService.updateProductImages(wallpaperId, wallpaperModel.getImageList(), WALLPAPER);
+        attributeService.updateProductAttributes(wallpaperProductKey, wallpaperModel.getAttributes());
+        imageService.updateProductImages(wallpaperProductKey, wallpaperModel.getImageList());
 
         wallpaperRepository.save(wallpaper);
     }
 
     public void deleteWallpaper(Long wallpaperId) {
         Wallpaper wallpaper = getWallpaperById(wallpaperId);
+        ProductKey wallpaperProductKey = wallpaper.getProductKey();
 
-        imageService.deleteProductImages(wallpaperId);
-        attributeService.deleteProductAttributeItems(wallpaper);
-        keyHolderService.deleteKeyHolder(wallpaperId);
+        imageService.deleteProductImages(wallpaperProductKey);
+        attributeService.deleteProductAttributeItems(wallpaperProductKey);
+        productKeyService.deleteKeyHolder(wallpaperProductKey);
 
         wallpaperRepository.delete(wallpaper);
     }
@@ -91,6 +91,4 @@ public class WallpaperService {
         return wallpaperRepository.findById(wallpaperId)
                 .orElseThrow(() -> new DecorateBackendException(WALLPAPER_NOT_EXISTS.getMessage()));
     }
-
-
 }

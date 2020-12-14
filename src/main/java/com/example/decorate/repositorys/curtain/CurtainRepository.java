@@ -16,13 +16,8 @@ public interface CurtainRepository extends JpaRepository<Curtain, Long>{
 
     Optional<Curtain> findById(Long curtainId);
 
-    @Query("SELECT c FROM Curtain c, AttributeListItem ca " +
-            "WHERE c.key.id = ca.key.id AND " +
+    @Query("SELECT c FROM Curtain c, AttributeItem ca " +
+            "WHERE c.productKey.id = ca.productKey.id AND " +
             "ca.attribute.description in ('kek')")
     List<Curtain> findwhateva();
-
-    /*asdsasdasdasd
-    *
-    *
-    * */
 }

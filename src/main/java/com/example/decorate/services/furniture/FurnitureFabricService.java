@@ -1,7 +1,7 @@
 package com.example.decorate.services.furniture;
 
 import com.example.decorate.domain.FurnitureFabric;
-import com.example.decorate.domain.KeyHolder;
+import com.example.decorate.domain.ProductKey;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.FurnitureFabricModel;
 import com.example.decorate.domain.dto.ProductCreationFormData;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.decorate.domain.ProductType.CURTAIN;
-import static com.example.decorate.domain.ProductType.FURNITURE_FABRIC;
 import static com.example.decorate.exception.ExceptionMessages.FURNITURE_FABRIC_NOT_EXISTS;
 
 @Slf4j
@@ -25,24 +24,24 @@ import static com.example.decorate.exception.ExceptionMessages.FURNITURE_FABRIC_
 @Service
 @Transactional
 public class FurnitureFabricService {
-    private final KeyHolderService keyHolderService;
+    private final ProductKeyService productKeyService;
     private final FurnitureFabricRepository furnitureFabricRepository;
     private final AttributeService attributeService;
     private final ImageService imageService;
     private final ModelCreatorService modelCreatorService;
     private final EntityUpdateService entityUpdateService;
-    private final FurnitureFabricAttributeService furnitureFabricAttributeService;
 
     public void saveFurnitureFabric(ProductCreationFormData productCreationFormData) {
-        KeyHolder keyHolder = new KeyHolder();
-        keyHolderService.saveKey(keyHolder, CURTAIN);
+        ProductKey furnitureFabricProductKey = new ProductKey();
+        productKeyService.saveKey(furnitureFabricProductKey, CURTAIN);
 
-        FurnitureFabric furnitureFabric = new FurnitureFabric(productCreationFormData, keyHolder);
+        FurnitureFabric furnitureFabric = new FurnitureFabric(productCreationFormData, furnitureFabricProductKey);
         furnitureFabricRepository.save(furnitureFabric);
 
         List<AttributeCreationFormData> furnitureFabricAttributes = productCreationFormData.getAttributeCreationFormDataList();
-        attributeService.createFurnitureFabricAttributes(furnitureFabric, furnitureFabricAttributes);
-        imageService.saveImageList(productCreationFormData.getImageList(), keyHolder.getId(), FURNITURE_FABRIC);
+        attributeService.createProductAttributeItems(furnitureFabricAttributes, furnitureFabricProductKey);
+
+        imageService.saveImageList(productCreationFormData.getImageList(), furnitureFabricProductKey);
     }
 
     public FurnitureFabricModel getFurnitureFabric(Long furnitureFabricId) {
@@ -63,20 +62,22 @@ public class FurnitureFabricService {
 
     public void updateFurnitureFabric(Long furnitureFabricId, FurnitureFabricModel furnitureFabricModel) {
         FurnitureFabric furnitureFabric = getFurnitureFabricById(furnitureFabricId);
+        ProductKey furnitureFabricProductKey = furnitureFabric.getProductKey();
 
         entityUpdateService.setFurnitureFabricUpdatedValues(furnitureFabric, furnitureFabricModel);
-        attributeService.updateFurnitureFabricAttributes(furnitureFabric, furnitureFabricModel.getAttributes());
-        imageService.updateProductImages(furnitureFabricId, furnitureFabricModel.getImageList(), FURNITURE_FABRIC);
+        attributeService.updateProductAttributes(furnitureFabricProductKey, furnitureFabricModel.getAttributes());
+        imageService.updateProductImages(furnitureFabricProductKey, furnitureFabricModel.getImageList());
 
         furnitureFabricRepository.save(furnitureFabric);
     }
 
     public void deleteFurnitureFabric(Long furnitureFabricId) {
         FurnitureFabric furnitureFabric = getFurnitureFabricById(furnitureFabricId);
+        ProductKey furnitureFabricProductKey = furnitureFabric.getProductKey();
 
-        imageService.deleteProductImages(furnitureFabricId);
-        attributeService.deleteProductAttributeItems(furnitureFabric);
-        keyHolderService.deleteKeyHolder(furnitureFabricId);
+        imageService.deleteProductImages(furnitureFabricProductKey);
+        attributeService.deleteProductAttributeItems(furnitureFabricProductKey);
+        productKeyService.deleteKeyHolder(furnitureFabricProductKey);
 
         furnitureFabricRepository.delete(furnitureFabric);
     }

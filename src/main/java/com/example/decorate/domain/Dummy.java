@@ -1,16 +1,17 @@
 package com.example.decorate.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 
-@Entity
-@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
+@Builder
 public class Dummy {
 
     @Id

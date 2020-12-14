@@ -1,20 +1,20 @@
 package com.example.decorate.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 @Entity
+@Builder
 public class DecorateUser {
 
     @Id
@@ -38,6 +38,16 @@ public class DecorateUser {
 
     private String authority;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DecorateUser that = (DecorateUser) o;
+        return userId.equals(that.userId);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
+    }
 }
