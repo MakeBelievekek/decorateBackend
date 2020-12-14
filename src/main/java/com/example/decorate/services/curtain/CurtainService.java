@@ -84,10 +84,10 @@ public class CurtainService {
         curtainRepository.delete(curtain);
     }
 
-    public List<CurtainModel> getCurtainModelsForList(SearchModel searchModel) {
+  /*  public List<CurtainModel> getCurtainModelsForList(SearchModel searchModel) {
 
         return attributeService.findCurtainAttributeByAttributesAndCurtain(searchModel.getAttributes(), searchModel.getProductId()).stream().map(modelCreatorService::createCurtainModel).collect(Collectors.toList());
-    }
+    }*/
 
     private Curtain getCurtainById(Long curtainId) {
         return curtainRepository.findById(curtainId)

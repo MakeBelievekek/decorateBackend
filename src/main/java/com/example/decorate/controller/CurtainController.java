@@ -79,7 +79,7 @@ public class CurtainController {
                 .body("Curtain has been deleted!");
     }
 
-    @PostMapping("/search")
+/*    @PostMapping("/search")
     public ResponseEntity<List<CurtainModel>> search(@RequestBody SearchModel searchModel) {
         List<CurtainModel> curtainModelsForList = curtainService.getCurtainModelsForList(searchModel);
 
@@ -88,7 +88,7 @@ public class CurtainController {
         return ResponseEntity
                 .status(OK)
                 .body(curtainModelsForList);
-    }
+    }*/
 
     @GetMapping("/dummy")
     public ResponseEntity<List<Curtain>> search() {
