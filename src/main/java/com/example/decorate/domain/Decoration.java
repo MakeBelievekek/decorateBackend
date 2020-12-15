@@ -1,27 +1,27 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ProductCreationFormData;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
+@Builder
 public class Decoration {
     @Id
     @Column(name = "id")
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "key_id")
-    private KeyHolder key;
+    @PrimaryKeyJoinColumn(name = "product_id", referencedColumnName = "key_id")
+    private ProductKey productKey;
 
     @Column(name = "name")
     private String name;
@@ -58,9 +58,9 @@ public class Decoration {
     @Column(name = "created")
     private Instant created = Instant.now();
 
-    public Decoration(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
-        this.key = keyHolder;
-        this.id = keyHolder.getId();
+    public Decoration(ProductCreationFormData productCreationFormData, ProductKey productKey) {
+        this.productKey = productKey;
+        this.id = productKey.getId();
         this.name = productCreationFormData.getName();
         this.productDesc = productCreationFormData.getProductDesc();
         this.itemNumber = productCreationFormData.getItemNumber();
@@ -73,5 +73,18 @@ public class Decoration {
         this.annotation = productCreationFormData.getAnnotation();
         this.recommendedGlue = productCreationFormData.getRecommendedGlue();
         this.created = Instant.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Decoration that = (Decoration) o;
+        return productKey.equals(that.productKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productKey);
     }
 }

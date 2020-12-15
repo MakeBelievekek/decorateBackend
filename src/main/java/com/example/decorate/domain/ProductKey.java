@@ -4,15 +4,16 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
-public class   KeyHolder {
+@Builder
+public class ProductKey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +34,8 @@ public class   KeyHolder {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        KeyHolder keyHolder = (KeyHolder) o;
-        return id.equals(keyHolder.id);
+        ProductKey productKey = (ProductKey) o;
+        return id.equals(productKey.id);
     }
 
     @Override

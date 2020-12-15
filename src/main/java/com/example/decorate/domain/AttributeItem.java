@@ -8,27 +8,24 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Getter
 @Setter
 @ToString
 @Entity
-public class WallpaperAttribute {
+@Builder
+public class AttributeItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "key_id")
-    private KeyHolder key;
+    @JoinColumn(name = "product_id")
+    private ProductKey productKey;
 
     @ManyToOne
     @JoinColumn(name = "attribute_id")
     private Attribute attribute;
-
-    @ManyToOne
-    @JoinColumn(name = "wallpaper_id")
-    private Wallpaper wallpaper;
 
     @Column(name = "modified")
     private Instant modified;
@@ -36,23 +33,26 @@ public class WallpaperAttribute {
     @Column(name = "created")
     private Instant created = Instant.now();
 
-    public WallpaperAttribute(Attribute attribute, Wallpaper wallpaper, KeyHolder keyHolder) {
-        this.key = keyHolder;
+    public AttributeItem(ProductKey productKey, Attribute attribute) {
+        this.productKey = productKey;
         this.attribute = attribute;
-        this.wallpaper = wallpaper;
-        this.created = Instant.now();
+    }
+
+    public AttributeItem(Attribute attribute, ProductKey productKey) {
+        this.productKey = productKey;
+        this.attribute = attribute;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        WallpaperAttribute that = (WallpaperAttribute) o;
-        return key.equals(that.key);
+        AttributeItem that = (AttributeItem) o;
+        return id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key);
+        return Objects.hash(id);
     }
 }

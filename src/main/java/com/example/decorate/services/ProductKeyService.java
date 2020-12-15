@@ -3,7 +3,7 @@ package com.example.decorate.services;
 import com.example.decorate.domain.*;
 import com.example.decorate.domain.dto.ProductListItem;
 import com.example.decorate.repositorys.curtain.CurtainRepository;
-import com.example.decorate.repositorys.KeyHolderRepository;
+import com.example.decorate.repositorys.ProductKeyRepository;
 import com.example.decorate.repositorys.wallpaper.WallpaperRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,47 +22,47 @@ import static com.example.decorate.domain.ProductType.WALLPAPER;
 @Service
 @Transactional
 
-public class KeyHolderService {
+public class ProductKeyService {
 
-    private final KeyHolderRepository keyHolderRepository;
+    private final ProductKeyRepository productKeyRepository;
     private final CurtainRepository curtainRepository;
     private final WallpaperRepository wallpaperRepository;
     private final ImageService imageService;
 
-    public KeyHolder saveKey(KeyHolder keyHolder, ProductType productType) {
-        keyHolder.setType(productType);
-        keyHolderRepository.save(keyHolder);
-        return keyHolder;
+    public ProductKey saveKey(ProductKey productKey, ProductType productType) {
+        productKey.setType(productType);
+        productKeyRepository.save(productKey);
+        return productKey;
     }
 
-    public List<KeyHolder> getProductsFromLocal(String productIds) {
-        List<KeyHolder> keyHolders = new ArrayList<>();
+    public List<ProductKey> getProductsFromLocal(String productIds) {
+        List<ProductKey> productKeys = new ArrayList<>();
         String[] ids = productIds.split(",");
         List<Long> productsLong = new ArrayList<>();
         for (String s : ids) {
             productsLong.add(Long.parseLong(s));
         }
 
-        productsLong.stream().map(keyHolderRepository::findById)
+        productsLong.stream().map(productKeyRepository::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .forEach(keyHolders::add);
-        return keyHolders;
+                .forEach(productKeys::add);
+        return productKeys;
     }
 
-    public List<KeyHolder> getKeyholders(List<Long> itemId) {
+    public List<ProductKey> getKeyholders(List<Long> itemId) {
 
-        List<KeyHolder> keys = new ArrayList<>();
+        List<ProductKey> keys = new ArrayList<>();
 
         for (Long aLong : itemId) {
-            Optional<KeyHolder> keyHolder = this.keyHolderRepository.findById(aLong);
+            Optional<ProductKey> keyHolder = this.productKeyRepository.findById(aLong);
             keyHolder.ifPresent(keys::add);
         }
         return keys;
     }
 
-    public List<ProductListItem> getProducts(List<KeyHolder> keys) {
-        List<ProductListItem> items = new ArrayList<>();
+    public List<ProductListItem> getProducts(List<ProductKey> keys) {
+      /*  List<ProductListItem> items = new ArrayList<>();
 
         keys.stream().filter(keyHolder -> keyHolder.getType() == WALLPAPER)
                 .map(keyHolder -> this.wallpaperRepository.findById(keyHolder.getId()))
@@ -75,7 +75,7 @@ public class KeyHolderService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(curtain -> new ProductListItem(curtain, imageService.getProductPrimaryImg(curtain.getId())))
-                .forEach(items::add);
+                .forEach(items::add);*/
 /*
         for (KeyHolder key : keys) {
             if (key.getType() == WALLPAPER) {
@@ -94,11 +94,12 @@ public class KeyHolderService {
             }
         }*/
 
-        return items;
+//        return items;
+        return null;
     }
 
     public ProductListItem getProd(Long id) {
-        Optional<KeyHolder> keyHolder = this.keyHolderRepository.findById(id);
+        Optional<ProductKey> keyHolder = this.productKeyRepository.findById(id);
         if (keyHolder.isPresent()) {
             if (keyHolder.get().getType() == WALLPAPER) {
                 Optional<Wallpaper> wallpaper = this.wallpaperRepository.findById(keyHolder.get().getId());
@@ -116,7 +117,7 @@ public class KeyHolderService {
         return null;
     }
 
-    public void deleteKeyHolder(Long productId) {
-        keyHolderRepository.deleteById(productId);
+    public void deleteKeyHolder(ProductKey productKey) {
+        productKeyRepository.delete(productKey);
     }
 }

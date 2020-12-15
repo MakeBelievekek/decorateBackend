@@ -1,20 +1,18 @@
 package com.example.decorate.domain;
 
-import com.example.decorate.domain.dto.ImageModel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Date;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
+@Builder
 public class Image {
 
     @Id
@@ -22,8 +20,9 @@ public class Image {
     @Column(name = "image_id")
     private Long id;
 
-    @Column(name = "prod_id")
-    private Long prodKey;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private ProductKey productKey;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "prod_type")
@@ -42,16 +41,29 @@ public class Image {
     @Column(name = "created")
     private Instant created = Instant.now();
 
-    public Image(ImageModel imageModel) {
+   /* public Image(ImageModel imageModel) {
         this.imageType = ImageType.valueOf(imageModel.getImageType());
         this.imgUrl = imageModel.getImgUrl();
         this.created = Instant.now();
     }
 
     public Image(ImageModel imageModel, Long productId) {
-        this.prodKey = productId;
+        this.productKey = productId;
         this.imageType = ImageType.valueOf(imageModel.getImageType());
         this.imgUrl = imageModel.getImgUrl();
         this.created = Instant.now();
+    }*/
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Image image = (Image) o;
+        return id.equals(image.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

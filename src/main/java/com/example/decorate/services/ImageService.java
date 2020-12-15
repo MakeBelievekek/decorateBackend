@@ -2,13 +2,13 @@ package com.example.decorate.services;
 
 import com.example.decorate.domain.Image;
 import com.example.decorate.domain.ImageType;
+import com.example.decorate.domain.ProductKey;
 import com.example.decorate.domain.ProductType;
 import com.example.decorate.domain.dto.ImageModel;
 import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repositorys.ImageRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.LazyToOne;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.decorate.exception.ExceptionMessages.IMAGE_NOT_EXISTS;
 import static com.example.decorate.exception.ExceptionMessages.MULTIPLE_PRIMARY_IMG_EXISTS;
 
 @Service
@@ -28,56 +27,42 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
 
-    public void saveImageList(List<ImageModel> images, Long prodId, ProductType productType) {
+    public void saveImageList(List<ImageModel> images, ProductKey productKey) {
         for (ImageModel imageModel : images) {
             String imgUrl = imageModel.getImgUrl();
             String strImageType = imageModel.getImageType();
+            ProductType productType = productKey.getType();
 
             Image image = Image.builder()
                     .productType(productType)
-                    .prodKey(prodId)
+                    .productKey(productKey)
                     .imgUrl(imgUrl)
                     .imageType(ImageType.valueOf(strImageType))
                     .created(Instant.now())
                     .build();
 
             imageRepository.save(image);
-            checkForDuplicatePrimaryImg(prodId);
+          //  checkForDuplicatePrimaryImg(productKey);
         }
     }
 
-    public List<Image> getImagesByProductId(Long productId) {
-        return getAllImagesByProdKey(productId);
+    public List<Image> getImagesByProductId(ProductKey productKey) {
+        return getAllImagesByProdKey(productKey);
     }
 
-    public ImageModel getProductPrimaryImg(Long productId) {
-        Image image = imageRepository.findProductPrimaryImage(productId)
-                .orElseThrow(() -> new DecorateBackendException(IMAGE_NOT_EXISTS.getMessage()));
-        return new ImageModel(image);
+    public void deleteProductImages(ProductKey productKey) {
+        List<Image> allImagesByProdKey = getAllImagesByProdKey(productKey);
+        imageRepository.deleteAll(allImagesByProdKey);
     }
 
-    public void deleteImage(Long imageId) {
-        Image image = getImageById(imageId);
-        imageRepository.delete(image);
+    private List<Image> getAllImagesByProdKey(ProductKey productKey) {
+        return imageRepository.findAllByProductKey(productKey);
     }
 
-    private Image getImageById(Long imageId) {
-        return imageRepository.findById(imageId)
-                .orElseThrow(() -> new DecorateBackendException(IMAGE_NOT_EXISTS.getMessage()));
-    }
-
-    public void deleteProductImages(Long productId) {
-        List<Image> imagesByProductId = getAllImagesByProdKey(productId);
-        imageRepository.deleteAll(imagesByProductId);
-    }
-
-    private List<Image> getAllImagesByProdKey(Long productId) {
-        return imageRepository.findAllByProdKey(productId);
-    }
-
-    public void updateProductImages(Long productId, List<ImageModel> imageList, ProductType productType) {
+    public void updateProductImages(ProductKey productKey, List<ImageModel> imageList) {
         List<Long> activeImagesIdList = new ArrayList<>();
         for (ImageModel imageModel : imageList) {
+            ProductType productType = productKey.getType();
             Long imageId = createValidImageId(imageModel.getId());
             Optional<Image> img = imageRepository.findById(imageId);
             Image persistentImg = img.orElseGet(() -> {
@@ -87,18 +72,18 @@ public class ImageService {
             });
             persistentImg.setImageType(ImageType.valueOf(imageModel.getImageType()));
             persistentImg.setImgUrl(imageModel.getImgUrl());
-            persistentImg.setProdKey(productId);
+            persistentImg.setProductKey(productKey);
             persistentImg.setProductType(productType);
             persistentImg.setModified(Instant.now());
             activeImagesIdList.add(persistentImg.getId());
         }
-        imageRepository.deleteProductInActiveImages(activeImagesIdList, productId);
-        checkForDuplicatePrimaryImg(productId);
+        imageRepository.deleteProductInActiveImages(activeImagesIdList, productKey);
+        //checkForDuplicatePrimaryImg(productKey);
     }
 
-    private void checkForDuplicatePrimaryImg(Long productId) {
-        List<Long> imageIdsWhitMultiplePrimaryImgs = imageRepository.findImagesWhitMultiplePrimaryImgs(productId);
-        if (!imageIdsWhitMultiplePrimaryImgs.isEmpty()) {
+    private void checkForDuplicatePrimaryImg(ProductKey productKey) {
+        List<Long> imagesWhitMultiplePrimaryImages = imageRepository.findImagesWhitMultiplePrimaryImages(productKey);
+        if (!imagesWhitMultiplePrimaryImages.isEmpty()) {
             throw new DecorateBackendException(MULTIPLE_PRIMARY_IMG_EXISTS.getMessage());
         }
     }

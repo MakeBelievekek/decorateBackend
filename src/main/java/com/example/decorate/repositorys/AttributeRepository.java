@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+
 @Repository
 public interface AttributeRepository extends JpaRepository<Attribute, Long> {
     Optional<Attribute> findByDescription(String description);
+
 }

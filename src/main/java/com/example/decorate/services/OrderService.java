@@ -21,14 +21,14 @@ public class OrderService {
     private final ShippingOptionRepository shippingOptionRepository;
     private final OrderHistoryRepository orderHistoryRepository;
     private final PaymentHistoryRepository paymentHistoryRepository;
-    private final KeyHolderService keyHolderService;
+    private final ProductKeyService productKeyService;
 
     public Long saveOrder(OrderDto orderDto, String orderId) {
         Long orderDatabaseId;
         int totalPrice = 0;
         List<Product> products = new ArrayList<>();
         for (ItemAndQty itemAndQty : orderDto.getItemId()) {
-            products.add(new Product(this.keyHolderService.getProd(itemAndQty.getId()), itemAndQty.getQty()));
+            products.add(new Product(this.productKeyService.getProd(itemAndQty.getId()), itemAndQty.getQty()));
         }
         ShippingDetails shippingDetails = new ShippingDetails(orderDto);
         this.shippingDetailsRepository.save(shippingDetails);

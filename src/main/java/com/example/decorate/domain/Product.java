@@ -1,17 +1,19 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ProductListItem;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import java.time.Instant;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
+@Builder
 @Embeddable
 public class Product {
 

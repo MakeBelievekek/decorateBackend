@@ -1,18 +1,20 @@
 package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.order.OrderDto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
+@Builder
 public class ShippingDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +49,7 @@ public class ShippingDetails {
     private Instant modified;
 
     @Column(name = "created")
-    private Instant created = Instant.now();
+    private final Instant created = Instant.now();
 
     public ShippingDetails(OrderDto orderDto) {
         this.company = orderDto.getShipping().getCompany();
@@ -60,6 +62,18 @@ public class ShippingDetails {
         this.shipInfo = orderDto.getShipping().getShipInfo();
         this.shipMethod = orderDto.getShipping().getShipMethod();
         this.foxpost = orderDto.getShipping().getFoxpost();
-        this.created = Instant.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ShippingDetails that = (ShippingDetails) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

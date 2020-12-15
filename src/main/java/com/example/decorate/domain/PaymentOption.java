@@ -1,19 +1,23 @@
 package com.example.decorate.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
+@Builder
 @Embeddable
 public class PaymentOption {
 
     @Enumerated(EnumType.STRING)
     private PaymentOptionEnum paymentOption;
+
 }

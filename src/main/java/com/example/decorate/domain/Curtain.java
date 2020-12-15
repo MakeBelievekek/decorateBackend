@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -15,6 +14,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @Entity
+@Builder
 public class Curtain {
 
     @Id
@@ -22,8 +22,8 @@ public class Curtain {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "key_id")
-    private KeyHolder key;
+    @PrimaryKeyJoinColumn(name = "product_id", referencedColumnName = "key_id")
+    private ProductKey productKey;
 
     @Column(name = "name")
     private String name;
@@ -62,9 +62,9 @@ public class Curtain {
     @Column(name = "created")
     private Instant created = Instant.now();
 
-    public Curtain(ProductCreationFormData productCreationFormData, KeyHolder keyHolder) {
-        this.key = keyHolder;
-        this.id = keyHolder.getId();
+    public Curtain(ProductCreationFormData productCreationFormData, ProductKey productKey) {
+        this.productKey = productKey;
+        this.id = productKey.getId();
         this.name = productCreationFormData.getName();
         this.productDesc = productCreationFormData.getProductDesc();
         this.itemNumber = productCreationFormData.getItemNumber();
@@ -84,11 +84,11 @@ public class Curtain {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Curtain curtain = (Curtain) o;
-        return key.equals(curtain.key);
+        return productKey.equals(curtain.productKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key);
+        return Objects.hash(productKey);
     }
 }

@@ -6,6 +6,7 @@ import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.CurtainModel;
 import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.exception.DecorateBackendException;
+import com.example.decorate.mapper.CurtainMapper;
 import com.example.decorate.repositorys.curtain.CurtainRepository;
 import com.example.decorate.services.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.example.decorate.domain.ProductType.CURTAIN;
 import static com.example.decorate.exception.ExceptionMessages.CURTAIN_NOT_EXISTS;
@@ -27,7 +27,7 @@ import static com.example.decorate.exception.ExceptionMessages.CURTAIN_NOT_EXIST
 
 public class CurtainService {
 
-    private final KeyHolderService keyHolderService;
+    private final ProductKeyService productKeyService;
     private final CurtainRepository curtainRepository;
     private final AttributeService attributeService;
     private final ImageService imageService;
@@ -35,16 +35,16 @@ public class CurtainService {
     private final EntityUpdateService entityUpdateService;
 
     public void saveCurtain(ProductCreationFormData productCreationFormData) {
-        KeyHolder keyHolder = new KeyHolder();
-        keyHolderService.saveKey(keyHolder, CURTAIN);
+        ProductKey curtainProductKey = new ProductKey();
+        productKeyService.saveKey(curtainProductKey, CURTAIN);
 
-        Curtain curtain = new Curtain(productCreationFormData, keyHolder);
+        Curtain curtain = new Curtain(productCreationFormData, curtainProductKey);
         curtainRepository.save(curtain);
 
         List<AttributeCreationFormData> curtainAttributes = productCreationFormData.getAttributeCreationFormDataList();
-        attributeService.createCurtainAttributes(curtain, curtainAttributes);
+        attributeService.createProductAttributeItems(curtainAttributes, curtainProductKey);
 
-        imageService.saveImageList(productCreationFormData.getImageList(), keyHolder.getId(), CURTAIN);
+        imageService.saveImageList(productCreationFormData.getImageList(), curtainProductKey);
 
     }
 
@@ -66,28 +66,29 @@ public class CurtainService {
 
     public void updateCurtain(Long curtainId, CurtainModel curtainModel) {
         Curtain curtain = getCurtainById(curtainId);
+        ProductKey curtainProductKey = curtain.getProductKey();
 
         entityUpdateService.setCurtainUpdatedValues(curtain, curtainModel);
-        attributeService.updateCurtainAttributes(curtain, curtainModel.getAttributes());
-        imageService.updateProductImages(curtainId, curtainModel.getImageList(), CURTAIN);
+        attributeService.updateProductAttributes(curtainProductKey, curtainModel.getAttributes());
+        imageService.updateProductImages(curtainProductKey, curtainModel.getImageList());
 
         curtainRepository.save(curtain);
     }
 
     public void deleteCurtain(Long curtainId) {
         Curtain curtain = getCurtainById(curtainId);
+        ProductKey curtainProductKey = curtain.getProductKey();
 
-        imageService.deleteProductImages(curtainId);
-        attributeService.deleteProductAttributeItems(curtain);
-        keyHolderService.deleteKeyHolder(curtainId);
+        imageService.deleteProductImages(curtainProductKey);
+        attributeService.deleteProductAttributeItems(curtainProductKey);
+        productKeyService.deleteKeyHolder(curtainProductKey);
 
         curtainRepository.delete(curtain);
     }
 
-  /*  public List<CurtainModel> getCurtainModelsForList(SearchModel searchModel) {
-
-        return attributeService.findCurtainAttributeByAttributesAndCurtain(searchModel.getAttributes(), searchModel.getProductId()).stream().map(modelCreatorService::createCurtainModel).collect(Collectors.toList());
-    }*/
+    public List<CurtainModel> getCurtainModelsForList(SearchModel searchModel) {
+        return null;
+    }
 
     private Curtain getCurtainById(Long curtainId) {
         return curtainRepository.findById(curtainId)

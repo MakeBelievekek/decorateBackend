@@ -22,13 +22,4 @@ public interface CurtainRepository extends JpaRepository<Curtain, Long>{
             "AND attributeListItem.attribute.description =:attribute")
     List<Curtain> getCurtainsByAttributes(@Param("attribute") String attribute);
 
-    @Query("SELECT c FROM Curtain c, AttributeListItem ca " +
-            "WHERE c.key.id = ca.key.id AND " +
-            "ca.attribute.description in ('kek')")
-    List<Curtain> findwhateva();
-
-    /*asdsasdasdasd
-    *
-    *
-    * */
 }

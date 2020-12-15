@@ -1,10 +1,10 @@
 
 package com.example.decorate.controller;
 
-import com.example.decorate.domain.KeyHolder;
+import com.example.decorate.domain.ProductKey;
 import com.example.decorate.domain.dto.ProductListItem;
 import com.example.decorate.services.curtain.CurtainService;
-import com.example.decorate.services.KeyHolderService;
+import com.example.decorate.services.ProductKeyService;
 import com.example.decorate.services.ShippingOptionService;
 import com.example.decorate.services.wallpaper.WallpaperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +18,15 @@ import java.util.List;
 @RequestMapping("/api/public/product")
 public class ProductController {
 
-    private KeyHolderService keyHolderService;
+    private ProductKeyService productKeyService;
     private WallpaperService wallpaperService;
     private CurtainService curtainService;
     private ShippingOptionService shippingOptionService;
 
     @Autowired
-    public ProductController(KeyHolderService keyHolderService, WallpaperService wallpaperService, CurtainService curtainService, ShippingOptionService shippingOptionService) {
+    public ProductController(ProductKeyService productKeyService, WallpaperService wallpaperService, CurtainService curtainService, ShippingOptionService shippingOptionService) {
 
-        this.keyHolderService = keyHolderService;
+        this.productKeyService = productKeyService;
         this.wallpaperService = wallpaperService;
         this.curtainService = curtainService;
         this.shippingOptionService = shippingOptionService;
@@ -42,8 +42,8 @@ public class ProductController {
 
     @GetMapping("/local/{ids}")
     public ResponseEntity getProductsForLocalStorage(@PathVariable("ids") String productsIds) {
-        List<KeyHolder> keyHolders = keyHolderService.getProductsFromLocal(productsIds);
-        List<ProductListItem> products = this.keyHolderService.getProducts(keyHolders);
+        List<ProductKey> productKeys = productKeyService.getProductsFromLocal(productsIds);
+        List<ProductListItem> products = this.productKeyService.getProducts(productKeys);
         for (ProductListItem product : products) {
             System.out.println(product);
         }

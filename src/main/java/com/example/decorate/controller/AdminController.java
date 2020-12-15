@@ -2,14 +2,11 @@ package com.example.decorate.controller;
 
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.FormData;
-import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.services.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/restricted/admin")
@@ -31,7 +28,7 @@ public class AdminController {
 
     @GetMapping("/formData")
     public ResponseEntity<FormData> getFormData() {
-        return new ResponseEntity(attributeService.getAll(), HttpStatus.OK);
+        return new ResponseEntity(attributeService.getAllAttributes(), HttpStatus.OK);
     }
 
 }
