@@ -3,7 +3,6 @@ package com.example.decorate.services.curtain;
 import com.example.decorate.domain.*;
 import com.example.decorate.domain.dto.*;
 import com.example.decorate.exception.DecorateBackendException;
-import com.example.decorate.mapper.CurtainMapper;
 import com.example.decorate.repositorys.curtain.CurtainRepository;
 import com.example.decorate.services.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.decorate.domain.ProductType.CURTAIN;
 import static com.example.decorate.exception.ExceptionMessages.CURTAIN_NOT_EXISTS;
@@ -30,12 +32,13 @@ public class CurtainService {
     private final ImageService imageService;
     private final ModelCreatorService modelCreatorService;
     private final EntityUpdateService entityUpdateService;
+    private final EntityCreatorService entityCreatorService;
 
     public void saveCurtain(ProductCreationFormData productCreationFormData) {
         ProductKey curtainProductKey = new ProductKey();
         productKeyService.saveKey(curtainProductKey, CURTAIN);
 
-        Curtain curtain = new Curtain(productCreationFormData, curtainProductKey);
+        Curtain curtain = entityCreatorService.createCurtainFromCreationModel(productCreationFormData, curtainProductKey);
         curtainRepository.save(curtain);
 
         List<AttributeCreationFormData> curtainAttributes = productCreationFormData.getAttributeCreationFormDataList();
@@ -53,12 +56,9 @@ public class CurtainService {
 
     public List<CurtainModel> getAllCurtains() {
         List<Curtain> allCurtains = curtainRepository.getAllCurtains();
-        List<CurtainModel> allCurtainModels = new ArrayList<>();
-
-        for (Curtain curtain : allCurtains) {
-            allCurtainModels.add(modelCreatorService.createCurtainModel(curtain));
-        }
-        return allCurtainModels;
+        return allCurtains.stream()
+                .map(modelCreatorService::createCurtainModel)
+                .collect(Collectors.toList());
     }
 
     public void updateCurtain(Long curtainId, CurtainModel curtainModel) {
@@ -84,7 +84,11 @@ public class CurtainService {
     }
 
     public List<CurtainModel> getCurtainModelsForList(SearchModel searchModel) {
-        return null;
+        List<String> attributeDescriptions = searchModel.getAttributes().stream().map(AttributeModel::getDescription).collect(Collectors.toList());
+        Long searchParameterCount =(long) attributeDescriptions.size();
+        log.info(attributeDescriptions.toString());
+        log.info(searchParameterCount + "");
+        return curtainRepository.findwhateva(attributeDescriptions, searchParameterCount).stream().map(modelCreatorService::createCurtainModel).collect(Collectors.toList());
     }
 
     private Curtain getCurtainById(Long curtainId) {

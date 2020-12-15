@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 import static com.example.decorate.domain.ProductType.WALLPAPER;
@@ -34,16 +35,19 @@ public class WallpaperService {
     private final ProductKeyService productKeyService;
     private final ModelCreatorService modelCreatorService;
     private final EntityUpdateService entityUpdateService;
+    private final EntityCreatorService entityCreatorService;
 
 
     public void saveWallpaper(ProductCreationFormData productCreationFormData) {
         ProductKey wallpaperProductKey = new ProductKey();
         productKeyService.saveKey(wallpaperProductKey, WALLPAPER);
 
-        Wallpaper wallpaper = new Wallpaper(productCreationFormData, wallpaperProductKey);
+        Wallpaper wallpaper = entityCreatorService
+                .createWallpaperFromCreationModel(productCreationFormData, wallpaperProductKey);
         wallpaperRepository.save(wallpaper);
 
-        List<AttributeCreationFormData> attributeCreationFormDataList = productCreationFormData.getAttributeCreationFormDataList();
+        List<AttributeCreationFormData> attributeCreationFormDataList = productCreationFormData
+                .getAttributeCreationFormDataList();
         attributeService.createProductAttributeItems(attributeCreationFormDataList, wallpaperProductKey);
 
         List<ImageModel> imageList = productCreationFormData.getImageList();
@@ -57,12 +61,10 @@ public class WallpaperService {
 
     public List<WallpaperModel> getAllWallpapers() {
         List<Wallpaper> allWallpapers = wallpaperRepository.findAll();
-        List<WallpaperModel> wallpaperModels = new ArrayList<>();
 
-        for (Wallpaper wallpaper : allWallpapers) {
-            wallpaperModels.add(modelCreatorService.createWallpaperModel(wallpaper));
-        }
-        return wallpaperModels;
+        return allWallpapers.stream()
+                .map(modelCreatorService::createWallpaperModel)
+                .collect(Collectors.toList());
     }
 
     public void updateWallpaper(Long wallpaperId, WallpaperModel wallpaperModel) {

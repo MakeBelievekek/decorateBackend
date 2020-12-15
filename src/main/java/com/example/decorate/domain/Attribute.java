@@ -33,13 +33,8 @@ public class Attribute {
     private Instant modified;
 
     @Column(name = "created")
-    private Instant created = Instant.now();
+    private final Instant created = Instant.now();
 
-    public Attribute(AttributeCreationFormData attributeCreationFormData) {
-        this.type = AttributeType.valueOf(attributeCreationFormData.getType());
-        this.description = attributeCreationFormData.getDescription();
-        this.created = Instant.now();
-    }
 
     public Attribute(String type, String description) {
         this.type = AttributeType.valueOf(type);

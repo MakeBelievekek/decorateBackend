@@ -31,17 +31,7 @@ public class AttributeItem {
     private Instant modified;
 
     @Column(name = "created")
-    private Instant created = Instant.now();
-
-    public AttributeItem(ProductKey productKey, Attribute attribute) {
-        this.productKey = productKey;
-        this.attribute = attribute;
-    }
-
-    public AttributeItem(Attribute attribute, ProductKey productKey) {
-        this.productKey = productKey;
-        this.attribute = attribute;
-    }
+    private final Instant created = Instant.now();
 
     @Override
     public boolean equals(Object o) {

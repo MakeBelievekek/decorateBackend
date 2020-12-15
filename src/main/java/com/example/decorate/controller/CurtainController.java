@@ -83,22 +83,11 @@ public class CurtainController {
     public ResponseEntity<List<CurtainModel>> search(@RequestBody SearchModel searchModel) {
         List<CurtainModel> curtainModelsForList = curtainService.getCurtainModelsForList(searchModel);
 
-        log.info("Curtain successfully created!");
+        log.info(curtainModelsForList.size() + " curtains found form search!");
 
         return ResponseEntity
                 .status(OK)
                 .body(curtainModelsForList);
-    }
-
-    @GetMapping("/dummy")
-    public ResponseEntity<List<Curtain>> search() {
-        List<Curtain> findwhateva = curtainRepository.findwhateva();
-
-        log.info("Curtain successfully created!");
-
-        return ResponseEntity
-                .status(OK)
-                .body(findwhateva);
     }
 
     @GetMapping
@@ -144,7 +133,6 @@ public class CurtainController {
                 .id(1L)
                 .build());
         SearchModel retek = SearchModel.builder()
-                .productId(1L)
                 .attributes(build)
                 .build();
         return ResponseEntity

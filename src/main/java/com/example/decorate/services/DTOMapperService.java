@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.decorate.mapper.AttributeMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DTOMapperService {
     private final AttributeService attributeService;
     private final ImageService imageService;
-
+    private final AttributeMapper attributeMapper;
     public List<AttributeModel> getProductAllAttributesModel(ProductKey productKey) {
         List<Attribute> productAllAttributes = attributeService.getProductAllAttributesByProductKey(productKey);
         return convertProductAttributesToDTO(productAllAttributes);
@@ -28,7 +29,7 @@ public class DTOMapperService {
 
     private List<AttributeModel> convertProductAttributesToDTO(List<Attribute> productAttributes) {
         return productAttributes.stream()
-                .map(AttributeModel::new)
+                .map(attributeMapper::createAttributeModelFromAttribute)
                 .collect(Collectors.toList());
     }
 

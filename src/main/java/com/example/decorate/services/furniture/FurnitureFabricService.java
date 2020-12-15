@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.decorate.domain.ProductType.CURTAIN;
 import static com.example.decorate.exception.ExceptionMessages.FURNITURE_FABRIC_NOT_EXISTS;
@@ -30,12 +31,14 @@ public class FurnitureFabricService {
     private final ImageService imageService;
     private final ModelCreatorService modelCreatorService;
     private final EntityUpdateService entityUpdateService;
+    private final EntityCreatorService entityCreatorService;
 
     public void saveFurnitureFabric(ProductCreationFormData productCreationFormData) {
         ProductKey furnitureFabricProductKey = new ProductKey();
         productKeyService.saveKey(furnitureFabricProductKey, CURTAIN);
 
-        FurnitureFabric furnitureFabric = new FurnitureFabric(productCreationFormData, furnitureFabricProductKey);
+        FurnitureFabric furnitureFabric = entityCreatorService
+                .createFurnitureFabricFromCreationModel(productCreationFormData, furnitureFabricProductKey);
         furnitureFabricRepository.save(furnitureFabric);
 
         List<AttributeCreationFormData> furnitureFabricAttributes = productCreationFormData.getAttributeCreationFormDataList();
@@ -52,12 +55,10 @@ public class FurnitureFabricService {
 
     public List<FurnitureFabricModel> getAllFurnitureFabrics() {
         List<FurnitureFabric> furnitureFabrics = furnitureFabricRepository.getAllFurnitureFabrics();
-        List<FurnitureFabricModel> allFurnitureFabricModels = new ArrayList<>();
 
-        for (FurnitureFabric furnitureFabric : furnitureFabrics) {
-            allFurnitureFabricModels.add(modelCreatorService.createFurnitureFabricModel(furnitureFabric));
-        }
-        return allFurnitureFabricModels;
+        return furnitureFabrics.stream()
+                .map(modelCreatorService::createFurnitureFabricModel)
+                .collect(Collectors.toList());
     }
 
     public void updateFurnitureFabric(Long furnitureFabricId, FurnitureFabricModel furnitureFabricModel) {
