@@ -2,9 +2,7 @@ package com.example.decorate.services.decoration;
 
 import com.example.decorate.domain.Decoration;
 import com.example.decorate.domain.ProductKey;
-import com.example.decorate.domain.dto.AttributeCreationFormData;
-import com.example.decorate.domain.dto.DecorationModel;
-import com.example.decorate.domain.dto.ProductCreationFormData;
+import com.example.decorate.domain.dto.*;
 import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repositorys.decoration.DecorationRepository;
 import com.example.decorate.services.*;
@@ -80,6 +78,19 @@ public class DecorationService {
         productKeyService.deleteKeyHolder(decorationProductKey);
 
         decorationRepository.delete(decoration);
+    }
+
+    public List<DecorationModel> getDecorationModelsForList(SearchModel searchModel) {
+        List<String> attributeDescriptions = searchModel.getAttributes()
+                .stream()
+                .map(AttributeModel::getDescription)
+                .collect(Collectors.toList());
+        Long searchParameterCount = (long) attributeDescriptions.size();
+
+        return decorationRepository.findDecorationByAttributeDesc(attributeDescriptions, searchParameterCount)
+                .stream()
+                .map(modelCreatorService::createDecorationModel)
+                .collect(Collectors.toList());
     }
 
     private Decoration getDecorationById(Long decorationId) {

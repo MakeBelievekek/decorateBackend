@@ -10,9 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,11 +81,16 @@ public class CurtainService {
     }
 
     public List<CurtainModel> getCurtainModelsForList(SearchModel searchModel) {
-        List<String> attributeDescriptions = searchModel.getAttributes().stream().map(AttributeModel::getDescription).collect(Collectors.toList());
-        Long searchParameterCount =(long) attributeDescriptions.size();
-        log.info(attributeDescriptions.toString());
-        log.info(searchParameterCount + "");
-        return curtainRepository.findwhateva(attributeDescriptions, searchParameterCount).stream().map(modelCreatorService::createCurtainModel).collect(Collectors.toList());
+        List<String> attributeDescriptions = searchModel.getAttributes()
+                .stream()
+                .map(AttributeModel::getDescription)
+                .collect(Collectors.toList());
+        Long searchParameterCount = (long) attributeDescriptions.size();
+
+        return curtainRepository.findCurtainByAttributeDesc(attributeDescriptions, searchParameterCount)
+                .stream()
+                .map(modelCreatorService::createCurtainModel)
+                .collect(Collectors.toList());
     }
 
     private Curtain getCurtainById(Long curtainId) {

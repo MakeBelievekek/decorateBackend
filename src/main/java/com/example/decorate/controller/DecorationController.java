@@ -1,5 +1,6 @@
 package com.example.decorate.controller;
 
+import com.example.decorate.domain.Decoration;
 import com.example.decorate.domain.dto.*;
 import com.example.decorate.services.decoration.DecorationService;
 import lombok.AllArgsConstructor;
@@ -70,6 +71,17 @@ public class DecorationController {
         return ResponseEntity
                 .status(ACCEPTED)
                 .body("Decoration has been deleted!");
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<DecorationModel>> search(@RequestBody SearchModel searchModel) {
+        List<DecorationModel> decorationModelsForList = decorationService.getDecorationModelsForList(searchModel);
+
+        log.info(decorationModelsForList.size() + " decorations found form search!");
+
+        return ResponseEntity
+                .status(OK)
+                .body(decorationModelsForList);
     }
 
     @GetMapping

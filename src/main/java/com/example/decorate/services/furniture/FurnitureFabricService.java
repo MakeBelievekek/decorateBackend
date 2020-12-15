@@ -2,9 +2,7 @@ package com.example.decorate.services.furniture;
 
 import com.example.decorate.domain.FurnitureFabric;
 import com.example.decorate.domain.ProductKey;
-import com.example.decorate.domain.dto.AttributeCreationFormData;
-import com.example.decorate.domain.dto.FurnitureFabricModel;
-import com.example.decorate.domain.dto.ProductCreationFormData;
+import com.example.decorate.domain.dto.*;
 import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repositorys.furniture.FurnitureFabricRepository;
 import com.example.decorate.services.*;
@@ -81,6 +79,19 @@ public class FurnitureFabricService {
         productKeyService.deleteKeyHolder(furnitureFabricProductKey);
 
         furnitureFabricRepository.delete(furnitureFabric);
+    }
+
+    public List<FurnitureFabricModel> getFurnitureFabricModelsForList(SearchModel searchModel) {
+        List<String> attributeDescriptions = searchModel.getAttributes()
+                .stream()
+                .map(AttributeModel::getDescription)
+                .collect(Collectors.toList());
+        Long searchParameterCount = (long) attributeDescriptions.size();
+
+        return furnitureFabricRepository.findFurnitureFabricByAttributeDesc(attributeDescriptions, searchParameterCount)
+                .stream()
+                .map(modelCreatorService::createFurnitureFabricModel)
+                .collect(Collectors.toList());
     }
 
     private FurnitureFabric getFurnitureFabricById(Long curtainId) {

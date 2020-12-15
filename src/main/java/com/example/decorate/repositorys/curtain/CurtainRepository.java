@@ -21,5 +21,5 @@ public interface CurtainRepository extends JpaRepository<Curtain, Long>{
             "ca.attribute.description in :descList " +
             "GROUP BY c " +
             "HAVING COUNT(c) = :attributeCount ")
-    List<Curtain> findwhateva(List<String> descList, Long attributeCount);
+    List<Curtain> findCurtainByAttributeDesc(List<String> descList, Long attributeCount);
 }

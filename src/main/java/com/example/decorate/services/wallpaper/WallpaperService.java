@@ -3,10 +3,7 @@ package com.example.decorate.services.wallpaper;
 
 import com.example.decorate.domain.ProductKey;
 import com.example.decorate.domain.Wallpaper;
-import com.example.decorate.domain.dto.AttributeCreationFormData;
-import com.example.decorate.domain.dto.ImageModel;
-import com.example.decorate.domain.dto.ProductCreationFormData;
-import com.example.decorate.domain.dto.WallpaperModel;
+import com.example.decorate.domain.dto.*;
 import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repositorys.wallpaper.WallpaperRepository;
 import com.example.decorate.services.*;
@@ -87,6 +84,19 @@ public class WallpaperService {
         productKeyService.deleteKeyHolder(wallpaperProductKey);
 
         wallpaperRepository.delete(wallpaper);
+    }
+
+    public List<WallpaperModel> getWallpaperModelsForList(SearchModel searchModel) {
+        List<String> attributeDescriptions = searchModel.getAttributes()
+                .stream()
+                .map(AttributeModel::getDescription)
+                .collect(Collectors.toList());
+        Long searchParameterCount = (long) attributeDescriptions.size();
+
+        return wallpaperRepository.findWallpaperByAttributeDesc(attributeDescriptions, searchParameterCount)
+                .stream()
+                .map(modelCreatorService::createWallpaperModel)
+                .collect(Collectors.toList());
     }
 
     private Wallpaper getWallpaperById(Long wallpaperId) {
