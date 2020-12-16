@@ -1,9 +1,10 @@
 package com.example.decorate.services;
 
 import com.example.decorate.domain.*;
+import com.example.decorate.domain.dto.ImageModel;
 import com.example.decorate.domain.dto.ProductListItem;
-import com.example.decorate.repositorys.curtain.CurtainRepository;
 import com.example.decorate.repositorys.ProductKeyRepository;
+import com.example.decorate.repositorys.curtain.CurtainRepository;
 import com.example.decorate.repositorys.wallpaper.WallpaperRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,7 @@ public class ProductKeyService {
     public List<ProductKey> getProductsFromLocal(String productIds) {
         List<ProductKey> productKeys = new ArrayList<>();
         String[] ids = productIds.split(",");
+        System.out.println(ids);
         List<Long> productsLong = new ArrayList<>();
         for (String s : ids) {
             productsLong.add(Long.parseLong(s));
@@ -47,6 +49,8 @@ public class ProductKeyService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .forEach(productKeys::add);
+        for (Long aLong : productsLong) {
+        }
         return productKeys;
     }
 
@@ -62,40 +66,37 @@ public class ProductKeyService {
     }
 
     public List<ProductListItem> getProducts(List<ProductKey> keys) {
-      /*  List<ProductListItem> items = new ArrayList<>();
+        List<ProductListItem> items = new ArrayList<>();
 
-        keys.stream().filter(keyHolder -> keyHolder.getType() == WALLPAPER)
-                .map(keyHolder -> this.wallpaperRepository.findById(keyHolder.getId()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(wallpaper -> new ProductListItem(wallpaper, imageService.getProductPrimaryImg(wallpaper.getId())))
-                .forEach(items::add);
-        keys.stream().filter(keyHolder -> keyHolder.getType() == CURTAIN)
-                .map(keyHolder -> this.curtainRepository.findById(keyHolder.getId()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(curtain -> new ProductListItem(curtain, imageService.getProductPrimaryImg(curtain.getId())))
-                .forEach(items::add);*/
-/*
-        for (KeyHolder key : keys) {
-            if (key.getType() == WALLPAPER) {
-                Optional<Wallpaper> wallpaper = this.wallpaperRepository.findById(key.getId());
-                if (wallpaper.isPresent()) {
-                    ImageData image = new ImageData(imageRepository.findByProdKeyAndImageType(key.getId(), ImageType.PRIMARY_KEY));
-                    items.add(new ProductListItem(wallpaper.get(), image));
+        for (ProductKey productKey : keys) {
+            if (productKey.getType() == WALLPAPER) {
+                Optional<Wallpaper> byId = this.wallpaperRepository.findById(productKey.getId());
+                if (byId.isPresent()) {
+                    Wallpaper wallpaper = byId.get();
+                    List<Image> images = imageService.getImagesByProductId(productKey);
+                    images.forEach(img -> {
+                        if (img.getImageType() == ImageType.PRIMARY_IMG) {
+                            ProductListItem productListItem = new ProductListItem(wallpaper, new ImageModel(img));
+                            items.add(productListItem);
+                        }
+                    });
                 }
             }
-            if (key.getType() == CURTAIN) {
-                Optional<Curtain> curtain = this.curtainRepository.findById(key.getId());
-                if (curtain.isPresent()) {
-                    ImageData image = new ImageData(imageRepository.findByProdKeyAndImageType(key.getId(), ImageType.PRIMARY_KEY));
-                    items.add(new ProductListItem(curtain.get(), image));
+            if (productKey.getType() == CURTAIN){
+                Optional<Curtain> byId = this.curtainRepository.findById(productKey.getId());
+                if (byId.isPresent()) {
+                    Curtain curtain = byId.get();
+                    List<Image> images = imageService.getImagesByProductId(productKey);
+                    images.forEach(img -> {
+                        if (img.getImageType() == ImageType.PRIMARY_IMG) {
+                            ProductListItem productListItem = new ProductListItem(curtain, new ImageModel(img));
+                            items.add(productListItem);
+                        }
+                    });
                 }
             }
-        }*/
-
-//        return items;
-        return null;
+        }
+        return items;
     }
 
     public ProductListItem getProd(Long id) {

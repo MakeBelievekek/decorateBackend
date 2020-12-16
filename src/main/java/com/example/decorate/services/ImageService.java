@@ -47,6 +47,7 @@ public class ImageService {
     }
 
     public List<Image> getImagesByProductId(ProductKey productKey) {
+
         return getAllImagesByProdKey(productKey);
     }
 

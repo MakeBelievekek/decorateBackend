@@ -90,16 +90,7 @@ public class CurtainController {
                 .body(curtainModelsForList);
     }*/
 
-    @GetMapping("/dummy")
-    public ResponseEntity<List<Curtain>> search() {
-        List<Curtain> findwhateva = curtainRepository.findwhateva();
 
-        log.info("Curtain successfully created!");
-
-        return ResponseEntity
-                .status(OK)
-                .body(findwhateva);
-    }
 
     @GetMapping
     public ResponseEntity<ProductCreationFormData> controllDto() {
@@ -135,10 +126,7 @@ public class CurtainController {
                         .typeOfSize("nagy")
                         .build());
     }
-    @GetMapping("/dummyAttr")
-    public ResponseEntity<List<Curtain>> getCurtainsByAttr(){
-        return ResponseEntity.status(OK).body(curtainService.getCurtainByAttr());
-    }
+
 
     @GetMapping("/search")
     public ResponseEntity<SearchModel> xxx() {
