@@ -72,6 +72,17 @@ public class WallpaperController {
                 .body("Wallpaper has been deleted!");
     }
 
+    @PostMapping("/search")
+    public ResponseEntity<List<WallpaperModel>> search(@RequestBody SearchModel searchModel) {
+        List<WallpaperModel> wallpaperModelsForList = wallpaperService.getWallpaperModelsForList(searchModel);
+
+        log.info(wallpaperModelsForList.size() + " wallpapers found form search!");
+
+        return ResponseEntity
+                .status(OK)
+                .body(wallpaperModelsForList);
+    }
+
     @GetMapping
     public ResponseEntity<ProductCreationFormData> controllDto() {
         return ResponseEntity

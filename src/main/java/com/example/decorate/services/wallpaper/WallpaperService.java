@@ -3,10 +3,7 @@ package com.example.decorate.services.wallpaper;
 
 import com.example.decorate.domain.ProductKey;
 import com.example.decorate.domain.Wallpaper;
-import com.example.decorate.domain.dto.AttributeCreationFormData;
-import com.example.decorate.domain.dto.ImageModel;
-import com.example.decorate.domain.dto.ProductCreationFormData;
-import com.example.decorate.domain.dto.WallpaperModel;
+import com.example.decorate.domain.dto.*;
 import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repositorys.wallpaper.WallpaperRepository;
 import com.example.decorate.services.*;
@@ -17,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 import static com.example.decorate.domain.ProductType.WALLPAPER;
@@ -34,16 +32,19 @@ public class WallpaperService {
     private final ProductKeyService productKeyService;
     private final ModelCreatorService modelCreatorService;
     private final EntityUpdateService entityUpdateService;
+    private final EntityCreatorService entityCreatorService;
 
 
     public void saveWallpaper(ProductCreationFormData productCreationFormData) {
         ProductKey wallpaperProductKey = new ProductKey();
         productKeyService.saveKey(wallpaperProductKey, WALLPAPER);
 
-        Wallpaper wallpaper = new Wallpaper(productCreationFormData, wallpaperProductKey);
+        Wallpaper wallpaper = entityCreatorService
+                .createWallpaperFromCreationModel(productCreationFormData, wallpaperProductKey);
         wallpaperRepository.save(wallpaper);
 
-        List<AttributeCreationFormData> attributeCreationFormDataList = productCreationFormData.getAttributeCreationFormDataList();
+        List<AttributeCreationFormData> attributeCreationFormDataList = productCreationFormData
+                .getAttributeCreationFormDataList();
         attributeService.createProductAttributeItems(attributeCreationFormDataList, wallpaperProductKey);
 
         List<ImageModel> imageList = productCreationFormData.getImageList();
@@ -57,12 +58,10 @@ public class WallpaperService {
 
     public List<WallpaperModel> getAllWallpapers() {
         List<Wallpaper> allWallpapers = wallpaperRepository.findAll();
-        List<WallpaperModel> wallpaperModels = new ArrayList<>();
 
-        for (Wallpaper wallpaper : allWallpapers) {
-            wallpaperModels.add(modelCreatorService.createWallpaperModel(wallpaper));
-        }
-        return wallpaperModels;
+        return allWallpapers.stream()
+                .map(modelCreatorService::createWallpaperModel)
+                .collect(Collectors.toList());
     }
 
     public void updateWallpaper(Long wallpaperId, WallpaperModel wallpaperModel) {
@@ -85,6 +84,19 @@ public class WallpaperService {
         productKeyService.deleteKeyHolder(wallpaperProductKey);
 
         wallpaperRepository.delete(wallpaper);
+    }
+
+    public List<WallpaperModel> getWallpaperModelsForList(SearchModel searchModel) {
+        List<String> attributeDescriptions = searchModel.getAttributes()
+                .stream()
+                .map(AttributeModel::getDescription)
+                .collect(Collectors.toList());
+        Long searchParameterCount = (long) attributeDescriptions.size();
+
+        return wallpaperRepository.findWallpaperByAttributeDesc(attributeDescriptions, searchParameterCount)
+                .stream()
+                .map(modelCreatorService::createWallpaperModel)
+                .collect(Collectors.toList());
     }
 
     private Wallpaper getWallpaperById(Long wallpaperId) {

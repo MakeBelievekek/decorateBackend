@@ -1,6 +1,7 @@
 package com.example.decorate.services;
 
 import com.example.decorate.domain.*;
+import com.example.decorate.mapper.AttributeItemMapper;
 import com.example.decorate.repositorys.AttributeItemRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +19,16 @@ import java.util.Optional;
 @Transactional
 public class AttributeItemService {
     private final AttributeItemRepository attributeItemRepository;
+    private final AttributeItemMapper attributeItemMapper;
 
 
     public void createProductAttributeItems(List<Attribute> productAttributes, ProductKey productKey) {
+        log.warn("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        log.info(productAttributes.toString());
         for (Attribute attribute : productAttributes) {
-            attributeItemRepository.save(new AttributeItem(attribute, productKey));
+            AttributeItem attributeItem = attributeItemMapper.createAttributeItemFromAttribute(attribute, productKey);
+            log.info(attributeItem.toString());
+            attributeItemRepository.save(attributeItem);
         }
     }
 

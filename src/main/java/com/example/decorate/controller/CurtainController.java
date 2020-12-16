@@ -79,18 +79,16 @@ public class CurtainController {
                 .body("Curtain has been deleted!");
     }
 
-/*    @PostMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<List<CurtainModel>> search(@RequestBody SearchModel searchModel) {
         List<CurtainModel> curtainModelsForList = curtainService.getCurtainModelsForList(searchModel);
 
-        log.info("Curtain successfully created!");
+        log.info(curtainModelsForList.size() + " curtains found form search!");
 
         return ResponseEntity
                 .status(OK)
                 .body(curtainModelsForList);
-    }*/
-
-
+    }
 
     @GetMapping
     public ResponseEntity<ProductCreationFormData> controllDto() {
@@ -136,7 +134,6 @@ public class CurtainController {
                 .id(1L)
                 .build());
         SearchModel retek = SearchModel.builder()
-                .productId(1L)
                 .attributes(build)
                 .build();
         return ResponseEntity

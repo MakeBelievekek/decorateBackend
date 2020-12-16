@@ -62,23 +62,6 @@ public class Curtain {
     @Column(name = "created")
     private Instant created = Instant.now();
 
-    public Curtain(ProductCreationFormData productCreationFormData, ProductKey productKey) {
-        this.productKey = productKey;
-        this.id = productKey.getId();
-        this.name = productCreationFormData.getName();
-        this.productDesc = productCreationFormData.getProductDesc();
-        this.itemNumber = productCreationFormData.getItemNumber();
-        this.width = productCreationFormData.getWidth();
-        this.height = productCreationFormData.getHeight();
-        this.patternRep = productCreationFormData.getPatternRep();
-        this.price = productCreationFormData.getPrice();
-        this.composition = productCreationFormData.getComposition();
-        this.productFamily = productCreationFormData.getProductFamily();
-        this.cleaningInst = productCreationFormData.getCleaningInst();
-        this.typeOfSize = productCreationFormData.getTypeOfSize();
-        this.created = Instant.now();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

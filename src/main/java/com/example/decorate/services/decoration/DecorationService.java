@@ -2,9 +2,7 @@ package com.example.decorate.services.decoration;
 
 import com.example.decorate.domain.Decoration;
 import com.example.decorate.domain.ProductKey;
-import com.example.decorate.domain.dto.AttributeCreationFormData;
-import com.example.decorate.domain.dto.DecorationModel;
-import com.example.decorate.domain.dto.ProductCreationFormData;
+import com.example.decorate.domain.dto.*;
 import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repositorys.decoration.DecorationRepository;
 import com.example.decorate.services.*;
@@ -15,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.decorate.domain.ProductType.DECORATION;
 import static com.example.decorate.exception.ExceptionMessages.DECORATION_NOT_EXISTS;
@@ -30,12 +29,14 @@ public class DecorationService {
     private final ImageService imageService;
     private final ModelCreatorService modelCreatorService;
     private final EntityUpdateService entityUpdateService;
+    private final EntityCreatorService entityCreatorService;
 
     public void saveDecoration(ProductCreationFormData productCreationFormData) {
         ProductKey decorationProductKey = new ProductKey();
         productKeyService.saveKey(decorationProductKey, DECORATION);
 
-        Decoration decoration = new Decoration(productCreationFormData, decorationProductKey);
+        Decoration decoration = entityCreatorService
+                .createDecorationFromCreationModel(productCreationFormData, decorationProductKey);
         decorationRepository.save(decoration);
 
         List<AttributeCreationFormData> decorationAttributes = productCreationFormData.getAttributeCreationFormDataList();
@@ -51,12 +52,10 @@ public class DecorationService {
 
     public List<DecorationModel> getAllDecorations() {
         List<Decoration> allDecorations = decorationRepository.getAllDecorations();
-        List<DecorationModel> allDecorationModels = new ArrayList<>();
 
-        for (Decoration decoration : allDecorations) {
-            allDecorationModels.add(modelCreatorService.createDecorationModel(decoration));
-        }
-        return allDecorationModels;
+        return allDecorations.stream()
+                .map(modelCreatorService::createDecorationModel)
+                .collect(Collectors.toList());
     }
 
     public void updateDecoration(Long decorationId, DecorationModel decorationModel) {
@@ -79,6 +78,19 @@ public class DecorationService {
         productKeyService.deleteKeyHolder(decorationProductKey);
 
         decorationRepository.delete(decoration);
+    }
+
+    public List<DecorationModel> getDecorationModelsForList(SearchModel searchModel) {
+        List<String> attributeDescriptions = searchModel.getAttributes()
+                .stream()
+                .map(AttributeModel::getDescription)
+                .collect(Collectors.toList());
+        Long searchParameterCount = (long) attributeDescriptions.size();
+
+        return decorationRepository.findDecorationByAttributeDesc(attributeDescriptions, searchParameterCount)
+                .stream()
+                .map(modelCreatorService::createDecorationModel)
+                .collect(Collectors.toList());
     }
 
     private Decoration getDecorationById(Long decorationId) {

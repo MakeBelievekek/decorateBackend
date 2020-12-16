@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -14,4 +15,10 @@ public interface FurnitureFabricRepository extends JpaRepository<FurnitureFabric
     @Query("SELECT ff FROM FurnitureFabric ff ")
     List<FurnitureFabric> getAllFurnitureFabrics();
 
+    @Query("SELECT c FROM Curtain c, AttributeItem ca " +
+            "WHERE c.productKey = ca.productKey AND " +
+            "ca.attribute.description in :descList " +
+            "GROUP BY c " +
+            "HAVING COUNT(c) = :attributeCount ")
+    List<FurnitureFabric> findFurnitureFabricByAttributeDesc(List<String> attributeDescriptions, Long searchParameterCount);
 }

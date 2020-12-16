@@ -18,15 +18,4 @@ public class AttributeModel {
 
     private String description;
 
-    public AttributeModel(Attribute attribute) {
-        this.id = attribute.getId();
-        this.type = attribute.getType().getType();
-        this.description = attribute.getDescription();
-    }
-
-    public AttributeModel(AttributeItem attributeItem) {
-        this.id = attributeItem.getId();
-        this.type = attributeItem.getAttribute().getType().toString();
-        this.description = attributeItem.getAttribute().getDescription();
-    }
 }

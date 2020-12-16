@@ -6,6 +6,7 @@ import com.example.decorate.domain.ProductKey;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.AttributeModel;
 import com.example.decorate.domain.dto.FormData;
+import com.example.decorate.mapper.AttributeMapper;
 import com.example.decorate.repositorys.AttributeRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class AttributeService {
 
     private final AttributeRepository attributeRepository;
     private final AttributeItemService attributeItemService;
+    private final AttributeMapper attributeMapper;
 
     public List<Attribute> updateAttributes(List<AttributeModel> attributeModels) {
         List<Attribute> productAttributes = new ArrayList<>();
@@ -32,16 +34,32 @@ public class AttributeService {
         for (AttributeModel attributeModel : attributeModels) {
             String attrType = attributeModel.getType();
             String attrDesc = attributeModel.getDescription();
-            attributeCreationProcess(productAttributes, attrType, attrDesc);
+            Attribute attribute = attributeCreationProcess(attrType, attrDesc);
+            productAttributes.add(attribute);
         }
         return productAttributes;
     }
 
-    private void attributeCreationProcess(List<Attribute> productAttributes,
-                                          String attrType,
-                                          String attrDesc) {
+    public void createProductAttributeItems(List<AttributeCreationFormData> productAttributes, ProductKey productKey) {
+        List<Attribute> attributes = saveAttributes(productAttributes);
+        attributeItemService.createProductAttributeItems(attributes, productKey);
+    }
+
+    public List<Attribute> saveAttributes(List<AttributeCreationFormData> attributeCreationFormDataList) {
+        List<Attribute> productAttributes = new ArrayList<>();
+
+        for (AttributeCreationFormData attributeCreationFormData : attributeCreationFormDataList) {
+            String attrType = attributeCreationFormData.getType();
+            String attrDesc = attributeCreationFormData.getDescription();
+            Attribute attribute = attributeCreationProcess(attrType, attrDesc);
+            productAttributes.add(attribute);
+        }
+        return productAttributes;
+    }
+
+    private Attribute attributeCreationProcess(String attrType, String attrDesc) {
         Attribute attribute = saveAttribute(attrType, attrDesc);
-        productAttributes.add(attribute);
+        return attribute;
     }
 
     public Attribute saveAttribute(String attributeType, String attributeDesc) {
@@ -63,25 +81,11 @@ public class AttributeService {
     public FormData getAllAttributes() {
         List<AttributeModel> attributeModels = attributeRepository.findAll()
                 .stream()
-                .map(AttributeModel::new)
+                .map(attributeMapper::createAttributeModelFromAttribute)
                 .collect(Collectors.toList());
-        return new FormData(attributeModels);
-    }
-
-    public void createProductAttributeItems(List<AttributeCreationFormData> productAttributes, ProductKey productKey) {
-        List<Attribute> attributes = saveAttributes(productAttributes);
-        attributeItemService.createProductAttributeItems(attributes, productKey);
-    }
-
-    public List<Attribute> saveAttributes(List<AttributeCreationFormData> attributeCreationFormDataList) {
-        List<Attribute> productAttributes = new ArrayList<>();
-
-        for (AttributeCreationFormData attributeCreationFormData : attributeCreationFormDataList) {
-            String attrType = attributeCreationFormData.getType();
-            String attrDesc = attributeCreationFormData.getDescription();
-            attributeCreationProcess(productAttributes, attrType, attrDesc);
-        }
-        return productAttributes;
+        return FormData.builder()
+                .attributes(attributeModels)
+                .build();
     }
 
     public void updateProductAttributes(ProductKey productKey, List<AttributeModel> attributes) {

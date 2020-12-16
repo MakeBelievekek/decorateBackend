@@ -11,6 +11,5 @@ import java.util.List;
 @Builder
 public class SearchModel {
 
-    private Long productId;
     private List<AttributeModel> attributes;
 }

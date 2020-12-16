@@ -2,9 +2,7 @@ package com.example.decorate.services.furniture;
 
 import com.example.decorate.domain.FurnitureFabric;
 import com.example.decorate.domain.ProductKey;
-import com.example.decorate.domain.dto.AttributeCreationFormData;
-import com.example.decorate.domain.dto.FurnitureFabricModel;
-import com.example.decorate.domain.dto.ProductCreationFormData;
+import com.example.decorate.domain.dto.*;
 import com.example.decorate.exception.DecorateBackendException;
 import com.example.decorate.repositorys.furniture.FurnitureFabricRepository;
 import com.example.decorate.services.*;
@@ -15,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.decorate.domain.ProductType.CURTAIN;
 import static com.example.decorate.exception.ExceptionMessages.FURNITURE_FABRIC_NOT_EXISTS;
@@ -30,12 +29,14 @@ public class FurnitureFabricService {
     private final ImageService imageService;
     private final ModelCreatorService modelCreatorService;
     private final EntityUpdateService entityUpdateService;
+    private final EntityCreatorService entityCreatorService;
 
     public void saveFurnitureFabric(ProductCreationFormData productCreationFormData) {
         ProductKey furnitureFabricProductKey = new ProductKey();
         productKeyService.saveKey(furnitureFabricProductKey, CURTAIN);
 
-        FurnitureFabric furnitureFabric = new FurnitureFabric(productCreationFormData, furnitureFabricProductKey);
+        FurnitureFabric furnitureFabric = entityCreatorService
+                .createFurnitureFabricFromCreationModel(productCreationFormData, furnitureFabricProductKey);
         furnitureFabricRepository.save(furnitureFabric);
 
         List<AttributeCreationFormData> furnitureFabricAttributes = productCreationFormData.getAttributeCreationFormDataList();
@@ -52,12 +53,10 @@ public class FurnitureFabricService {
 
     public List<FurnitureFabricModel> getAllFurnitureFabrics() {
         List<FurnitureFabric> furnitureFabrics = furnitureFabricRepository.getAllFurnitureFabrics();
-        List<FurnitureFabricModel> allFurnitureFabricModels = new ArrayList<>();
 
-        for (FurnitureFabric furnitureFabric : furnitureFabrics) {
-            allFurnitureFabricModels.add(modelCreatorService.createFurnitureFabricModel(furnitureFabric));
-        }
-        return allFurnitureFabricModels;
+        return furnitureFabrics.stream()
+                .map(modelCreatorService::createFurnitureFabricModel)
+                .collect(Collectors.toList());
     }
 
     public void updateFurnitureFabric(Long furnitureFabricId, FurnitureFabricModel furnitureFabricModel) {
@@ -80,6 +79,19 @@ public class FurnitureFabricService {
         productKeyService.deleteKeyHolder(furnitureFabricProductKey);
 
         furnitureFabricRepository.delete(furnitureFabric);
+    }
+
+    public List<FurnitureFabricModel> getFurnitureFabricModelsForList(SearchModel searchModel) {
+        List<String> attributeDescriptions = searchModel.getAttributes()
+                .stream()
+                .map(AttributeModel::getDescription)
+                .collect(Collectors.toList());
+        Long searchParameterCount = (long) attributeDescriptions.size();
+
+        return furnitureFabricRepository.findFurnitureFabricByAttributeDesc(attributeDescriptions, searchParameterCount)
+                .stream()
+                .map(modelCreatorService::createFurnitureFabricModel)
+                .collect(Collectors.toList());
     }
 
     private FurnitureFabric getFurnitureFabricById(Long curtainId) {

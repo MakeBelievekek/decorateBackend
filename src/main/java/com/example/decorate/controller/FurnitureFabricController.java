@@ -50,7 +50,7 @@ public class FurnitureFabricController {
     }
 
     @PutMapping("/update/{furnitureFabricId}")
-    public ResponseEntity<String> updateCurtain(@RequestBody FurnitureFabricModel furnitureFabricModel,
+    public ResponseEntity<String> updateFurnitureFabric(@RequestBody FurnitureFabricModel furnitureFabricModel,
                                                 @PathVariable Long furnitureFabricId) {
         furnitureFabricService.updateFurnitureFabric(furnitureFabricId, furnitureFabricModel);
 
@@ -69,7 +69,18 @@ public class FurnitureFabricController {
 
         return ResponseEntity
                 .status(ACCEPTED)
-                .body("Curtain has been deleted!");
+                .body("Furniture fabric has been deleted!");
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<FurnitureFabricModel>> search(@RequestBody SearchModel searchModel) {
+        List<FurnitureFabricModel> furnitureFabricModelsForList = furnitureFabricService.getFurnitureFabricModelsForList(searchModel);
+
+        log.info(furnitureFabricModelsForList.size() + " furnitureFabrics found form search!");
+
+        return ResponseEntity
+                .status(OK)
+                .body(furnitureFabricModelsForList);
     }
 
     @GetMapping
