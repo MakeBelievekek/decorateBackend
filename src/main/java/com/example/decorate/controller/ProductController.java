@@ -2,16 +2,18 @@
 package com.example.decorate.controller;
 
 import com.example.decorate.domain.ProductKey;
+import com.example.decorate.domain.dto.ProductCategoryModalDto;
 import com.example.decorate.domain.dto.ProductListItem;
-import com.example.decorate.services.curtain.CurtainService;
 import com.example.decorate.services.ProductKeyService;
 import com.example.decorate.services.ShippingOptionService;
+import com.example.decorate.services.curtain.CurtainService;
 import com.example.decorate.services.wallpaper.WallpaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,7 +39,7 @@ public class ProductController {
     public ResponseEntity getProducts(@RequestParam String productCategory,
                                       @RequestParam String attrType, @RequestParam String attr) {
         System.out.println(attr);
-        return new ResponseEntity(productCategory+"  "+attrType+"  "+attr, HttpStatus.OK);
+        return new ResponseEntity(productCategory + "  " + attrType + "  " + attr, HttpStatus.OK);
     }
 
     @GetMapping("/local/{ids}")
@@ -56,6 +58,11 @@ public class ProductController {
         return new ResponseEntity(this.shippingOptionService.getAllOption(), HttpStatus.OK);
     }
 
+    @GetMapping("/productTypes")
+    public ResponseEntity<List<ProductCategoryModalDto>> getProductTypesAndAttributes() {
+
+        return ResponseEntity.status(HttpStatus.OK).body(productKeyService.getAllProductTypeWithAttributes());
+    }
 
 }
 

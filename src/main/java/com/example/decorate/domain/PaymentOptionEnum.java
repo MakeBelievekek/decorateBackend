@@ -2,7 +2,7 @@ package com.example.decorate.domain;
 
 public enum PaymentOptionEnum {
 
-    CASH("Készpénzes fizetés", 0), CREDIT("Barion bankkártyás fizetés", 0), COURSE("Utánvétes fizetés", 300), FORWARD_REFERENCES("Előre utalás", 0);
+    CASH("Készpénzes fizetés", 0), CREDIT("Barion bankkártyás fizetés", 0), CASH_ON_DELIVERY("Utánvétes fizetés", 300), FORWARD_REFERENCES("Előre utalás", 0);
 
     private String option;
 

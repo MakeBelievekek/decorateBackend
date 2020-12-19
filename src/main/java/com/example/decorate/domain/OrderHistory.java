@@ -25,12 +25,9 @@ public class OrderHistory {
     @Column(name = "id")
     private Long id;
 
-    @Size(min = 3, max = 15)
-    @NotBlank(message = "Kérlek adj meg egy vezetéknevet")
     private String lastName;
 
-    @Size(min = 3, max = 15)
-    @NotBlank(message = "Kérlek adj meg egy keresztnevet")
+
     private String firstName;
 
     @OneToOne(fetch = FetchType.LAZY)

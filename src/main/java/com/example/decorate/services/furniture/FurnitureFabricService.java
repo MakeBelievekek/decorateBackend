@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.decorate.domain.ProductType.CURTAIN;
+import static com.example.decorate.domain.ProductType.FURNITURE_FABRIC;
 import static com.example.decorate.exception.ExceptionMessages.FURNITURE_FABRIC_NOT_EXISTS;
 
 @Slf4j
@@ -33,7 +34,7 @@ public class FurnitureFabricService {
 
     public void saveFurnitureFabric(ProductCreationFormData productCreationFormData) {
         ProductKey furnitureFabricProductKey = new ProductKey();
-        productKeyService.saveKey(furnitureFabricProductKey, CURTAIN);
+        productKeyService.saveKey(furnitureFabricProductKey, FURNITURE_FABRIC);
 
         FurnitureFabric furnitureFabric = entityCreatorService
                 .createFurnitureFabricFromCreationModel(productCreationFormData, furnitureFabricProductKey);
@@ -81,7 +82,7 @@ public class FurnitureFabricService {
         furnitureFabricRepository.delete(furnitureFabric);
     }
 
-    public List<FurnitureFabricModel> getFurnitureFabricModelsForList(SearchModel searchModel) {
+   public List<FurnitureFabricModel> getFurnitureFabricModelsForList(SearchModel searchModel) {
         List<String> attributeDescriptions = searchModel.getAttributes()
                 .stream()
                 .map(AttributeModel::getDescription)

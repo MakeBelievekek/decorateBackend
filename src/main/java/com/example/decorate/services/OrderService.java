@@ -38,7 +38,7 @@ public class OrderService {
         for (Product product : products) {
             totalPrice += (product.getPrice() * product.getQuantity());
         }
-        if (orderDto.getPaymentOption().equals(PaymentOptionEnum.COURSE.getOption())) {
+        if (orderDto.getPaymentOption().equals(PaymentOptionEnum.CASH_ON_DELIVERY.getOption())) {
             totalPrice += 300;
         }
         orderHistory.setTotalPrice(totalPrice + this.shippingOptionRepository.findByTypeOfDelivery(shippingDetails.getShipMethod()).getPrice());

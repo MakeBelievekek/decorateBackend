@@ -13,8 +13,8 @@ public interface WallpaperRepository extends JpaRepository<Wallpaper, Long> {
 
     @Query("SELECT c FROM Curtain c, AttributeItem ca " +
             "WHERE c.productKey = ca.productKey AND " +
-            "ca.attribute.description in :descList " +
+            "ca.attribute.description in :attributeDescriptions " +
             "GROUP BY c " +
-            "HAVING COUNT(c) = :attributeCount ")
+            "HAVING COUNT(c) = :searchParameterCount ")
     List<Wallpaper> findWallpaperByAttributeDesc(List<String> attributeDescriptions, Long searchParameterCount);
 }

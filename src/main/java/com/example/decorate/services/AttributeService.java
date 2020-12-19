@@ -6,6 +6,7 @@ import com.example.decorate.domain.ProductKey;
 import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.AttributeModel;
 import com.example.decorate.domain.dto.FormData;
+import com.example.decorate.domain.dto.ProductCategoryModalDto;
 import com.example.decorate.mapper.AttributeMapper;
 import com.example.decorate.repositorys.AttributeRepository;
 import lombok.AllArgsConstructor;
@@ -98,9 +99,11 @@ public class AttributeService {
     }
 
     public List<Attribute> getProductAllAttributesByProductKey(ProductKey productKey) {
-       return attributeItemService
-               .findProductAllAttributeItemsByProductKey(productKey).stream()
-               .map(AttributeItem::getAttribute)
-               .collect(Collectors.toList());
+        return attributeItemService
+                .findProductAllAttributeItemsByProductKey(productKey).stream()
+                .map(AttributeItem::getAttribute)
+                .collect(Collectors.toList());
     }
+
+
 }

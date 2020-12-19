@@ -36,4 +36,7 @@ public interface AttributeItemRepository extends JpaRepository<AttributeItem, Lo
     @Query("SELECT ai FROM AttributeItem ai " +
             "WHERE ai.productKey = :productKey")
     List<AttributeItem> findProductAllAttributeItemsByProductKey(ProductKey productKey);
+
+   @Query("SELECT attributeIt FROM AttributeItem  attributeIt WHERE attributeIt.attribute = :attr ")
+    List<AttributeItem> getProductKeysForCurtainSubtype(Attribute attr);
 }

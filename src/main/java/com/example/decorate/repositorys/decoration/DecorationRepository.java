@@ -17,8 +17,8 @@ public interface DecorationRepository extends JpaRepository<Decoration, Long> {
 
     @Query("SELECT c FROM Curtain c, AttributeItem ca " +
             "WHERE c.productKey = ca.productKey AND " +
-            "ca.attribute.description in :descList " +
+            "ca.attribute.description in :attributeDescriptions " +
             "GROUP BY c " +
-            "HAVING COUNT(c) = :attributeCount ")
+            "HAVING COUNT(c) = :searchParameterCount ")
     List<Decoration> findDecorationByAttributeDesc(List<String> attributeDescriptions, Long searchParameterCount);
 }

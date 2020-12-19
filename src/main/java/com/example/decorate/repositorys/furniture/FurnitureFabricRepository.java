@@ -15,10 +15,10 @@ public interface FurnitureFabricRepository extends JpaRepository<FurnitureFabric
     @Query("SELECT ff FROM FurnitureFabric ff ")
     List<FurnitureFabric> getAllFurnitureFabrics();
 
-    @Query("SELECT c FROM Curtain c, AttributeItem ca " +
+   @Query("SELECT c FROM Curtain c, AttributeItem ca " +
             "WHERE c.productKey = ca.productKey AND " +
-            "ca.attribute.description in :descList " +
+            "ca.attribute.description in :attributeDescriptions " +
             "GROUP BY c " +
-            "HAVING COUNT(c) = :attributeCount ")
+            "HAVING COUNT(c) = :searchParameterCount ")
     List<FurnitureFabric> findFurnitureFabricByAttributeDesc(List<String> attributeDescriptions, Long searchParameterCount);
 }

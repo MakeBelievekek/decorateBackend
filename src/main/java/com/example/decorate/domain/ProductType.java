@@ -1,8 +1,17 @@
 package com.example.decorate.domain;
 
 public enum ProductType {
-    WALLPAPER,
-    CURTAIN,
-    FURNITURE_FABRIC,
-    DECORATION;
+    WALLPAPER("Tapéta"),
+    CURTAIN("Függöny"),
+    FURNITURE_FABRIC("Bútorszövet"),
+    DECORATION("Lakásdekoráció");
+
+    private String type;
+
+    ProductType(String type) {
+        this.type = type;
+    }
+    public String getType() {
+        return type;
+    }
 }
