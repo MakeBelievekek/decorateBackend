@@ -19,6 +19,6 @@ public interface DecorationRepository extends JpaRepository<Decoration, Long> {
             "WHERE c.productKey = ca.productKey AND " +
             "ca.attribute.description in :attributeDescriptions " +
             "GROUP BY c " +
-            "HAVING COUNT(c) = :searchParameterCount ")
-    List<Decoration> findDecorationByAttributeDesc(List<String> attributeDescriptions, Long searchParameterCount);
+            "HAVING COUNT(c) = :attributeCount ")
+    List<Decoration> findDecorationByAttributeDesc(List<String> attributeDescriptions, Long attributeCount);
 }

@@ -19,8 +19,8 @@ public interface CurtainRepository extends JpaRepository<Curtain, Long>{
 
     @Query("SELECT c FROM Curtain c, AttributeItem ca " +
             "WHERE c.productKey = ca.productKey AND " +
-            "ca.attribute.description in :descList " +
+            "ca.attribute.description in :attributeDescriptions " +
             "GROUP BY c " +
             "HAVING COUNT(c) = :attributeCount ")
-    List<Curtain> findCurtainByAttributeDesc(List<String> descList, Long attributeCount);
+    List<Curtain> findCurtainByAttributeDesc(List<String> attributeDescriptions, Long attributeCount);
 }

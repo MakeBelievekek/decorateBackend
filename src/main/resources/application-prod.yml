@@ -37,5 +37,12 @@ logging:
     console: "%cyan(%d{yyyy-MM-dd HH:mm:ss}) [%green(%thread)] %highlight(%-5level) %yellow(%logger{36}) - %msg%n"
 
 
+security:
+  require-ssl: true
 server:
-  port: 80
+  port: 443
+  ssl:
+    key-store: /etc/letsencrypt/live/textilgarden.hu/keystore.p12
+    key-store-password: decorate1234.
+    keyAlias: tomcat
+    keyStoreType: PKCS12

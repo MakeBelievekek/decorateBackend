@@ -19,6 +19,6 @@ public interface FurnitureFabricRepository extends JpaRepository<FurnitureFabric
             "WHERE c.productKey = ca.productKey AND " +
             "ca.attribute.description in :attributeDescriptions " +
             "GROUP BY c " +
-            "HAVING COUNT(c) = :searchParameterCount ")
-    List<FurnitureFabric> findFurnitureFabricByAttributeDesc(List<String> attributeDescriptions, Long searchParameterCount);
+            "HAVING COUNT(c) = :attributeCount ")
+    List<FurnitureFabric> findFurnitureFabricByAttributeDesc(List<String> attributeDescriptions, Long attributeCount);
 }

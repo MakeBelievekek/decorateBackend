@@ -47,7 +47,6 @@ public class ProductListItem {
     }
 
     public ProductListItem(Curtain curtain, ImageModel image) {
-        this.id = curtain.getId();
         this.productDesc = curtain.getProductDesc();
         this.itemNumber = curtain.getItemNumber();
         this.price = curtain.getPrice();
@@ -56,7 +55,6 @@ public class ProductListItem {
         this.typeOfSize = curtain.getTypeOfSize();
     }
     public ProductListItem(Curtain curtain) {
-        this.id = curtain.getId();
         this.productDesc = curtain.getProductDesc();
         this.itemNumber = curtain.getItemNumber();
         this.price = curtain.getPrice();
