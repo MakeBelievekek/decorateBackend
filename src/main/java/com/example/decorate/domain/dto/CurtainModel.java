@@ -29,21 +29,4 @@ public class CurtainModel {
     private String typeOfSize;
     private List<AttributeModel> attributes;
     private List<ImageModel> imageList;
-
-    public CurtainModel(Curtain curtain) {
-        id = curtain.getId();
-        name = curtain.getName();
-        productDesc = curtain.getProductDesc();
-     //   System.out.println(curtain.getCurtainType().toString());
-      //  curtainType = curtain.getCurtainType().toString();
-        width = curtain.getWidth();
-        height = curtain.getHeight();
-        itemNumber = curtain.getItemNumber();
-        patternRep = curtain.getPatternRep();
-        price = curtain.getPrice();
-        composition = curtain.getComposition();
-        productFamily = curtain.getProductFamily();
-        cleaningInst = curtain.getCleaningInst();
-        typeOfSize = curtain.getTypeOfSize();
-    }
 }
