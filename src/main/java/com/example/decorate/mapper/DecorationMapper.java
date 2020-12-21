@@ -17,11 +17,15 @@ public interface DecorationMapper {
     @Mapping(target = "attributes", ignore = true)
     @Mapping(target = "imageList", ignore = true)
     DecorationModel decorationToDecorationModel(Decoration decoration);
-
+    @Mapping(target = "id", ignore = true)
     Decoration productCreationToDecoration(ProductCreationFormData productCreationFormData, ProductKey productKey);
 
     @Mapping(target = "modified", expression = "java(java.time.Instant.now())")
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "productKey", ignore = true)
     void updateDecorationFields(@MappingTarget Decoration decoration, DecorationModel decorationModel);
+
+    @Mapping(target = "imageList", ignore = true)
+    @Mapping(target = "attributeCreationFormDataList", ignore = true)
+    ProductCreationFormData decorationToFormData(Decoration decoration, @MappingTarget ProductCreationFormData productCreationFormData);
 }

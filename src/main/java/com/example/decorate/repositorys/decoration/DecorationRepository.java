@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public interface DecorationRepository extends JpaRepository<Decoration, Long> {
 
-    @Query("SELECT curtain FROM Curtain curtain ")
+    @Query("SELECT decoration FROM Decoration decoration ")
     List<Decoration> getAllDecorations();
 
-    @Query("SELECT c FROM Curtain c, AttributeItem ca " +
+    @Query("SELECT c FROM Decoration c, AttributeItem ca " +
             "WHERE c.productKey = ca.productKey AND " +
             "ca.attribute.description in :attributeDescriptions " +
             "GROUP BY c " +

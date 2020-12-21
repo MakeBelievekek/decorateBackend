@@ -16,6 +16,10 @@ import java.util.Set;
 public class ProductCategoryModalDto {
     private String productType;
     private String productDatabaseName;
+    private boolean isShown ;
+    private boolean color;
+    private boolean pattern;
+    private boolean style;
     private Set<Attribute> colorList = new HashSet<>();
     private Set<Attribute> patternList = new HashSet<>();
     private Set<Attribute> styleList = new HashSet<>();

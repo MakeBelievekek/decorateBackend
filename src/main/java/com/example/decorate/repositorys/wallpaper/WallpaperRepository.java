@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface WallpaperRepository extends JpaRepository<Wallpaper, Long> {
 
-    @Query("SELECT c FROM Curtain c, AttributeItem ca " +
+    @Query("SELECT c FROM Wallpaper c, AttributeItem ca " +
             "WHERE c.productKey = ca.productKey AND " +
             "ca.attribute.description in :attributeDescriptions " +
             "GROUP BY c " +

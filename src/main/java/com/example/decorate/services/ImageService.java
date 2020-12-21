@@ -42,7 +42,7 @@ public class ImageService {
                     .build();
 
             imageRepository.save(image);
-          //  checkForDuplicatePrimaryImg(productKey);
+            //  checkForDuplicatePrimaryImg(productKey);
         }
     }
 
@@ -58,6 +58,10 @@ public class ImageService {
 
     private List<Image> getAllImagesByProdKey(ProductKey productKey) {
         return imageRepository.findAllByProductKey(productKey);
+    }
+
+    public List<Image> getAllImagesByProdId(Long id) {
+        return imageRepository.findAllByProductId(id);
     }
 
     public void updateProductImages(ProductKey productKey, List<ImageModel> imageList) {

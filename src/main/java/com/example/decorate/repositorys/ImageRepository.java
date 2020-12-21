@@ -1,7 +1,6 @@
 package com.example.decorate.repositorys;
 
 import com.example.decorate.domain.Image;
-import com.example.decorate.domain.ImageType;
 import com.example.decorate.domain.ProductKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -39,4 +38,7 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
             "GROUP BY image.productKey " +
             "HAVING COUNT(image.productKey) > 1")
     List<Long> findImagesWhitMultiplePrimaryImages(ProductKey productKey);
+
+    @Query("SELECT image FROM Image image WHERE image.productKey.id =:id")
+    List<Image> findAllByProductId(Long id);
 }

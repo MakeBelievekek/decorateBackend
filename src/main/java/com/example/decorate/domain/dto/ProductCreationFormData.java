@@ -14,6 +14,8 @@ import java.util.List;
 @Data
 public class ProductCreationFormData {
 
+    private Long id;
+
     private String name;
 
     private String productDesc;

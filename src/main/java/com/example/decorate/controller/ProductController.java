@@ -3,6 +3,7 @@ package com.example.decorate.controller;
 
 import com.example.decorate.domain.ProductKey;
 import com.example.decorate.domain.dto.ProductCategoryModalDto;
+import com.example.decorate.domain.dto.ProductCreationFormData;
 import com.example.decorate.domain.dto.ProductListItem;
 import com.example.decorate.services.ProductKeyService;
 import com.example.decorate.services.ShippingOptionService;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,8 +26,10 @@ public class ProductController {
     private ShippingOptionService shippingOptionService;
 
     @Autowired
-    public ProductController(ProductKeyService productKeyService, WallpaperService wallpaperService, CurtainService curtainService, ShippingOptionService shippingOptionService) {
-
+    public ProductController(ProductKeyService productKeyService,
+                             WallpaperService wallpaperService,
+                             CurtainService curtainService,
+                             ShippingOptionService shippingOptionService) {
         this.productKeyService = productKeyService;
         this.wallpaperService = wallpaperService;
         this.curtainService = curtainService;
@@ -36,10 +38,11 @@ public class ProductController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity getProducts(@RequestParam String productCategory,
-                                      @RequestParam String attrType, @RequestParam String attr) {
-        System.out.println(attr);
-        return new ResponseEntity(productCategory + "  " + attrType + "  " + attr, HttpStatus.OK);
+    public ResponseEntity<List<ProductCreationFormData>> getProducts(@RequestParam String productCategory,
+                                      @RequestParam String attrType,
+                                      @RequestParam List<String> attrs) {
+        List<ProductCreationFormData> productsByFilter = productKeyService.getProductsByFilter(productCategory, attrType, attrs);
+        return new ResponseEntity<>(productsByFilter, HttpStatus.OK);
     }
 
     @GetMapping("/local/{ids}")

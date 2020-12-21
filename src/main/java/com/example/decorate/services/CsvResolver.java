@@ -28,7 +28,6 @@ public class CsvResolver {
             "Ajánlott Ragasztó", "Falra felrakás módja", "Kopásállóság", "Fő kép", "Másodlagos Képek", "Szín", "Minta", "Stílus"};
 
     public static boolean hasCSVFormat(MultipartFile file) {
-
         if (!TYPE.equals(file.getContentType())) {
             return false;
         }
@@ -42,7 +41,6 @@ public class CsvResolver {
             List<ProductCreationFormData> products = new ArrayList<ProductCreationFormData>();
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
-
             for (CSVRecord csvRecord : csvRecords) {
                 ProductCreationFormData product = new ProductCreationFormData();
                 product.setProductType(csvRecord.get("Termék Típus"));

@@ -1,6 +1,7 @@
 package com.example.decorate.repositorys;
 
 import com.example.decorate.domain.Attribute;
+import com.example.decorate.domain.ProductKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,6 @@ public interface AttributeRepository extends JpaRepository<Attribute, Long> {
 
     @Query("SELECT attr FROM Attribute attr WHERE attr.id in :attributeList ")
     List<Attribute> getAllAttributeDescription(List<Long> attributeList);
+
+
 }

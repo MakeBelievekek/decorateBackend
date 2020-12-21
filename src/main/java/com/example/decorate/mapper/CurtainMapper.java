@@ -17,12 +17,17 @@ public interface CurtainMapper {
     @Mapping(target = "curtainType", ignore = true)
     CurtainModel curtainToCurtainModel(Curtain curtain);
 
+    @Mapping(target = "id", ignore = true)
     Curtain productCreationToCurtain(ProductCreationFormData productCreationFormData, ProductKey productKey);
 
     @Mapping(target = "modified", expression = "java(java.time.Instant.now())")
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "productKey", ignore = true)
     void updateCurtainFields(@MappingTarget Curtain curtain, CurtainModel curtainModel);
+
+    @Mapping(target = "imageList", ignore = true)
+    @Mapping(target = "attributeCreationFormDataList", ignore = true)
+    ProductCreationFormData curtainToFormData(Curtain curtain, @MappingTarget ProductCreationFormData productCreationFormData);
 
 }
 

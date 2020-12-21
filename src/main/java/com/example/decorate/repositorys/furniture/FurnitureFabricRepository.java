@@ -15,7 +15,7 @@ public interface FurnitureFabricRepository extends JpaRepository<FurnitureFabric
     @Query("SELECT ff FROM FurnitureFabric ff ")
     List<FurnitureFabric> getAllFurnitureFabrics();
 
-   @Query("SELECT c FROM Curtain c, AttributeItem ca " +
+   @Query("SELECT c FROM FurnitureFabric c, AttributeItem ca " +
             "WHERE c.productKey = ca.productKey AND " +
             "ca.attribute.description in :attributeDescriptions " +
             "GROUP BY c " +
