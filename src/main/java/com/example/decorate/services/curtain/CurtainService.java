@@ -37,7 +37,9 @@ public class CurtainService {
         productKeyService.saveKey(curtainProductKey, CURTAIN);
 
         Curtain curtain = entityCreatorService.createCurtainFromCreationModel(productCreationFormData, curtainProductKey);
+        log.error(curtain.toString());
         curtainRepository.save(curtain);
+
 
         List<AttributeCreationFormData> curtainAttributes = productCreationFormData.getAttributeCreationFormDataList();
         attributeService.createProductAttributeItems(curtainAttributes, curtainProductKey);

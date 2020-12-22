@@ -16,7 +16,8 @@ public interface FurnitureFabricMapper {
     @Mapping(target = "imageList", ignore = true)
     FurnitureFabricModel furnitureFabricToFurnitureFabricModel(FurnitureFabric furnitureFabric);
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "productKey.id", target = "id")
+    @Mapping(source = "productKey", target = "productKey")
     FurnitureFabric productCreationToFurnitureFabric(ProductCreationFormData productCreationFormData, ProductKey productKey);
 
     @Mapping(target = "modified", expression = "java(java.time.Instant.now())")

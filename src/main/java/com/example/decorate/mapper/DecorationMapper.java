@@ -17,7 +17,9 @@ public interface DecorationMapper {
     @Mapping(target = "attributes", ignore = true)
     @Mapping(target = "imageList", ignore = true)
     DecorationModel decorationToDecorationModel(Decoration decoration);
-    @Mapping(target = "id", ignore = true)
+
+    @Mapping(source = "productKey.id", target = "id")
+    @Mapping(source = "productKey", target = "productKey")
     Decoration productCreationToDecoration(ProductCreationFormData productCreationFormData, ProductKey productKey);
 
     @Mapping(target = "modified", expression = "java(java.time.Instant.now())")

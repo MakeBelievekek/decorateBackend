@@ -44,28 +44,28 @@ public class CsvResolver {
             for (CSVRecord csvRecord : csvRecords) {
                 ProductCreationFormData product = new ProductCreationFormData();
                 product.setProductType(csvRecord.get("Termék Típus"));
-                System.out.println(csvRecord.get("Termék Típus"));
+//                System.out.println(csvRecord.get("Termék Típus"));
                 product.setName(csvRecord.get("Terméknév"));
-                System.out.println(csvRecord.get("Terméknév"));
+//                System.out.println(csvRecord.get("Terméknév"));
                 product.setItemNumber(csvRecord.get("Cikkszám"));
-                System.out.println(csvRecord.get("Cikkszám"));
+//                System.out.println(csvRecord.get("Cikkszám"));
                 product.setPrice(csvRecord.get("Ár").equals("") ? 0 :Integer.parseInt(csvRecord.get("Ár")));
-                System.out.println(Integer.parseInt(csvRecord.get("Ár")));
+//                System.out.println(Integer.parseInt(csvRecord.get("Ár")));
                 product.setProductFamily(csvRecord.get("Termékcsalád"));
-                System.out.println(csvRecord.get("Termékcsalád"));
+//                System.out.println(csvRecord.get("Termékcsalád"));
                 product.setProductDesc(csvRecord.get("Leírás"));
-                System.out.println(csvRecord.get("Leírás"));
+//                System.out.println(csvRecord.get("Leírás"));
                 product.setComposition(csvRecord.get("Összetétel"));
-                System.out.println(csvRecord.get("Összetétel"));
+//                System.out.println(csvRecord.get("Összetétel"));
                 product.setHeight(csvRecord.get("Magasság").equals("") ? 0 : Integer.parseInt(csvRecord.get("Magasság")));
-                System.out.println(product.getHeight());
+//                System.out.println(product.getHeight());
                 product.setWidth(csvRecord.get("Szélesség").equals("") ? 0 : Integer.parseInt(csvRecord.get("Szélesség")));
                 product.setAbrasionResistance(csvRecord.get("Kopásállóság").equals("") ? 0 : Integer.parseInt(csvRecord.get("Kopásállóság")));
                 product.setPatternRep(csvRecord.get("Mintaismétlődés").equals("") ? 0 : Double.parseDouble(csvRecord.get("Mintaismétlődés")));
-                System.out.println(product.getWidth());
-                System.out.println(product.getPatternRep());
+//                System.out.println(product.getWidth());
+//                System.out.println(product.getPatternRep());
                 product.setTypeOfSize(csvRecord.get("Mértékegység"));
-                System.out.println(csvRecord.get("Mértékegység"));
+//                System.out.println(csvRecord.get("Mértékegység"));
                 product.setCleaningInst(csvRecord.get("Tisztítási útmutató"));
                 product.setRecommendedGlue(csvRecord.get("Ajánlott Ragasztó"));
                 product.setAnnotation(csvRecord.get("Falra felrakás módja"));
@@ -79,7 +79,7 @@ public class CsvResolver {
                 products.add(product);
             }
             for (ProductCreationFormData product : products) {
-                System.out.println(product);
+//                System.out.println(product);
             }
             return products;
         } catch (IOException e) {
