@@ -25,14 +25,16 @@ public class FileUploadController {
             try {
                 csvService.save(file);
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
+                log.info(message);
                 return ResponseEntity.status(OK).body(message);
             } catch (Exception e) {
                 message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-                System.out.println(message);
+                log.warn(message + " " + e.getMessage());
                 return ResponseEntity.status(EXPECTATION_FAILED).body(message);
             }
         }
         message = "Please upload an excel file!";
+        log.warn("File format not excel!");
         return ResponseEntity.status(BAD_REQUEST).body(message);
     }
 

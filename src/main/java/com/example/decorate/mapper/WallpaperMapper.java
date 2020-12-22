@@ -15,7 +15,9 @@ public interface WallpaperMapper {
     @Mapping(target = "attributes", ignore = true)
     @Mapping(target = "imageList", ignore = true)
     WallpaperModel wallpaperToWallpaperModel(Wallpaper wallpaper);
-    @Mapping(target = "id", ignore = true)
+
+    @Mapping(source = "productKey.id", target = "id")
+    @Mapping(source = "productKey", target = "productKey")
     Wallpaper productCreationToWallpaper(ProductCreationFormData productCreationFormData, ProductKey productKey);
 
     @Mapping(target = "modified", expression = "java(java.time.Instant.now())")
