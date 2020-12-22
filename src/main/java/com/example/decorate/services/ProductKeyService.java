@@ -20,8 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.example.decorate.domain.ProductType.CURTAIN;
-import static com.example.decorate.domain.ProductType.WALLPAPER;
+import static com.example.decorate.domain.ProductType.*;
 
 @AllArgsConstructor
 @Slf4j
@@ -137,18 +136,19 @@ public class ProductKeyService {
         productKeyRepository.delete(productKey);
     }
 
-    public List<ProductCreationFormData> getProductsByFilter(String productCategory, String attrType, List<String> attrs) {
+    public List<ProductCreationFormData> getProductsByFilter(String productCategory, List<String> attrs) {
         List<ProductCreationFormData> products = new ArrayList<>();
-
         for (ProductType value : ProductType.values()) {
             if (value.toString().equals(productCategory)) {
-                System.out.println(value);
+                System.out.println(value + "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
                 switch (value) {
                     case CURTAIN:
                         List<Curtain> curtainByAttributeDesc = curtainRepository.findCurtainByAttributeDesc(attrs, (long) attrs.size());
                         curtainByAttributeDesc.forEach(curtain -> {
                             ProductCreationFormData product = new ProductCreationFormData();
+                            attrs.forEach(attribute -> attributeRepository.findByDescription(attribute));
                             curtainMapper.curtainToFormData(curtain, product);
+                            product.setProductType(CURTAIN.getType());
                             products.add(product);
                         });
                         break;
@@ -157,14 +157,16 @@ public class ProductKeyService {
                         wallpaperByAttributeDesc.forEach(wallpaper -> {
                             ProductCreationFormData product = new ProductCreationFormData();
                             wallpaperMapper.wallpaperToFormData(wallpaper, product);
+                            product.setProductType(WALLPAPER.getType());
                             products.add(product);
                         });
                         break;
-                    case FURNITURE_FABRIC:
+                    case FURNITURE:
                         List<FurnitureFabric> furnitureFabricByAttributeDesc = furnitureFabricRepository.findFurnitureFabricByAttributeDesc(attrs, (long) attrs.size());
                         furnitureFabricByAttributeDesc.forEach(furniture -> {
                             ProductCreationFormData product = new ProductCreationFormData();
                             furnitureFabricMapper.furnitureFabricToFormData(furniture, product);
+                            product.setProductType(FURNITURE.getType());
                             products.add(product);
                         });
                         break;
@@ -173,19 +175,18 @@ public class ProductKeyService {
                         decorationByAttributeDesc.forEach(decoration -> {
                             ProductCreationFormData product = new ProductCreationFormData();
                             decorationMapper.decorationToFormData(decoration, product);
+                            product.setProductType(DECORATION.getType());
                             products.add(product);
                         });
                         break;
                 }
             }
         }
-
-        setImageAndAttributes(products);
-        products.forEach(System.out::println);
+        setImageAndAttributes(products, attrs);
         return products;
     }
 
-    public void setImageAndAttributes(List<ProductCreationFormData> products) {
+    public void setImageAndAttributes(List<ProductCreationFormData> products, List<String> attributeList) {
         products.forEach(productCreationFormData -> {
             List<AttributeItem> productAllAttributeItemsByProductId = attributeItemRepository.
                     findProductAllAttributeItemsByProductId(productCreationFormData.getId());
@@ -193,7 +194,8 @@ public class ProductKeyService {
                     .stream()
                     .map(AttributeItem::getAttribute)
                     .collect(Collectors.toList());
-            List<AttributeCreationFormData> collect = attributes
+            List<Attribute> attributeListWithOutExtraType = removeNotNecessaryAttributeType(attributes, attributeList);
+            List<AttributeCreationFormData> collect = attributeListWithOutExtraType
                     .stream()
                     .map(attribute -> attributeMapper.createAttributeFormData(attribute))
                     .collect(Collectors.toList());
@@ -206,6 +208,19 @@ public class ProductKeyService {
                     .collect(Collectors.toList());
             productCreationFormData.getImageList().addAll(imageModelList);
         });
+    }
+
+    private List<Attribute> removeNotNecessaryAttributeType(List<Attribute> attributes, List<String> attrs) {
+        List<Attribute> attributeList = new ArrayList<>();
+        attributes.removeIf(attribute -> attribute.getType() == AttributeType.TYPE);
+        attributeList.addAll(attributes);
+        attrs.forEach(attribute -> {
+            Optional<Attribute> byDescription = attributeRepository.findByDescription(attribute);
+            if (byDescription.get().getType() == AttributeType.TYPE) {
+                attributeList.add(byDescription.get());
+            }
+        });
+        return attributeList;
     }
 
     public List<ProductCategoryModalDto> getAllProductTypeWithAttributes() {
@@ -270,5 +285,87 @@ public class ProductKeyService {
                 .map(attributeItem -> attributeItem.getAttribute()
                         .getId())
                 .collect(Collectors.toList());
+    }
+
+    public List<ProductCreationFormData> getProductsWithCurtainSubType(String productCategory) {
+        List<ProductCreationFormData> products = new ArrayList<>();
+        boolean isCurtainSubType = true;
+        System.out.println(productCategory + "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+        for (ProductType value : values()) {
+            if (value.getType().equals(productCategory)) {
+                System.out.println(value.getType() + "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁ");
+                System.out.println(productCategory + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                products.addAll(getProductsWithType(value));
+                isCurtainSubType = false;
+            }
+        }
+        if (isCurtainSubType) {
+            System.out.println(productCategory + "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+
+        }
+        return products;
+    }
+
+    public List<ProductCreationFormData> getProductsWithType(ProductType productType) {
+        List<ProductCreationFormData> products = new ArrayList<>();
+        switch (productType) {
+            case CURTAIN:
+                List<Curtain> allCurtains = curtainRepository.getAllCurtains();
+                allCurtains.forEach(curtain -> {
+                    ProductCreationFormData product = new ProductCreationFormData();
+                    curtainMapper.curtainToFormData(curtain, product);
+                    product.setProductType(CURTAIN.getType());
+                    products.add(product);
+                });
+                break;
+            case WALLPAPER:
+                List<Wallpaper> allWallpaper = wallpaperRepository.getAllWallpaper();
+                allWallpaper.forEach(wallpaper -> {
+                    ProductCreationFormData product = new ProductCreationFormData();
+                    wallpaperMapper.wallpaperToFormData(wallpaper, product);
+                    product.setProductType(WALLPAPER.getType());
+                    products.add(product);
+                });
+                break;
+            case FURNITURE:
+                List<FurnitureFabric> allFurniture = furnitureFabricRepository.getAllFurniture();
+                allFurniture.forEach(furniture -> {
+                    ProductCreationFormData product = new ProductCreationFormData();
+                    furnitureFabricMapper.furnitureFabricToFormData(furniture, product);
+                    product.setProductType(FURNITURE.getType());
+                    products.add(product);
+                });
+                break;
+            case DECORATION:
+                List<Decoration> allDecoration = decorationRepository.getAllDecorations();
+                allDecoration.forEach(decoration -> {
+                    ProductCreationFormData product = new ProductCreationFormData();
+                    decorationMapper.decorationToFormData(decoration, product);
+                    product.setProductType(DECORATION.getType());
+                    products.add(product);
+                });
+                break;
+        }
+        products.forEach(productCreationFormData -> {
+            List<AttributeItem> productAllAttributeItemsByProductId = attributeItemRepository.
+                    findProductAllAttributeItemsByProductId(productCreationFormData.getId());
+            List<Attribute> attributes = productAllAttributeItemsByProductId
+                    .stream()
+                    .map(AttributeItem::getAttribute)
+                    .collect(Collectors.toList());
+            List<AttributeCreationFormData> collect = attributes
+                    .stream()
+                    .map(attribute -> attributeMapper.createAttributeFormData(attribute))
+                    .collect(Collectors.toList());
+            productCreationFormData.getAttributeCreationFormDataList().addAll(collect);
+            List<Image> allImagesByProdId =
+                    imageService.getAllImagesByProdId(productCreationFormData.getId());
+            List<ImageModel> imageModelList = allImagesByProdId
+                    .stream()
+                    .map(image -> imageMapper.imageModelFromImage(image))
+                    .collect(Collectors.toList());
+            productCreationFormData.getImageList().addAll(imageModelList);
+        });
+        return products;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.decorate.repositorys.furniture;
 
 import com.example.decorate.domain.FurnitureFabric;
+import com.example.decorate.domain.Wallpaper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,7 @@ public interface FurnitureFabricRepository extends JpaRepository<FurnitureFabric
             "GROUP BY c " +
             "HAVING COUNT(c) = :attributeCount ")
     List<FurnitureFabric> findFurnitureFabricByAttributeDesc(List<String> attributeDescriptions, Long attributeCount);
+
+    @Query("SELECT furniture FROM FurnitureFabric furniture ")
+    List<FurnitureFabric> getAllFurniture();
 }

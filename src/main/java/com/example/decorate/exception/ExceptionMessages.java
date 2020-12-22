@@ -5,7 +5,7 @@ public enum ExceptionMessages {
     ATTRIBUTE_LIST_ITEM_NOT_EXISTS ("AttributeListItem dose not exists!"),
     IMAGE_NOT_EXISTS ("Image dose not exists!"),
     WALLPAPER_NOT_EXISTS ("Wallpaper dose not exists!"),
-    FURNITURE_FABRIC_NOT_EXISTS ("Furniture fabric dose not exists!"),
+    FURNITURE_NOT_EXISTS ("Furniture fabric dose not exists!"),
     ATTRIBUTE_NOT_EXISTS ("Attribute dose not exists!"),
     ATTRIBUTE_LIST_EMPTY ("You must fill out the product attribute list!"),
     MULTIPLE_PRIMARY_IMG_EXISTS ("Multiple PRIMARY_IMG exists!"),

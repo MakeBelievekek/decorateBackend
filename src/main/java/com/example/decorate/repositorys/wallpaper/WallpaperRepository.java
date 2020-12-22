@@ -16,4 +16,7 @@ public interface WallpaperRepository extends JpaRepository<Wallpaper, Long> {
             "GROUP BY c " +
             "HAVING COUNT(c) = :attributeCount ")
     List<Wallpaper> findWallpaperByAttributeDesc(List<String> attributeDescriptions, Long attributeCount);
+
+    @Query("SELECT wallpaper FROM Wallpaper wallpaper ")
+    List<Wallpaper> getAllWallpaper();
 }

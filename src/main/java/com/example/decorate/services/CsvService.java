@@ -40,7 +40,7 @@ public class CsvService {
                     wallpaperService.saveWallpaper(product);
                 if (product.getProductType().equals(ProductType.CURTAIN.toString()))
                     curtainService.saveCurtain(product);
-                if (product.getProductType().equals(ProductType.FURNITURE_FABRIC.toString()))
+                if (product.getProductType().equals(ProductType.FURNITURE.toString()))
                     furnitureFabricService.saveFurnitureFabric(product);
                 if (product.getProductType().equals(ProductType.DECORATION.toString()))
                     decorationService.saveDecoration(product);

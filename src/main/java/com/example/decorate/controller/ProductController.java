@@ -36,13 +36,19 @@ public class ProductController {
         this.shippingOptionService = shippingOptionService;
     }
 
-    @GetMapping
+    @GetMapping("/productsWithQuery")
     @ResponseBody
-    public ResponseEntity<List<ProductCreationFormData>> getProducts(@RequestParam String productCategory,
-                                      @RequestParam String attrType,
-                                      @RequestParam List<String> attrs) {
-        List<ProductCreationFormData> productsByFilter = productKeyService.getProductsByFilter(productCategory, attrType, attrs);
+    public ResponseEntity<List<ProductCreationFormData>> getProductsWithQuery(@RequestParam String productCategory,
+                                                                              @RequestParam List<String> attrs) {
+        List<ProductCreationFormData> productsByFilter = productKeyService.getProductsByFilter(productCategory, attrs);
         return new ResponseEntity<>(productsByFilter, HttpStatus.OK);
+    }
+    @GetMapping("/products")
+    @ResponseBody
+    public ResponseEntity<List<ProductCreationFormData>> getProducts(@RequestParam String productCategory) {
+        List<ProductCreationFormData> productsWithType = productKeyService.getProductsWithCurtainSubType(productCategory);
+
+        return new ResponseEntity<>(productsWithType, HttpStatus.OK);
     }
 
     @GetMapping("/local/{ids}")
