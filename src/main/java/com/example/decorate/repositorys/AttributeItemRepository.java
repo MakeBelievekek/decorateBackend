@@ -3,6 +3,7 @@ package com.example.decorate.repositorys;
 import com.example.decorate.domain.Attribute;
 import com.example.decorate.domain.AttributeItem;
 import com.example.decorate.domain.ProductKey;
+import com.example.decorate.domain.ProductType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface AttributeItemRepository extends JpaRepository<AttributeItem, Long> {
@@ -41,7 +43,6 @@ public interface AttributeItemRepository extends JpaRepository<AttributeItem, Lo
             "WHERE ai.productKey.id = :id")
     List<AttributeItem> findProductAllAttributeItemsByProductId(Long id);
 
-    @Query("SELECT attributeIt FROM AttributeItem  attributeIt WHERE attributeIt.attribute = :attr ")
+    @Query("SELECT ai FROM AttributeItem  ai WHERE ai.attribute = :attr ")
     List<AttributeItem> getProductKeysForCurtainSubtype(Attribute attr);
-
 }

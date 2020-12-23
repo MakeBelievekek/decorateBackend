@@ -20,12 +20,26 @@ public interface WallpaperMapper {
     @Mapping(source = "productKey", target = "productKey")
     Wallpaper productCreationToWallpaper(ProductCreationFormData productCreationFormData, ProductKey productKey);
 
+    @Mapping(target = "typeOfSize", ignore = true)
     @Mapping(target = "modified", expression = "java(java.time.Instant.now())")
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "productKey", ignore = true)
     void updateWallpaperFields(@MappingTarget Wallpaper wallpaper, WallpaperModel wallpaperModel);
 
+    @Mapping(target = "productType", ignore = true)
+    @Mapping(target = "curtainType", ignore = true)
+    @Mapping(target = "cleaningInst", ignore = true)
+    @Mapping(target = "abrasionResistance", ignore = true)
     @Mapping(target = "imageList", ignore = true)
     @Mapping(target = "attributeCreationFormDataList", ignore = true)
-    ProductCreationFormData wallpaperToFormData(Wallpaper wallpaper, @MappingTarget ProductCreationFormData productCreationFormData);
+    ProductCreationFormData wallpaperToFormData(Wallpaper wallpaper,
+                                                @MappingTarget ProductCreationFormData productCreationFormData);
+
+    @Mapping(target = "productType", ignore = true)
+    @Mapping(target = "curtainType", ignore = true)
+    @Mapping(target = "cleaningInst", ignore = true)
+    @Mapping(target = "abrasionResistance", ignore = true)
+    @Mapping(target = "imageList", ignore = true)
+    @Mapping(target = "attributeCreationFormDataList", ignore = true)
+    ProductCreationFormData wallpaperToFormData(Wallpaper wallpaper);
 }

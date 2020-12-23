@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @AllArgsConstructor
@@ -23,8 +21,6 @@ public class AttributeItemService {
 
 
     public void createProductAttributeItems(List<Attribute> productAttributes, ProductKey productKey) {
-        log.warn("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        log.info(productAttributes.toString());
         for (Attribute attribute : productAttributes) {
             AttributeItem attributeItem = attributeItemMapper.createAttributeItemFromAttribute(attribute, productKey);
             log.info(attributeItem.toString());

@@ -1,6 +1,7 @@
 package com.example.decorate.services;
 
 import com.example.decorate.domain.*;
+import com.example.decorate.domain.dto.AttributeCreationFormData;
 import com.example.decorate.domain.dto.AttributeModel;
 import com.example.decorate.domain.dto.ImageModel;
 
@@ -22,6 +23,8 @@ public class DTOMapperService {
     private final AttributeService attributeService;
     private final ImageService imageService;
     private final AttributeMapper attributeMapper;
+
+
     public List<AttributeModel> getProductAllAttributesModel(ProductKey productKey) {
         List<Attribute> productAllAttributes = attributeService.getProductAllAttributesByProductKey(productKey);
         return convertProductAttributesToDTO(productAllAttributes);
@@ -48,5 +51,16 @@ public class DTOMapperService {
             images.add(new ImageModel(image));
         }
         return images;
+    }
+
+    public List<AttributeCreationFormData> getProductAllAttributeCreationModels(ProductKey productKey) {
+        List<Attribute> productAllAttributes = attributeService.getProductAllAttributesByProductKey(productKey);
+        return convertProductAttributesToAttributeCreationModel(productAllAttributes);
+    }
+
+    private List<AttributeCreationFormData> convertProductAttributesToAttributeCreationModel(List<Attribute> productAttributes) {
+        return productAttributes.stream()
+                .map(attributeMapper::createAttributeFormData)
+                .collect(Collectors.toList());
     }
 }

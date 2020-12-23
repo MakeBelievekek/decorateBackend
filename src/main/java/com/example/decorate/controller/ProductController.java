@@ -9,6 +9,7 @@ import com.example.decorate.services.ProductKeyService;
 import com.example.decorate.services.ShippingOptionService;
 import com.example.decorate.services.curtain.CurtainService;
 import com.example.decorate.services.wallpaper.WallpaperService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,25 +17,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/public/product")
 public class ProductController {
 
-    private ProductKeyService productKeyService;
-    private WallpaperService wallpaperService;
-    private CurtainService curtainService;
-    private ShippingOptionService shippingOptionService;
-
-    @Autowired
-    public ProductController(ProductKeyService productKeyService,
-                             WallpaperService wallpaperService,
-                             CurtainService curtainService,
-                             ShippingOptionService shippingOptionService) {
-        this.productKeyService = productKeyService;
-        this.wallpaperService = wallpaperService;
-        this.curtainService = curtainService;
-        this.shippingOptionService = shippingOptionService;
-    }
+    private final ProductKeyService productKeyService;
+    private final ShippingOptionService shippingOptionService;
 
     @GetMapping("/productsWithQuery")
     @ResponseBody
@@ -43,6 +32,7 @@ public class ProductController {
         List<ProductCreationFormData> productsByFilter = productKeyService.getProductsByFilter(productCategory, attrs);
         return new ResponseEntity<>(productsByFilter, HttpStatus.OK);
     }
+
     @GetMapping("/products")
     @ResponseBody
     public ResponseEntity<List<ProductCreationFormData>> getProducts(@RequestParam String productCategory) {

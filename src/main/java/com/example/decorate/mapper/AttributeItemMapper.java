@@ -12,4 +12,5 @@ public interface AttributeItemMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "modified", ignore = true)
     AttributeItem createAttributeItemFromAttribute(Attribute attribute, ProductKey productKey);
+
 }

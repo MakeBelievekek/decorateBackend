@@ -26,9 +26,23 @@ public interface CurtainMapper {
     @Mapping(target = "productKey", ignore = true)
     void updateCurtainFields(@MappingTarget Curtain curtain, CurtainModel curtainModel);
 
+    @Mapping(target = "recommendedGlue", ignore = true)
+    @Mapping(target = "productType", ignore = true)
+    @Mapping(target = "curtainType", ignore = true)
+    @Mapping(target = "annotation", ignore = true)
+    @Mapping(target = "abrasionResistance", ignore = true)
     @Mapping(target = "imageList", ignore = true)
     @Mapping(target = "attributeCreationFormDataList", ignore = true)
     ProductCreationFormData curtainToFormData(Curtain curtain, @MappingTarget ProductCreationFormData productCreationFormData);
+
+    @Mapping(target = "recommendedGlue", ignore = true)
+    @Mapping(target = "productType", ignore = true)
+    @Mapping(target = "curtainType", ignore = true)
+    @Mapping(target = "annotation", ignore = true)
+    @Mapping(target = "abrasionResistance", ignore = true)
+    @Mapping(target = "imageList", ignore = true)
+    @Mapping(target = "attributeCreationFormDataList", ignore = true)
+    ProductCreationFormData curtainToFormData(Curtain curtain);
 
 }
 

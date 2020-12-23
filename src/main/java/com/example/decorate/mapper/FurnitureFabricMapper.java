@@ -25,7 +25,19 @@ public interface FurnitureFabricMapper {
     @Mapping(target = "productKey", ignore = true)
     void updateFurnitureFabricFields(@MappingTarget FurnitureFabric furnitureFabric, FurnitureFabricModel furnitureFabricModel);
 
+    @Mapping(target = "recommendedGlue", ignore = true)
+    @Mapping(target = "productType", ignore = true)
+    @Mapping(target = "curtainType", ignore = true)
+    @Mapping(target = "annotation", ignore = true)
     @Mapping(target = "imageList", ignore = true)
     @Mapping(target = "attributeCreationFormDataList", ignore = true)
     ProductCreationFormData furnitureFabricToFormData(FurnitureFabric furnitureFabric, @MappingTarget ProductCreationFormData productCreationFormData);
+
+    @Mapping(target = "recommendedGlue", ignore = true)
+    @Mapping(target = "productType", ignore = true)
+    @Mapping(target = "curtainType", ignore = true)
+    @Mapping(target = "annotation", ignore = true)
+    @Mapping(target = "imageList", ignore = true)
+    @Mapping(target = "attributeCreationFormDataList", ignore = true)
+    ProductCreationFormData furnitureFabricToFormData(FurnitureFabric furnitureFabric);
 }

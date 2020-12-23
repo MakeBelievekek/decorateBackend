@@ -27,7 +27,21 @@ public interface DecorationMapper {
     @Mapping(target = "productKey", ignore = true)
     void updateDecorationFields(@MappingTarget Decoration decoration, DecorationModel decorationModel);
 
+    @Mapping(target = "typeOfSize", ignore = true)
+    @Mapping(target = "productType", ignore = true)
+    @Mapping(target = "curtainType", ignore = true)
+    @Mapping(target = "cleaningInst", ignore = true)
+    @Mapping(target = "abrasionResistance", ignore = true)
     @Mapping(target = "imageList", ignore = true)
     @Mapping(target = "attributeCreationFormDataList", ignore = true)
     ProductCreationFormData decorationToFormData(Decoration decoration, @MappingTarget ProductCreationFormData productCreationFormData);
+
+    @Mapping(target = "typeOfSize", ignore = true)
+    @Mapping(target = "productType", ignore = true)
+    @Mapping(target = "curtainType", ignore = true)
+    @Mapping(target = "cleaningInst", ignore = true)
+    @Mapping(target = "abrasionResistance", ignore = true)
+    @Mapping(target = "imageList", ignore = true)
+    @Mapping(target = "attributeCreationFormDataList", ignore = true)
+    ProductCreationFormData decorationToFormData(Decoration decoration);
 }

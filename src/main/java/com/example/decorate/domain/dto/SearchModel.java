@@ -10,6 +10,8 @@ import java.util.List;
 @Data
 @Builder
 public class SearchModel {
-
+    private String productType;
+    private String subType;
+    private Long subTypeId;
     private List<AttributeModel> attributes;
 }

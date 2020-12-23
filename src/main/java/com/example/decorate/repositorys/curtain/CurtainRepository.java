@@ -23,4 +23,11 @@ public interface CurtainRepository extends JpaRepository<Curtain, Long>{
             "GROUP BY c " +
             "HAVING COUNT(c) = :attributeCount ")
     List<Curtain> findCurtainByAttributeDesc(List<String> attributeDescriptions, Long attributeCount);
+
+    @Query("SELECT c FROM Curtain c, AttributeItem ca " +
+            "WHERE c.productKey = ca.productKey AND " +
+            "ca.attribute.id in :attributeIds " +
+            "GROUP BY c " +
+            "HAVING COUNT(c) = :numberOfAttributes ")
+    List<Curtain> findBySubTypeAttributeAndAttributes(List<Long> attributeIds, Long numberOfAttributes);
 }
