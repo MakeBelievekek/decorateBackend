@@ -81,13 +81,10 @@ public class FurnitureFabricService {
     }
 
     public List<FurnitureFabricModel> getFurnitureFabricModelsForList(SearchModel searchModel) {
-        List<String> attributeDescriptions = searchModel.getAttributes()
-                .stream()
-                .map(AttributeModel::getDescription)
-                .collect(Collectors.toList());
-        Long searchParameterCount = (long) attributeDescriptions.size();
+        List<Long> attributeIds = searchModel.getAttributeIds();
+        Long searchParameterCount = (long) attributeIds.size();
 
-        return furnitureFabricRepository.findFurnitureFabricByAttributeDesc(attributeDescriptions, searchParameterCount)
+        return furnitureFabricRepository.findAllByAttributeIds(attributeIds, searchParameterCount)
                 .stream()
                 .map(modelCreatorService::createFurnitureFabricModel)
                 .collect(Collectors.toList());

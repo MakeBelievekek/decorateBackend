@@ -2,9 +2,12 @@ package com.example.decorate.domain;
 
 import com.example.decorate.domain.dto.ProductCreationFormData;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -56,6 +59,18 @@ public class FurnitureFabric {
     private int abrasionResistance;
 
     private String typeOfSize;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(
+            mappedBy = "productKey",
+            fetch = FetchType.EAGER)
+    private List<Image> images;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(
+            mappedBy = "productKey",
+            fetch = FetchType.EAGER)
+    private List<AttributeItem> attributeItems;
 
     @Column(name = "modified")
     private Instant modified;

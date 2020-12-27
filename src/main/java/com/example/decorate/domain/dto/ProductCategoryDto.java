@@ -13,8 +13,8 @@ import java.util.List;
 @Builder
 public class ProductCategoryDto {
     private SearchModel searchModel;
-    private List<AttributeModel> color;
-    private List<AttributeModel> pattern;
+    private List<AttributeModel> colorList;
+    private List<AttributeModel> patternList;
     private List<AttributeModel> composition;
-    private List<AttributeModel> style;
+    private List<AttributeModel> styleList;
 }

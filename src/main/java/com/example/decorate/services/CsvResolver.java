@@ -102,22 +102,22 @@ public class CsvResolver {
         System.out.println(styles);
         System.out.println(curtainType);
         System.out.println(product);
-        String[] colorList = colors.split(",");
-        String[] patternList = patterns.split(",");
-        String[] styleList = styles.split(",");
-        String[] typeList = curtainType.split(",");
+        String[] colorDescritionList = colors.split(",");
+        String[] patternDescriptionList = patterns.split(",");
+        String[] styleDescriptionList = styles.split(",");
+        String[] typeDescriptionList = curtainType.split(",");
 
-        for (String c : colorList) {
-            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(COLOR.toString(), c));
+        for (String colorDescription : colorDescritionList) {
+            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(COLOR.toString(), colorDescription));
         }
-        for (String p : patternList) {
-            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(PATTERN.toString(), p));
+        for (String patternDescription : patternDescriptionList) {
+            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(PATTERN.toString(), patternDescription));
         }
-        for (String s : styleList) {
-            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(STYLE.toString(), s));
+        for (String styleDescription : styleDescriptionList) {
+            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(STYLE.toString(), styleDescription));
         }
-        for (String t : typeList) {
-            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(AttributeType.TYPE.toString(), t));
+        for (String typeDescription : typeDescriptionList) {
+            product.getAttributeCreationFormDataList().add(new AttributeCreationFormData(AttributeType.TYPE.toString(), typeDescription));
         }
     }
 

@@ -11,23 +11,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CurtainRepository extends JpaRepository<Curtain, Long>{
-    @Query("SELECT curtain FROM Curtain curtain ")
+public interface CurtainRepository extends JpaRepository<Curtain, Long> {
+    @Query("SELECT c FROM Curtain c ")
     List<Curtain> getAllCurtains();
 
     Optional<Curtain> findById(Long curtainId);
 
     @Query("SELECT c FROM Curtain c, AttributeItem ca " +
             "WHERE c.productKey = ca.productKey AND " +
-            "ca.attribute.description in :attributeDescriptions " +
-            "GROUP BY c " +
-            "HAVING COUNT(c) = :attributeCount ")
-    List<Curtain> findCurtainByAttributeDesc(List<String> attributeDescriptions, Long attributeCount);
-
-    @Query("SELECT c FROM Curtain c, AttributeItem ca " +
-            "WHERE c.productKey = ca.productKey AND " +
             "ca.attribute.id in :attributeIds " +
             "GROUP BY c " +
             "HAVING COUNT(c) = :numberOfAttributes ")
-    List<Curtain> findBySubTypeAttributeAndAttributes(List<Long> attributeIds, Long numberOfAttributes);
+    List<Curtain> findByAttributeIds(List<Long> attributeIds, Long numberOfAttributes);
+
+    @Query("SELECT c FROM Curtain c " +
+            "ORDER BY c.productKey.created")
+    List<Curtain> fetchAllOrderedByProductCreationTime();
 }

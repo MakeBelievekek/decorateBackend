@@ -12,20 +12,18 @@ public interface FurnitureFabricRepository extends JpaRepository<FurnitureFabric
     @Query("SELECT ff FROM FurnitureFabric ff ")
     List<FurnitureFabric> getAllFurnitureFabrics();
 
-   @Query("SELECT ff FROM FurnitureFabric ff, AttributeItem fa " +
-            "WHERE ff.productKey = fa.productKey AND " +
-            "fa.attribute.description in :attributeDescriptions " +
-            "GROUP BY ff " +
-            "HAVING COUNT(ff) = :attributeCount ")
-    List<FurnitureFabric> findFurnitureFabricByAttributeDesc(List<String> attributeDescriptions, Long attributeCount);
-
     @Query("SELECT ff FROM FurnitureFabric ff ")
     List<FurnitureFabric> getAllFurniture();
 
     @Query("SELECT ff FROM FurnitureFabric ff, AttributeItem fa " +
             "WHERE ff.productKey = fa.productKey AND " +
-            "fa.attribute.id in :attributeIds " +
+            "(fa.attribute.id in :attributeIds OR " +
+            ":numberOfAttributesInt = 0)" +
             "GROUP BY ff " +
             "HAVING COUNT(ff) = :numberOfAttributes")
     List<FurnitureFabric> findAllByAttributeIds(List<Long> attributeIds, Long numberOfAttributes);
+
+    @Query("SELECT ff FROM FurnitureFabric ff " +
+            "ORDER BY ff.productKey.created")
+    List<FurnitureFabric>  fetchAllOrderedByProductCreationTime();
 }

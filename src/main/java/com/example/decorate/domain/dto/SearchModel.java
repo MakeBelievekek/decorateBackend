@@ -13,5 +13,5 @@ public class SearchModel {
     private String productType;
     private String subType;
     private Long subTypeId;
-    private List<AttributeModel> attributes;
+    private List<Long> attributeIds;
 }

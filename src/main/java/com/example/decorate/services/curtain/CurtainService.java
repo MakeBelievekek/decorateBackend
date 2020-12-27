@@ -4,6 +4,7 @@ import com.example.decorate.domain.Curtain;
 import com.example.decorate.domain.ProductKey;
 import com.example.decorate.domain.dto.*;
 import com.example.decorate.exception.DecorateBackendException;
+import com.example.decorate.mapper.CurtainMapper;
 import com.example.decorate.repositorys.curtain.CurtainRepository;
 import com.example.decorate.services.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,7 @@ public class CurtainService {
     private final ModelCreatorService modelCreatorService;
     private final EntityUpdateService entityUpdateService;
     private final EntityCreatorService entityCreatorService;
+    private final CurtainMapper curtainMapper;
 
     public void saveCurtain(ProductCreationFormData productCreationFormData) {
         ProductKey curtainProductKey = new ProductKey();
@@ -39,7 +41,6 @@ public class CurtainService {
         Curtain curtain = entityCreatorService.createCurtainFromCreationModel(productCreationFormData, curtainProductKey);
         log.error(curtain.toString());
         curtainRepository.save(curtain);
-
 
         List<AttributeCreationFormData> curtainAttributes = productCreationFormData.getAttributeCreationFormDataList();
         attributeService.createProductAttributeItems(curtainAttributes, curtainProductKey);
@@ -56,9 +57,7 @@ public class CurtainService {
 
     public List<CurtainModel> getAllCurtains() {
         List<Curtain> allCurtains = curtainRepository.getAllCurtains();
-        return allCurtains.stream()
-                .map(modelCreatorService::createCurtainModel)
-                .collect(Collectors.toList());
+        return modelCreatorService.curtainListToCurtainModelList(allCurtains);
     }
 
     public void updateCurtain(Long curtainId, CurtainModel curtainModel) {
@@ -84,13 +83,10 @@ public class CurtainService {
     }
 
     public List<CurtainModel> getCurtainModelsForList(SearchModel searchModel) {
-        List<String> attributeDescriptions = searchModel.getAttributes()
-                .stream()
-                .map(AttributeModel::getDescription)
-                .collect(Collectors.toList());
-        Long searchParameterCount = (long) attributeDescriptions.size();
+        List<Long> attributeIds = searchModel.getAttributeIds();
+        Long searchParameterCount = (long) attributeIds.size();
 
-        return curtainRepository.findCurtainByAttributeDesc(attributeDescriptions, searchParameterCount)
+        return curtainRepository.findByAttributeIds(attributeIds, searchParameterCount)
                 .stream()
                 .map(modelCreatorService::createCurtainModel)
                 .collect(Collectors.toList());

@@ -1,5 +1,6 @@
 package com.example.decorate.domain.dto;
 
+import com.example.decorate.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,4 +52,19 @@ public class ProductCreationFormData {
     private String typeOfSize;
 
     private int abrasionResistance;
+
+    public ProductCreationFormData(Wallpaper wallpaper, Curtain curtain, FurnitureFabric furnitureFabric, Decoration decoration) {
+        this.id = 0L;
+    }
+    public ProductCreationFormData(Wallpaper wallpaper) {
+        this.id = 0L;
+    }
+
+    public ProductCreationFormData(Wallpaper wallpaper, Curtain curtain) {
+        this.id = wallpaper.getId();
+    }
+
+    public ProductCreationFormData(ProductKey productKey, Wallpaper wallpaper, Curtain curtain) {
+        this.id = wallpaper.getId();
+    }
 }

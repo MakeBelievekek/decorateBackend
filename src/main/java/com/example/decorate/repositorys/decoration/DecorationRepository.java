@@ -15,15 +15,13 @@ public interface DecorationRepository extends JpaRepository<Decoration, Long> {
 
     @Query("SELECT d FROM Decoration d, AttributeItem da " +
             "WHERE d.productKey = da.productKey AND " +
-            "da.attribute.description in :attributeDescriptions " +
-            "GROUP BY d " +
-            "HAVING COUNT(d) = :attributeCount ")
-    List<Decoration> findDecorationByAttributeDesc(List<String> attributeDescriptions, Long attributeCount);
-
-    @Query("SELECT d FROM Decoration d, AttributeItem da " +
-            "WHERE d.productKey = da.productKey AND " +
-            "da.attribute.id in :attributeIds " +
+            "(da.attribute.id in :attributeIds OR " +
+            ":numberOfAttributesInt = 0)" +
             "GROUP BY d " +
             "HAVING COUNT(d) = :numberOfAttributes ")
     List<Decoration> findAllByAttributeIds(List<Long> attributeIds, Long numberOfAttributes);
+
+    @Query("SELECT d FROM Decoration d " +
+            "ORDER BY d.productKey.created")
+    List<Decoration>  fetchAllOrderedByProductCreationTime();
 }

@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,13 +80,10 @@ public class DecorationService {
     }
 
     public List<DecorationModel> getDecorationModelsForList(SearchModel searchModel) {
-        List<String> attributeDescriptions = searchModel.getAttributes()
-                .stream()
-                .map(AttributeModel::getDescription)
-                .collect(Collectors.toList());
-        Long searchParameterCount = (long) attributeDescriptions.size();
+        List<Long> attributeIds = searchModel.getAttributeIds();
+        Long searchParameterCount = (long) attributeIds.size();
 
-        return decorationRepository.findDecorationByAttributeDesc(attributeDescriptions, searchParameterCount)
+        return decorationRepository.findAllByAttributeIds(attributeIds, searchParameterCount)
                 .stream()
                 .map(modelCreatorService::createDecorationModel)
                 .collect(Collectors.toList());

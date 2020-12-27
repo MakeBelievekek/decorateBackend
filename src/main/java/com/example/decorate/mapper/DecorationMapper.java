@@ -11,17 +11,23 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DecorationMapper {
 
-    @Mapping(target = "attributes", ignore = true)
-    @Mapping(target = "imageList", ignore = true)
+    @Mapping(source = "images", target = "imageList")
+    @Mapping(source = "attributeItems", target = "attributes")
     DecorationModel decorationToDecorationModel(Decoration decoration);
 
+    @Mapping(target = "images", ignore = true)
+    @Mapping(target = "attributeItems", ignore = true)
     @Mapping(source = "productKey.id", target = "id")
     @Mapping(source = "productKey", target = "productKey")
     Decoration productCreationToDecoration(ProductCreationFormData productCreationFormData, ProductKey productKey);
 
+    @Mapping(target = "images", ignore = true)
+    @Mapping(target = "attributeItems", ignore = true)
     @Mapping(target = "modified", expression = "java(java.time.Instant.now())")
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "productKey", ignore = true)
@@ -32,16 +38,15 @@ public interface DecorationMapper {
     @Mapping(target = "curtainType", ignore = true)
     @Mapping(target = "cleaningInst", ignore = true)
     @Mapping(target = "abrasionResistance", ignore = true)
-    @Mapping(target = "imageList", ignore = true)
-    @Mapping(target = "attributeCreationFormDataList", ignore = true)
+    @Mapping(source = "images", target = "imageList")
+    @Mapping(source = "attributeItems", target = "attributeCreationFormDataList")
     ProductCreationFormData decorationToFormData(Decoration decoration, @MappingTarget ProductCreationFormData productCreationFormData);
 
-    @Mapping(target = "typeOfSize", ignore = true)
-    @Mapping(target = "productType", ignore = true)
-    @Mapping(target = "curtainType", ignore = true)
-    @Mapping(target = "cleaningInst", ignore = true)
-    @Mapping(target = "abrasionResistance", ignore = true)
-    @Mapping(target = "imageList", ignore = true)
-    @Mapping(target = "attributeCreationFormDataList", ignore = true)
+    @Mapping(source = "images", target = "imageList")
+    @Mapping(source = "attributeItems", target = "attributeCreationFormDataList")
     ProductCreationFormData decorationToFormData(Decoration decoration);
+
+    List<ProductCreationFormData> decorationListToFormDataList(List<Decoration> decoration);
+
+    List<DecorationModel> decorationListToDecorationModelList(List<Decoration> decorations);
 }

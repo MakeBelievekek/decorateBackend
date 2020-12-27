@@ -1,10 +1,6 @@
 package com.example.decorate.controller;
 
-import com.example.decorate.domain.dto.AttributeCreationFormData;
-import com.example.decorate.domain.dto.ProductCategoryDto;
-import com.example.decorate.domain.dto.ProductCreationFormData;
-import com.example.decorate.domain.dto.SearchModel;
-import com.example.decorate.services.AttributeItemService;
+import com.example.decorate.domain.dto.*;
 import com.example.decorate.services.AttributeService;
 import com.example.decorate.services.FilterService;
 import lombok.AllArgsConstructor;
@@ -38,14 +34,28 @@ public class AttributeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductCategoryDto>> getAllAttributesByType() {
-        List<ProductCategoryDto> allAttributesByType = this.filterService.getAllAttributesByType();
+    public ResponseEntity<List<ProductCategoryModalDto>> getAllAttributesByType() {
+        List<ProductCategoryModalDto> allAttributesByType = this.filterService.getAllAttributesByType();
         return ResponseEntity.status(OK).body(allAttributesByType);
+    }
+
+
+    @GetMapping("tak")
+    public ResponseEntity<List<ProductCreationFormData>> search() {
+        List<ProductCreationFormData> productTypeByAttribute = this.filterService.fetchAllProductOrderedByCreation();
+        log.warn(productTypeByAttribute.size() + " ez a sizea");
+        return ResponseEntity.status(OK).body(productTypeByAttribute);
     }
 
     @PostMapping("wut")
     public ResponseEntity<List<ProductCreationFormData>> search(@RequestBody SearchModel searchModel) {
-        List<ProductCreationFormData> productTypeByAttribute = this.filterService.findProductTypeByAttribute(searchModel);
+        List<ProductCreationFormData> productTypeByAttribute = this.filterService.findProductByFilter(searchModel);
         return ResponseEntity.status(OK).body(productTypeByAttribute);
+    }
+
+    @PostMapping("/single-filter")
+    public ResponseEntity<ProductCategoryModalDto> getAttributesForSingleFilter(@RequestBody SearchModel searchModel) {
+        ProductCategoryModalDto categoriesForSingleFilter = this.filterService.findAttributesBySingleFilter(searchModel);
+        return ResponseEntity.status(OK).body(categoriesForSingleFilter);
     }
 }

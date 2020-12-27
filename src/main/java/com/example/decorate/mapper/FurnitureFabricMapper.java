@@ -9,17 +9,21 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface FurnitureFabricMapper {
 
-    @Mapping(target = "attributes", ignore = true)
-    @Mapping(target = "imageList", ignore = true)
+    @Mapping(source = "images", target = "imageList")
+    @Mapping(source = "attributeItems", target = "attributes")
     FurnitureFabricModel furnitureFabricToFurnitureFabricModel(FurnitureFabric furnitureFabric);
 
     @Mapping(source = "productKey.id", target = "id")
     @Mapping(source = "productKey", target = "productKey")
     FurnitureFabric productCreationToFurnitureFabric(ProductCreationFormData productCreationFormData, ProductKey productKey);
 
+    @Mapping(target = "images", ignore = true)
+    @Mapping(target = "attributeItems", ignore = true)
     @Mapping(target = "modified", expression = "java(java.time.Instant.now())")
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "productKey", ignore = true)
@@ -29,15 +33,19 @@ public interface FurnitureFabricMapper {
     @Mapping(target = "productType", ignore = true)
     @Mapping(target = "curtainType", ignore = true)
     @Mapping(target = "annotation", ignore = true)
-    @Mapping(target = "imageList", ignore = true)
-    @Mapping(target = "attributeCreationFormDataList", ignore = true)
+    @Mapping(source = "images", target = "imageList")
+    @Mapping(source = "attributeItems", target = "attributeCreationFormDataList")
     ProductCreationFormData furnitureFabricToFormData(FurnitureFabric furnitureFabric, @MappingTarget ProductCreationFormData productCreationFormData);
 
     @Mapping(target = "recommendedGlue", ignore = true)
     @Mapping(target = "productType", ignore = true)
     @Mapping(target = "curtainType", ignore = true)
     @Mapping(target = "annotation", ignore = true)
-    @Mapping(target = "imageList", ignore = true)
-    @Mapping(target = "attributeCreationFormDataList", ignore = true)
+    @Mapping(source = "images", target = "imageList")
+    @Mapping(source = "attributeItems", target = "attributeCreationFormDataList")
     ProductCreationFormData furnitureFabricToFormData(FurnitureFabric furnitureFabric);
+
+    List<ProductCreationFormData> furnitureFabricListToFormDataList(List<FurnitureFabric> furnitureFabric);
+
+    List<FurnitureFabricModel> furnitureFabricListToFurnitureFabricModelList(List<FurnitureFabric> furnitureFabrics);
 }

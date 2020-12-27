@@ -1,6 +1,5 @@
 package com.example.decorate.controller;
 
-import com.example.decorate.domain.Curtain;
 import com.example.decorate.domain.dto.*;
 import com.example.decorate.repositorys.curtain.CurtainRepository;
 import com.example.decorate.services.curtain.CurtainService;
@@ -22,7 +21,6 @@ import static org.springframework.http.HttpStatus.*;
 public class CurtainController {
 
     private final CurtainService curtainService;
-    private final CurtainRepository curtainRepository;
 
     @PostMapping
     public ResponseEntity<String> createCurtain(@RequestBody ProductCreationFormData productCreationFormData) {
@@ -134,7 +132,7 @@ public class CurtainController {
                 .id(1L)
                 .build());
         SearchModel retek = SearchModel.builder()
-                .attributes(build)
+                .attributeIds(Arrays.asList(1L))
                 .build();
         return ResponseEntity
                 .status(OK)

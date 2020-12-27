@@ -136,8 +136,8 @@ public class ProductKeyService {
         productKeyRepository.delete(productKey);
     }
 
-    public List<ProductCreationFormData> getProductsByFilter(String productCategory, List<String> attrs) {
-        List<ProductCreationFormData> products = new ArrayList<>();
+    public List<ProductCreationFormData> getProductsByFilter(String productCategory, List<Long> attrs) {
+        /*List<ProductCreationFormData> products = new ArrayList<>();
         for (ProductType value : ProductType.values()) {
             if (value.toString().equals(productCategory)) {
                 System.out.println(value + "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
@@ -183,10 +183,11 @@ public class ProductKeyService {
             }
         }
         setImageAndAttributes(products, attrs);
-        return products;
+        return products;*/
+        return null;
     }
 
-    public void setImageAndAttributes(List<ProductCreationFormData> products, List<String> attributeList) {
+    public void setImageAndAttributes(List<ProductCreationFormData> products, List<Long> attributeList) {
         products.forEach(productCreationFormData -> {
             List<AttributeItem> productAllAttributeItemsByProductId = attributeItemRepository.
                     findProductAllAttributeItemsByProductId(productCreationFormData.getId());
@@ -210,16 +211,16 @@ public class ProductKeyService {
         });
     }
 
-    private List<Attribute> removeNotNecessaryAttributeType(List<Attribute> attributes, List<String> attrs) {
+    private List<Attribute> removeNotNecessaryAttributeType(List<Attribute> attributes, List<Long> attrs) {
         List<Attribute> attributeList = new ArrayList<>();
-        attributes.removeIf(attribute -> attribute.getType() == AttributeType.TYPE);
+     /*   attributes.removeIf(attribute -> attribute.getType() == AttributeType.TYPE);
         attributeList.addAll(attributes);
         attrs.forEach(attribute -> {
             Optional<Attribute> byDescription = attributeRepository.findByDescription(attribute);
             if (byDescription.get().getType() == AttributeType.TYPE) {
                 attributeList.add(byDescription.get());
             }
-        });
+        });*/
         return attributeList;
     }
 
@@ -257,6 +258,10 @@ public class ProductKeyService {
                     List<Long> allAttributeId = getAllAttributeId(productAllAttributeItemsByProductKey);
                     List<Attribute> allAttributeDescription = attributeRepository.getAllAttributeDescription(allAttributeId);
                     sortAttributes(allAttributeDescription, product);
+                    SearchModel searchModel = SearchModel.builder()
+                            .productType(product.getProductDatabaseName())
+                            .build();
+                    product.setSearchModel(searchModel);
                 });
                 productCategoryModalDtoList.add(product);
             }
@@ -289,19 +294,10 @@ public class ProductKeyService {
 
     public List<ProductCreationFormData> getProductsWithCurtainSubType(String productCategory) {
         List<ProductCreationFormData> products = new ArrayList<>();
-        boolean isCurtainSubType = true;
-        System.out.println(productCategory + "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
         for (ProductType value : values()) {
             if (value.getType().equals(productCategory)) {
-                System.out.println(value.getType() + "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁ");
-                System.out.println(productCategory + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                 products.addAll(getProductsWithType(value));
-                isCurtainSubType = false;
             }
-        }
-        if (isCurtainSubType) {
-            System.out.println(productCategory + "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-
         }
         return products;
     }

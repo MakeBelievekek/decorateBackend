@@ -1,10 +1,14 @@
 package com.example.decorate.domain;
 
-import com.example.decorate.domain.dto.ProductCreationFormData;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -55,6 +59,18 @@ public class Curtain {
     private String cleaningInst;
 
     private String typeOfSize;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(
+            mappedBy = "productKey",
+            fetch = FetchType.EAGER)
+    private List<Image> images;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(
+            mappedBy = "productKey",
+    fetch = FetchType.EAGER)
+    private List<AttributeItem> attributeItems;
 
     @Column(name = "modified")
     private Instant modified;

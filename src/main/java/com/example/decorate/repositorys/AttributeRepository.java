@@ -24,16 +24,26 @@ public interface AttributeRepository extends JpaRepository<Attribute, Long> {
     List<Attribute> getAllAttributeDescription(List<Long> attributeList);
 
     @Query("SELECT DISTINCT attr FROM Attribute  attr WHERE attr.type = 'TYPE' AND " +
-            "attr.description <> ''")
+            "attr.description <> '' AND attr.description <>'Díszpárna'")
     List<Attribute> findAllSubTypes();
 
-    @Query("SELECT DISTINCT attr  FROM Attribute attr, AttributeItem ai WHERE ai.productKey.type = :productType AND " +
-            "attr = ai.attribute AND " +
-            "ai.attribute.type <> 'TYPE'")
+    @Query("SELECT DISTINCT ai.attribute  FROM AttributeItem ai WHERE " +
+            "ai.productKey.type = :productType AND " +
+            "ai.attribute.type <> 'TYPE'" +
+            "ORDER BY ai.attribute.description")
     List<Attribute> findAllAttributeByProductType(ProductType productType);
 
-    @Query("SELECT DISTINCT ai.attribute FROM AttributeItem ai WHERE ai.productKey IN " +
+    @Query("SELECT DISTINCT ai.attribute FROM AttributeItem ai " +
+            "WHERE ai.productKey IN " +
             "(SELECT ai.productKey FROM AttributeItem ai WHERE ai.attribute = :attribute) AND " +
-            "ai.attribute.type <> 'TYPE'")
-    List<Attribute> findAllAttributesForMainAttributes(Attribute attribute);
+            "ai.attribute.type <> 'TYPE' " +
+            "ORDER BY ai.attribute.description")
+    List<Attribute> findAllAttributesForSubTypesByAttribute(Attribute attribute);
+
+    @Query("SELECT DISTINCT ai.attribute FROM AttributeItem ai " +
+            "WHERE ai.productKey IN " +
+            "(SELECT ai.productKey FROM AttributeItem ai WHERE ai.attribute.id = :attributeId) AND " +
+            "ai.attribute.type <> 'TYPE' " +
+            "ORDER BY ai.attribute.description")
+    List<Attribute> findAllAttributesForSubTypesByAttributeId(Long attributeId);
 }
