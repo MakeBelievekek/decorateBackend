@@ -22,7 +22,6 @@ public class ShippingDetails {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-
     private OrderHistory orderHistory;
 
     private String company;
