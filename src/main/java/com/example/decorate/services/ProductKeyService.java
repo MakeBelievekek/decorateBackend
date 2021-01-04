@@ -63,19 +63,13 @@ public class ProductKeyService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .forEach(productKeys::add);
-        for (Long aLong : productsLong) {
-        }
+
         return productKeys;
     }
 
     public List<ProductKey> getKeyholders(List<Long> itemId) {
-
         List<ProductKey> keys = new ArrayList<>();
-
-        for (Long aLong : itemId) {
-            Optional<ProductKey> keyHolder = this.productKeyRepository.findById(aLong);
-            keyHolder.ifPresent(keys::add);
-        }
+        itemId.forEach(aLong -> this.productKeyRepository.findById(aLong).ifPresent(keys::add));
         return keys;
     }
 

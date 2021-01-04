@@ -31,7 +31,7 @@ public class ShippingOrder {
         this.region = shippingOrderDto.getProvince();
         this.zip = shippingOrderDto.getZip();
         this.street = shippingOrderDto.getAddress() + shippingOrderDto.getAddress2();
-        this.fullName = userOrderDto.getLastname() + userOrderDto.getFirstname();
+        this.fullName = userOrderDto.getLastName() + userOrderDto.getFirstName();
 
     }
 }

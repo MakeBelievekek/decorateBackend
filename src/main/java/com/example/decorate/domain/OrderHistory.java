@@ -4,10 +4,7 @@ import com.example.decorate.domain.dto.order.OrderDto;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,10 +53,10 @@ public class OrderHistory {
     private Instant created = Instant.now();
 
     public OrderHistory(OrderDto orderDto, List<Product> products, String orderId, BillingDetails billingDetails, ShippingDetails shippingDetails) {
-        this.lastName = orderDto.getUser().getLastname();
-        this.firstName = orderDto.getUser().getFirstname();
+        this.lastName = orderDto.getUser().getLastName();
+        this.firstName = orderDto.getUser().getFirstName();
         this.email = orderDto.getUser().getEmail();
-      this.products = products;
+        this.products = products;
         this.paymentType = orderDto.getPaymentOption();
         this.orderId = orderId;
         this.billingDetails = billingDetails;

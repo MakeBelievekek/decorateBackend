@@ -1,12 +1,12 @@
 package com.example.decorate.controller;
 
-import com.example.decorate.domain.OrderHistory;
+import com.example.decorate.domain.ProductKey;
+import com.example.decorate.domain.dto.BarionMessage;
 import com.example.decorate.domain.dto.ProductListItem;
-import com.example.decorate.domain.dto.order.ItemAndQty;
 import com.example.decorate.domain.dto.order.OrderDto;
-import com.example.decorate.services.ProductKeyService;
 import com.example.decorate.services.OrderService;
 import com.example.decorate.services.PaymentService;
+import com.example.decorate.services.ProductKeyService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -36,8 +35,7 @@ public class PaymentController {
     }
 
     @GetMapping
-    public ResponseEntity getResult() throws JsonProcessingException {
-        //  return new ResponseEntity(this.paymentService.payment(), HttpStatus.ACCEPTED);
+    public ResponseEntity getResult() {
         return new ResponseEntity(this.paymentService.generatePaymentId(), HttpStatus.ACCEPTED);
     }
 
@@ -51,13 +49,11 @@ public class PaymentController {
     public ResponseEntity makeOrderWithBarion(@RequestBody OrderDto orderDto) throws JsonProcessingException {
         String paymentId = this.paymentService.generatePaymentId();
         String orderId = this.paymentService.generateOrderId();
-        Long orderDatabaseId;
-        List<Long> ids = new ArrayList<>();
-        for (ItemAndQty itemAndQty : orderDto.getItemId()) {
-            ids.add(itemAndQty.getId());
-        }
-        List<ProductListItem> items = this.productKeyService.getProducts(this.productKeyService.getKeyholders(ids));
-        orderDatabaseId = this.orderService.saveOrder(orderDto, orderId);
+        Long orderDatabaseId = this.orderService.saveOrder(orderDto, orderId);
+        List<Long> productIds = this.orderService.getProductIds(orderDto);
+        List<ProductKey> keyholders = this.productKeyService.getKeyholders(productIds);
+        List<ProductListItem> items = this.productKeyService.getProducts(keyholders);
+
         return new ResponseEntity(this.paymentService.processOrder(orderDto, items, orderId, paymentId, orderDatabaseId), HttpStatus.OK);
     }
 
@@ -68,27 +64,17 @@ public class PaymentController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/order")
-    public ResponseEntity saveOrder(@RequestBody OrderDto orderDto) {
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @GetMapping("/test")
-    public List<OrderHistory> test() {
-
-        return this.paymentService.test();
-    }
-
-    @PostMapping("/paymentComplete")
-    public ResponseEntity complete(@RequestBody String paymentId) {
-        this.paymentService.completeOrder(paymentId);
-        return new ResponseEntity(HttpStatus.OK);
+    @PostMapping("/checkPaymentStatus")
+    public ResponseEntity<BarionMessage> complete(@RequestBody String paymentId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.paymentService.checkStatus(paymentId));
     }
 
     @PostMapping("/barion")
-    public ResponseEntity checkBarionPayment(@RequestParam(name = "paymentId") String id) {
-        System.out.println("első állomás");
-        System.out.println(id);
-        return new ResponseEntity(this.paymentService.barionProcessing(id), HttpStatus.OK);
+    public ResponseEntity checkBarionPayment(@RequestBody String id) throws JsonProcessingException {
+        log.info(id);
+        this.paymentService.completeOrder(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
