@@ -271,7 +271,7 @@ public class ProductKeyService {
 
     public void sortAttributes(List<Attribute> attributeList, ProductCategoryModalDto productCategoryModalDto) {
 
-        attributeList.stream()
+       /* attributeList.stream()
                 .filter(attribute -> attribute.getType() == AttributeType.COLOR)
                 .forEach(attribute -> productCategoryModalDto.getColorList()
                         .add(attribute));
@@ -282,7 +282,7 @@ public class ProductKeyService {
         attributeList.stream()
                 .filter(attribute -> attribute.getType() == AttributeType.STYLE)
                 .forEach(attribute -> productCategoryModalDto.getStyleList()
-                        .add(attribute));
+                        .add(attribute));*/
     }
 
     public List<Long> getAllAttributeId(List<AttributeItem> attributeItemList) {

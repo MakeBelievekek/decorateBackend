@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,5 +14,5 @@ public class SearchModel {
     private String productType;
     private String subType;
     private Long subTypeId;
-    private List<Long> attributeIds;
+    private List<Long> attributeIds = new ArrayList<>();
 }

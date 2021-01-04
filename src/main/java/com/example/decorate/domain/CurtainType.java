@@ -1,8 +1,11 @@
 package com.example.decorate.domain;
 
 public enum CurtainType {
-    BLACKOUT("Blackout Függöny"), CHILDREN("Gyerekfüggöny"), TRANSLUCENT("Fényáteresztő Függöny"),
-    DARKENER("Sötétítő Függöny"), DEKOR("Dekorfüggöny"), PILLOW("Díszpárna");
+    BLACKOUT("Blackout Függöny"),
+    CHILDREN("Gyerekfüggöny"),
+    TRANSLUCENT("Fényáteresztő Függöny"),
+    DARKENER("Sötétítő Függöny"),
+    DEKOR("Dekorfüggöny");
 
     private String type;
 

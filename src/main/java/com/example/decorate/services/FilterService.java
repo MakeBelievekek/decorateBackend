@@ -1,10 +1,7 @@
 package com.example.decorate.services;
 
 import com.example.decorate.domain.*;
-import com.example.decorate.domain.dto.AttributeModel;
-import com.example.decorate.domain.dto.ProductCategoryModalDto;
-import com.example.decorate.domain.dto.ProductCreationFormData;
-import com.example.decorate.domain.dto.SearchModel;
+import com.example.decorate.domain.dto.*;
 import com.example.decorate.repositorys.AttributeRepository;
 import com.example.decorate.repositorys.curtain.CurtainRepository;
 import com.example.decorate.repositorys.decoration.DecorationRepository;
@@ -47,11 +44,11 @@ public class FilterService {
             List<Attribute> attributesForSubTypes = attributeRepository.findAllAttributesForSubTypesByAttribute(subType);
 
             Map<String, List<AttributeModel>> attributeModelsByType = groupAttributesByAttributeType(attributesForSubTypes);
-            SearchModel searchModel = SearchModel.builder()
-                    .subType(subType.getDescription())
-                    .subTypeId(subType.getId())
-                    .build();
-            if (attributeModelsByType != null) {
+            SearchModel searchModel = new SearchModel();
+            searchModel.setSubType(subType.getDescription());
+            searchModel.setSubTypeId(subType.getId());
+
+        if (attributeModelsByType != null) {
                 allAttributesByType.add(createProductCategoryModalDto(searchModel, attributeModelsByType));
             }
         }
@@ -68,9 +65,9 @@ public class FilterService {
                 String productTypeName = productType.toString();
 
                 Map<String, List<AttributeModel>> attributeModelsByType = groupAttributesByAttributeType(allAttributeByProductType);
-                SearchModel searchModel = SearchModel.builder()
-                        .productType(productTypeName)
-                        .build();
+                SearchModel searchModel = new SearchModel();
+                searchModel.setProductType(productTypeName);
+
                 allAttributesByType.add(createProductCategoryModalDto(searchModel, attributeModelsByType));
             }
         }
@@ -87,9 +84,11 @@ public class FilterService {
     }
 
     private ProductCategoryModalDto createProductCategoryModalDto(SearchModel searchModel, Map<String, List<AttributeModel>> attributeModelsByType) {
-        ProductCategoryModalDto productCategoryModalDto = ProductCategoryModalDto.builder()
-                .searchModel(searchModel)
-                .build();
+        ProductCategoryModalDto productCategoryModalDto = new ProductCategoryModalDto();
+        ProductAttributes productAttributes = new ProductAttributes();
+        productCategoryModalDto.setSearchModel(searchModel);
+        productCategoryModalDto.setProductAttributes(productAttributes);
+
         if (searchModel.getSubTypeId() == null) {
             productCategoryModalDto.setProductType(ProductType.valueOf(searchModel.getProductType()).getType());
             productCategoryModalDto.setProductDatabaseName(searchModel.getProductType());
@@ -99,13 +98,16 @@ public class FilterService {
         attributeModelsByType.forEach((key, attributesByType) -> {
             switch (key) {
                 case "COLOR":
-                    productCategoryModalDto.setColorList(new HashSet(attributesByType));
+                    productCategoryModalDto.getProductAttributes().setColorList(attributesByType);
                     break;
                 case "PATTERN":
-                    productCategoryModalDto.setPatternList(new HashSet(attributesByType));
+                    productCategoryModalDto.getProductAttributes().setPatternList(attributesByType);
                     break;
                 case "STYLE":
-                    productCategoryModalDto.setStyleList(new HashSet(attributesByType));
+                    productCategoryModalDto.getProductAttributes().setStyleList(attributesByType);
+                    break;
+                case "COMPOSITION":
+                    productCategoryModalDto.getProductAttributes().setCompositionList(attributesByType);
                     break;
             }
         });

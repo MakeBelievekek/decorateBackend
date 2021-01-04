@@ -35,7 +35,7 @@ public interface AttributeRepository extends JpaRepository<Attribute, Long> {
 
     @Query("SELECT DISTINCT ai.attribute FROM AttributeItem ai " +
             "WHERE ai.productKey IN " +
-            "(SELECT ai.productKey FROM AttributeItem ai WHERE ai.attribute = :attribute) AND " +
+            "(SELECT attritem.productKey FROM AttributeItem attritem WHERE attritem.attribute = :attribute) AND " +
             "ai.attribute.type <> 'TYPE' " +
             "ORDER BY ai.attribute.description")
     List<Attribute> findAllAttributesForSubTypesByAttribute(Attribute attribute);

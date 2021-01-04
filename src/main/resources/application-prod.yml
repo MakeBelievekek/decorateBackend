@@ -43,6 +43,7 @@ security:
   require-ssl: true
 server:
   port: 443
+  http
   ssl:
     key-store: /etc/letsencrypt/live/textilgarden.hu/keystore.p12
     key-store-password: decorate1234.

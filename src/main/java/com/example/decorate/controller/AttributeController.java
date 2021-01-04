@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -50,6 +51,7 @@ public class AttributeController {
     @PostMapping("wut")
     public ResponseEntity<List<ProductCreationFormData>> search(@RequestBody SearchModel searchModel) {
         List<ProductCreationFormData> productTypeByAttribute = this.filterService.findProductByFilter(searchModel);
+        log.info(productTypeByAttribute.toString());
         return ResponseEntity.status(OK).body(productTypeByAttribute);
     }
 
