@@ -12,7 +12,6 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Builder
 public class ShippingDetails {
@@ -21,7 +20,8 @@ public class ShippingDetails {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+
+    @OneToOne(fetch =  FetchType.LAZY)
     private OrderHistory orderHistory;
 
     private String company;

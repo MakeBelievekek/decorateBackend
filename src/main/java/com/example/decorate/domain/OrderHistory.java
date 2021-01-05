@@ -27,11 +27,11 @@ public class OrderHistory {
 
     private String firstName;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch =  FetchType.EAGER)
     @JoinColumn(name = "shipping_id", referencedColumnName = "id")
     private ShippingDetails shippingDetails;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch =  FetchType.EAGER)
     @JoinColumn(name = "billing_id", referencedColumnName = "id")
     private BillingDetails billingDetails;
 

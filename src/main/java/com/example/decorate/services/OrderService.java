@@ -64,4 +64,19 @@ public class OrderService {
         return orderDatabaseId;
     }
 
+    public OrderHistory findOrder(Long id) {
+        if (this.orderHistoryRepository.findById(id).isPresent())
+            return this.orderHistoryRepository.findById(id).get();
+        else
+            return null;
+    }
+
+    public ShippingDetails findShippingDetails(Long id) {
+        return this.shippingDetailsRepository.findByOrderId(id);
+    }
+
+    public BillingDetails findBillingDetails(Long id) {
+
+        return this.billingDetailsRepository.findByOrderId(id);
+    }
 }

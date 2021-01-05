@@ -182,4 +182,15 @@ public class PaymentService {
         PaymentHistory payment = this.paymentHistoryRepository.findByPaymentId(paymentId);
         return new BarionMessage(payment.getStatus().getType());
     }
+
+    public PaymentHistory findPayment(Long id) {
+        if (this.paymentHistoryRepository.findById(id).isPresent())
+            return this.paymentHistoryRepository.findById(id).get();
+        else
+            return null;
+    }
+
+    public PaymentHistory findPaymentWithOrderNumber(Long id) {
+        return this.paymentHistoryRepository.findByOrderHistory(id);
+    }
 }

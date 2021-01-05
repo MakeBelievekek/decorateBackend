@@ -23,7 +23,7 @@ public class BillingDetails {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private OrderHistory orderHistory;
 
     private String company;
