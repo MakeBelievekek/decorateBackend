@@ -178,9 +178,9 @@ public class PaymentService {
         return this.restTemplate.getForEntity(url, String.class);
     }
 
-    public BarionMessage checkStatus(String paymentId) {
+    public ResponseMessage checkStatus(String paymentId) {
         PaymentHistory payment = this.paymentHistoryRepository.findByPaymentId(paymentId);
-        return new BarionMessage(payment.getStatus().getType());
+        return new ResponseMessage(payment.getStatus().getType());
     }
 
     public PaymentHistory findPayment(Long id) {

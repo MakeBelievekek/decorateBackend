@@ -17,4 +17,11 @@ public class OrderDetails {
     private OrderHistory orderHistory;
     private ShippingDetails shippingDetails;
     private BillingDetails billingDetails;
+
+    public Integer getSubTotalPrice() {
+        return this.orderHistory.getProducts().stream().mapToInt(product -> {
+            int i = product.getPrice() * product.getQuantity();
+            return i;
+        }).sum();
+    }
 }

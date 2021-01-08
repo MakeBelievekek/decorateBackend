@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class BarionMessage {
-    String paymentStatus;
+public class ResponseMessage {
+    String message;
 }

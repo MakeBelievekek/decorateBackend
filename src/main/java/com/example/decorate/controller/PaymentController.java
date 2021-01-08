@@ -1,9 +1,9 @@
 package com.example.decorate.controller;
 
 import com.example.decorate.domain.*;
-import com.example.decorate.domain.dto.BarionMessage;
 import com.example.decorate.domain.dto.OrderDetails;
 import com.example.decorate.domain.dto.ProductListItem;
+import com.example.decorate.domain.dto.ResponseMessage;
 import com.example.decorate.domain.dto.order.OrderDto;
 import com.example.decorate.services.MailService;
 import com.example.decorate.services.OrderService;
@@ -63,14 +63,16 @@ public class PaymentController {
     }
 
     @PostMapping("/orderRequest")
-    public ResponseEntity makeOrder(@Valid @RequestBody OrderDto orderDto) {
+    public ResponseEntity<ResponseMessage> makeOrder(@Valid @RequestBody OrderDto orderDto) {
         String orderId = this.paymentService.generateOrderId();
         this.orderService.saveOrder(orderDto, orderId);
-        return new ResponseEntity(HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseMessage(orderId));
     }
 
     @PostMapping("/checkPaymentStatus")
-    public ResponseEntity<BarionMessage> complete(@RequestBody String paymentId) {
+    public ResponseEntity<ResponseMessage> complete(@RequestBody String paymentId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.paymentService.checkStatus(paymentId));
@@ -89,8 +91,7 @@ public class PaymentController {
         ShippingDetails shippingDetails = this.orderService.findShippingDetails(17L);
         BillingDetails billingDetails = this.orderService.findBillingDetails(17L);
         PaymentHistory payment = this.paymentService.findPaymentWithOrderNumber(17L);
-
-        //new OrderDetails(payment, order, shippingDetails, billingDetails;
-        return new ResponseEntity(mailService.sendEmailAboutOrder(), HttpStatus.OK);
+        mailService.sendEmailAboutOrder(new OrderDetails(payment, order, shippingDetails, billingDetails));
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

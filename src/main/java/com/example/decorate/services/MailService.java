@@ -11,10 +11,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +21,6 @@ import javax.mail.MessagingException;
 public class MailService {
     private final JavaMailSender mailSender;
     private final MailContentBuilder mailContentBuilder;
-    private SpringTemplateEngine templateEngine;
 
     @Async
     void sendMail(NotificationEmail notificationEmail) {
@@ -42,16 +40,13 @@ public class MailService {
         }
     }
 
-    public String sendEmailAboutOrder() throws MessagingException {
-        Context context = new Context();
-      //  context.setVariable("orderDetails", orderDetails);
-      //  String process = templateEngine.process("emails/order", context);
-        javax.mail.internet.MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+    @Async
+    public void sendEmailAboutOrder(OrderDetails orderDetails) throws MessagingException {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
         helper.setSubject("Megrendelés érkezett :");
-        helper.setText("process,"   );
+        helper.setText(mailContentBuilder.buildOrder(orderDetails), true);
         helper.setTo("zsolt.preseka@yopmail.com");
         mailSender.send(mimeMessage);
-        return "process";
     }
 }
