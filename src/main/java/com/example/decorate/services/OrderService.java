@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static com.example.decorate.domain.PaymentOptionEnum.CASH_ON_DELIVERY;
 
@@ -19,49 +20,34 @@ import static com.example.decorate.domain.PaymentOptionEnum.CASH_ON_DELIVERY;
 @Service
 @Transactional
 public class OrderService {
+
     private final BillingDetailsRepository billingDetailsRepository;
     private final ShippingDetailsRepository shippingDetailsRepository;
     private final ShippingOptionRepository shippingOptionRepository;
     private final OrderHistoryRepository orderHistoryRepository;
     private final PaymentHistoryRepository paymentHistoryRepository;
     private final ProductKeyService productKeyService;
+    private final PaymentService paymentService;
 
-
-    public List<Long> getProductIds(OrderDto orderDto) {
-        List<Long> ids = new ArrayList<>();
-        orderDto.getItemId().forEach(itemAndQty -> ids.add(itemAndQty.getId()));
-        return ids;
+    public OrderHistory orderProcessing(OrderDto orderDto) {
+        String orderId = generateOrderId();
+        List<Product> products = getProductForOrder(orderDto);
+        return saveOrder(orderDto, orderId, products);
     }
 
-    public Long saveOrder(OrderDto orderDto, String orderId) {
-        System.out.println(orderDto);
-        Long orderDatabaseId;
-        int totalPrice = 0;
-        List<Product> products = new ArrayList<>();
-        orderDto.getItemId()
-                .forEach(itemAndQty -> {
-                    ProductListItem prod = this.productKeyService.getProd(itemAndQty.getId());
-                    products.add(new Product(prod, itemAndQty.getQty()));
-                });
+    public OrderHistory saveOrder(OrderDto orderDto, String orderId, List<Product> products) {
         ShippingDetails shippingDetails = new ShippingDetails(orderDto);
         this.shippingDetailsRepository.save(shippingDetails);
         BillingDetails billingDetails = new BillingDetails(orderDto);
         this.billingDetailsRepository.save(billingDetails);
         OrderHistory orderHistory = new OrderHistory(orderDto, products, orderId, billingDetails, shippingDetails);
-        for (Product product : products) {
-            totalPrice += (product.getPrice() * product.getQuantity());
-        }
-        if (orderDto.getPaymentOption().equals(CASH_ON_DELIVERY.getOption())) {
-            totalPrice += CASH_ON_DELIVERY.getPrice();
-        }
-        orderHistory.setTotalPrice(totalPrice + this.shippingOptionRepository.findByTypeOfDelivery(shippingDetails.getShipMethod()).getPrice());
-
+        int totalPrice = getTotalPrice(shippingDetails, orderDto.getPaymentOption(), products);
+        orderHistory.setTotalPrice(totalPrice);
         this.orderHistoryRepository.save(orderHistory);
-        orderDatabaseId = orderHistory.getId();
         shippingDetails.setOrderHistory(orderHistory);
         billingDetails.setOrderHistory(orderHistory);
         this.paymentHistoryRepository.save(new PaymentHistory(orderHistory, PaymentStatus.PENDING));
-        return orderDatabaseId;
+        return orderHistory;
     }
 
     public OrderHistory findOrder(Long id) {
@@ -71,12 +57,49 @@ public class OrderService {
             return null;
     }
 
+    public OrderHistory findOrder(String paymentId) {
+        System.out.println(paymentId);
+        if (this.orderHistoryRepository.findByPaymentId(paymentId).isPresent())
+            return this.orderHistoryRepository.findByPaymentId(paymentId).get();
+        else
+            return null;
+    }
+
     public ShippingDetails findShippingDetails(Long id) {
         return this.shippingDetailsRepository.findByOrderId(id);
     }
 
     public BillingDetails findBillingDetails(Long id) {
-
         return this.billingDetailsRepository.findByOrderId(id);
+    }
+
+    public int getTotalPrice(ShippingDetails shippingDetails, String paymentOption, List<Product> products) {
+        return getShippingPrice(shippingDetails) + getPaymentPrice(paymentOption) + productsPrice(products);
+    }
+
+    public int getShippingPrice(ShippingDetails shippingDetails) {
+        return this.shippingOptionRepository.findByTypeOfDelivery(shippingDetails.getShipMethod()).getPrice();
+    }
+
+    public int getPaymentPrice(String paymentOption) {
+        return paymentOption.equals(CASH_ON_DELIVERY.getOption()) ? CASH_ON_DELIVERY.getPrice() : 0;
+    }
+
+    public int productsPrice(List<Product> products) {
+        return products.stream().mapToInt(product -> product.getQuantity() * product.getPrice()).sum();
+    }
+
+    public String generateOrderId() {
+        return UUID.randomUUID().toString();
+    }
+
+    public List<Product> getProductForOrder(OrderDto orderDto) {
+        List<Product> products = new ArrayList<>();
+        orderDto.getItemId()
+                .forEach(itemAndQty -> {
+                    ProductListItem prod = this.productKeyService.getProd(itemAndQty.getId());
+                    products.add(new Product(prod, itemAndQty.getQty()));
+                });
+        return products;
     }
 }

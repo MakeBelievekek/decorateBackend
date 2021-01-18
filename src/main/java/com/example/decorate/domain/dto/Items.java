@@ -1,5 +1,6 @@
 package com.example.decorate.domain.dto;
 
+import com.example.decorate.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,5 +32,14 @@ public class Items {
         this.UnitPrice = productListItem.getPrice();
         this.ItemTotal = productListItem.getPrice() * qty;
         this.SKU = productListItem.getItemNumber();
+    }
+    public Items(Product product) {
+        this.Name = product.getName();
+        this.Description = product.getProductDesc();
+        this.Quantity = product.getQuantity();
+        this.Unit = product.getTypeOfSize();
+        this.UnitPrice = product.getPrice();
+        this.ItemTotal = product.getPrice() * product.getQuantity();
+        this.SKU = product.getItemNumber();
     }
 }

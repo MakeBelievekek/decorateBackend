@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import java.time.Instant;
 
 @NoArgsConstructor
@@ -21,6 +20,10 @@ public class Product {
 
     private Integer quantity;
 
+    private String typeOfSize;
+    @Column(name = "description", columnDefinition = "text")
+    private String productDesc;
+
     private Integer price;
 
     private String itemNumber;
@@ -34,6 +37,8 @@ public class Product {
     public Product(ProductListItem productListItem, Integer qty) {
         this.name = productListItem.getName();
         this.quantity = qty;
+        this.typeOfSize = productListItem.getTypeOfSize();
+        this.productDesc = productListItem.getProductDesc();
         this.price = productListItem.getPrice();
         this.itemNumber = productListItem.getItemNumber();
         this.created = Instant.now();

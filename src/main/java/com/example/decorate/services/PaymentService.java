@@ -3,8 +3,9 @@ package com.example.decorate.services;
 import com.example.decorate.domain.OrderHistory;
 import com.example.decorate.domain.PaymentHistory;
 import com.example.decorate.domain.PaymentStatus;
+import com.example.decorate.domain.Product;
 import com.example.decorate.domain.dto.*;
-import com.example.decorate.domain.dto.order.OrderDto;
+import com.example.decorate.domain.dto.order.PaymentAndOrderDto;
 import com.example.decorate.repositorys.OrderHistoryRepository;
 import com.example.decorate.repositorys.PaymentHistoryRepository;
 import com.example.decorate.repositorys.ShippingOptionRepository;
@@ -37,6 +38,7 @@ public class PaymentService {
     private PaymentHistoryRepository paymentHistoryRepository;
     private OrderHistoryRepository orderHistoryRepository;
 
+
     public PaymentService(RestTemplateBuilder restTemplateBuilder,
                           ShippingOptionRepository shippingOptionRepository,
                           PaymentHistoryRepository paymentHistoryRepository,
@@ -46,17 +48,6 @@ public class PaymentService {
         this.paymentHistoryRepository = paymentHistoryRepository;
         this.orderHistoryRepository = orderHistoryRepository;
     }
-
-    public String generatePaymentId() {
-        Date dNow = new Date();
-        SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
-        return ft.format(dNow);
-    }
-
-    public String generateOrderId() {
-        return UUID.randomUUID().toString();
-    }
-
 
     public List<AptListItem> getAtp() throws JsonProcessingException {
 
@@ -90,41 +81,20 @@ public class PaymentService {
         return items;
     }
 
-    public List<Items> getItems(OrderDto orderDto, List<ProductListItem> products) {
+    public List<Items> getItems(List<Product> products) {
         List<Items> itemArray = new ArrayList<>();
-        products.forEach(productListItem -> orderDto.getItemId().forEach(itemAndQty -> {
-            if (itemAndQty.getId().equals(productListItem.getId()))
-                itemArray.add(new Items(productListItem, itemAndQty.getQty()));
-        }));
+        products.forEach(product -> itemArray.add(new Items(product)));
+        System.out.println(itemArray);
         return itemArray;
-    }
-
-    public List<Transactions> createTransactionArray(List<Items> items, int shippingPrice) {
-        int totalPrice = 0;
-        List<Transactions> transactionsArray = new ArrayList<>();
-        Transactions transactions = new Transactions();
-        transactions.setPOSTransactionId("tr-25");
-        transactions.setPayee("zsolt.preseka@gmail.com");
-        for (Items item : items) {
-            totalPrice += item.getItemTotal();
-        }
-
-        transactions.setTotal(totalPrice + shippingPrice);
-        transactions.setItems(items);
-        transactionsArray.add(transactions);
-        return transactionsArray;
     }
 
     public List<OrderHistory> test() {
         return this.orderHistoryRepository.findAll();
     }
 
-    public ResponseEntity processOrder(OrderDto orderDto, List<ProductListItem> products,
-                                       String orderId, String paymentId,
-                                       Long orderDatabaseId) throws JsonProcessingException {
-
-        int shippingPrice = this.shippingOptionRepository.findByTypeOfDelivery(orderDto.getShipping().getShipMethod()).getPrice();
-
+    public ResponseEntity processOrder(List<Product> products, OrderHistory orderHistory) throws JsonProcessingException {
+        String paymentId = generatePaymentId();
+        int totalPrice = orderHistory.getTotalPrice();
         String[] funding = {"All"};
         PaymentData paymentData = new PaymentData();
         paymentData.setPOSKey("5bdaeb94f3a44cdd91a644b73354fc63");
@@ -132,15 +102,16 @@ public class PaymentService {
         paymentData.setGuestCheckout(true);
         paymentData.setFundingSources(funding);
         paymentData.setPaymentRequestId(paymentId);
-        paymentData.setOrderNumber(orderId);
+        paymentData.setOrderNumber(orderHistory.getOrderId());
         paymentData.setShippingAddress(null);
-        paymentData.setRedirectUrl("https://textilgarden.hu");
+        // paymentData.setRedirectUrl("https://textilgarden.hu");
+        paymentData.setRedirectUrl("http://localhost:4200");
         paymentData.setCallbackUrl("https://textilgarden.hu/api/public/payment/barion");
 
         paymentData.setLocale("hu-HU");
         paymentData.setCurrency("HUF");
         paymentData.setPaymentWindow("00:30:00");
-        paymentData.setTransactions(createTransactionArray(getItems(orderDto, products), shippingPrice));
+        paymentData.setTransactions(createTransactionArray(getItems(products), totalPrice));
 
         ObjectMapper mapper = new ObjectMapper();
         String message = mapper.writeValueAsString(paymentData);
@@ -153,7 +124,7 @@ public class PaymentService {
         ResponseEntity<String> responseEntity = this.restTemplate.postForEntity(this.startUrl, httpEntity, String.class);
         JsonNode jsonNode = mapper.readTree(Objects.requireNonNull(responseEntity.getBody()));
         String jsonUrl = jsonNode.get("PaymentId").asText();
-        PaymentHistory paymentHistory = this.paymentHistoryRepository.findByOrderHistory(orderDatabaseId);
+        PaymentHistory paymentHistory = this.paymentHistoryRepository.findByOrderHistory(orderHistory.getId());
         paymentHistory.setPaymentId(jsonUrl);
         paymentHistory.setPaymentRequestId(paymentId);
         this.paymentHistoryRepository.save(paymentHistory);
@@ -161,11 +132,23 @@ public class PaymentService {
         return responseEntity;
     }
 
+    public List<Transactions> createTransactionArray(List<Items> items, int totalPrice) {
+        List<Transactions> transactionsArray = new ArrayList<>();
+        Transactions transactions = new Transactions();
+        transactions.setPOSTransactionId("tr-25");
+        transactions.setPayee("zsolt.preseka@gmail.com");
+        transactions.setTotal(totalPrice);
+        transactions.setItems(items);
+        transactionsArray.add(transactions);
+        return transactionsArray;
+    }
+
     public void completeOrder(String paymentId) throws JsonProcessingException {
         String[] payment = paymentId.split("&");
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(Objects.requireNonNull(barionProcessing(payment[0]).getBody()));
         String status = jsonNode.get("Status").asText();
+        log.info(String.valueOf(jsonNode));
         PaymentHistory paymentHistory = this.paymentHistoryRepository.findByPaymentId(payment[0].split("=")[1]);
         PaymentStatus paymentStatus = status.equals(PaymentStatus.SUCCEEDED.getType()) ? PaymentStatus.SUCCEEDED : PaymentStatus.CANCELED;
         paymentHistory.setStatus(paymentStatus);
@@ -178,9 +161,9 @@ public class PaymentService {
         return this.restTemplate.getForEntity(url, String.class);
     }
 
-    public ResponseMessage checkStatus(String paymentId) {
+    public PaymentAndOrderDto checkStatus(String paymentId) {
         PaymentHistory payment = this.paymentHistoryRepository.findByPaymentId(paymentId);
-        return new ResponseMessage(payment.getStatus().getType());
+        return new PaymentAndOrderDto(payment.getStatus().getType(), payment.getOrderHistory().getOrderId());
     }
 
     public PaymentHistory findPayment(Long id) {
@@ -192,5 +175,11 @@ public class PaymentService {
 
     public PaymentHistory findPaymentWithOrderNumber(Long id) {
         return this.paymentHistoryRepository.findByOrderHistory(id);
+    }
+
+    public String generatePaymentId() {
+        Date dNow = new Date();
+        SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
+        return ft.format(dNow);
     }
 }

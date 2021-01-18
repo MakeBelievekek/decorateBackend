@@ -1,10 +1,11 @@
 package com.example.decorate.controller;
 
 import com.example.decorate.domain.*;
+import com.example.decorate.domain.dto.CallbackDto;
 import com.example.decorate.domain.dto.OrderDetails;
-import com.example.decorate.domain.dto.ProductListItem;
 import com.example.decorate.domain.dto.ResponseMessage;
 import com.example.decorate.domain.dto.order.OrderDto;
+import com.example.decorate.domain.dto.order.PaymentAndOrderDto;
 import com.example.decorate.services.MailService;
 import com.example.decorate.services.OrderService;
 import com.example.decorate.services.PaymentService;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -47,32 +47,25 @@ public class PaymentController {
     @GetMapping("/atp")
     public ResponseEntity getAllAtp() throws JsonProcessingException {
 
-        return new ResponseEntity(this.paymentService.getAtp(), HttpStatus.ACCEPTED);
+        return new ResponseEntity(this.paymentService.getAtp(), HttpStatus.OK);
     }
 
-    @PostMapping("/orderRequestBarion")
-    public ResponseEntity makeOrderWithBarion(@RequestBody OrderDto orderDto) throws JsonProcessingException {
-        String paymentId = this.paymentService.generatePaymentId();
-        String orderId = this.paymentService.generateOrderId();
-        Long orderDatabaseId = this.orderService.saveOrder(orderDto, orderId);
-        List<Long> productIds = this.orderService.getProductIds(orderDto);
-        List<ProductKey> keyholders = this.productKeyService.getKeyholders(productIds);
-        List<ProductListItem> items = this.productKeyService.getProducts(keyholders);
-
-        return new ResponseEntity(this.paymentService.processOrder(orderDto, items, orderId, paymentId, orderDatabaseId), HttpStatus.OK);
+    @PostMapping("/processOrder")
+    public ResponseEntity processOrder(@Valid @RequestBody OrderDto orderDto) throws JsonProcessingException {
+        OrderHistory orderHistory = this.orderService.orderProcessing(orderDto);
+        if (orderDto.getPaymentOption().equals(PaymentOptionEnum.CREDIT.getOption())) {
+            return new ResponseEntity(this.paymentService.processOrder(orderHistory.getProducts(), orderHistory), HttpStatus.CREATED);
+        }
+        return new ResponseEntity(new ResponseMessage(orderHistory.getOrderId()), HttpStatus.CREATED);
     }
 
-    @PostMapping("/orderRequest")
-    public ResponseEntity<ResponseMessage> makeOrder(@Valid @RequestBody OrderDto orderDto) {
-        String orderId = this.paymentService.generateOrderId();
-        this.orderService.saveOrder(orderDto, orderId);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(new ResponseMessage(orderId));
+    @GetMapping("/orderNumber/{id}")
+    public ResponseMessage getOrderByOrderNumber(@PathVariable("id") String id) {
+        return new ResponseMessage(this.orderService.findOrder(id).getOrderId());
     }
 
     @PostMapping("/checkPaymentStatus")
-    public ResponseEntity<ResponseMessage> complete(@RequestBody String paymentId) {
+    public ResponseEntity<PaymentAndOrderDto> complete(@RequestBody String paymentId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.paymentService.checkStatus(paymentId));
