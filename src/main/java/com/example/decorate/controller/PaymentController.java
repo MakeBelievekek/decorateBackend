@@ -1,7 +1,6 @@
 package com.example.decorate.controller;
 
 import com.example.decorate.domain.*;
-import com.example.decorate.domain.dto.CallbackDto;
 import com.example.decorate.domain.dto.OrderDetails;
 import com.example.decorate.domain.dto.ResponseMessage;
 import com.example.decorate.domain.dto.order.OrderDto;
@@ -51,11 +50,10 @@ public class PaymentController {
     }
 
     @PostMapping("/processOrder")
-    public ResponseEntity processOrder(@Valid @RequestBody OrderDto orderDto) throws JsonProcessingException {
+    public ResponseEntity processOrder(@Valid @RequestBody OrderDto orderDto) throws JsonProcessingException, MessagingException {
         OrderHistory orderHistory = this.orderService.orderProcessing(orderDto);
-        if (orderDto.getPaymentOption().equals(PaymentOptionEnum.CREDIT.getOption())) {
+        if (orderDto.getPaymentOption().equals(PaymentOptionEnum.CREDIT.getOption()))
             return new ResponseEntity(this.paymentService.processOrder(orderHistory.getProducts(), orderHistory), HttpStatus.CREATED);
-        }
         return new ResponseEntity(new ResponseMessage(orderHistory.getOrderId()), HttpStatus.CREATED);
     }
 
@@ -65,7 +63,7 @@ public class PaymentController {
     }
 
     @PostMapping("/checkPaymentStatus")
-    public ResponseEntity<PaymentAndOrderDto> complete(@RequestBody String paymentId) {
+    public ResponseEntity<PaymentAndOrderDto> complete(@RequestBody String paymentId) throws MessagingException {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.paymentService.checkStatus(paymentId));
@@ -78,7 +76,7 @@ public class PaymentController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/email")
+  /*  @PostMapping("/email")
     public ResponseEntity orderEmail() throws MessagingException {
         OrderHistory order = this.orderService.findOrder(17L);
         ShippingDetails shippingDetails = this.orderService.findShippingDetails(17L);
@@ -86,5 +84,5 @@ public class PaymentController {
         PaymentHistory payment = this.paymentService.findPaymentWithOrderNumber(17L);
         mailService.sendEmailAboutOrder(new OrderDetails(payment, order, shippingDetails, billingDetails));
         return new ResponseEntity(HttpStatus.OK);
-    }
+    }*/
 }

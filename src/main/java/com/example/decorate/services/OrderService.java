@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,12 +28,15 @@ public class OrderService {
     private final OrderHistoryRepository orderHistoryRepository;
     private final PaymentHistoryRepository paymentHistoryRepository;
     private final ProductKeyService productKeyService;
-    private final PaymentService paymentService;
+    private final OrderAndPaymentEmailProcessService orderAndPaymentEmailProcessService;
 
-    public OrderHistory orderProcessing(OrderDto orderDto) {
+    public OrderHistory orderProcessing(OrderDto orderDto) throws MessagingException {
         String orderId = generateOrderId();
         List<Product> products = getProductForOrder(orderDto);
-        return saveOrder(orderDto, orderId, products);
+        OrderHistory orderHistory = saveOrder(orderDto, orderId, products);
+        if (!orderDto.getPaymentOption().equals(PaymentOptionEnum.CREDIT.getOption()))
+            this.orderAndPaymentEmailProcessService.orderEmail(orderHistory);
+        return orderHistory;
     }
 
     public OrderHistory saveOrder(OrderDto orderDto, String orderId, List<Product> products) {
@@ -64,6 +68,7 @@ public class OrderService {
         else
             return null;
     }
+
 
     public ShippingDetails findShippingDetails(Long id) {
         return this.shippingDetailsRepository.findByOrderId(id);

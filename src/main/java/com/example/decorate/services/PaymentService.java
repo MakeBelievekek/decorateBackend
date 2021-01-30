@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import javax.mail.MessagingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -32,21 +33,23 @@ import java.util.*;
 public class PaymentService {
 
     private final RestTemplate restTemplate;
-    private ShippingOptionRepository shippingOptionRepository;
+    private final ShippingOptionRepository shippingOptionRepository;
     private final String startUrl = "https://api.test.barion.com/v2/Payment/Start";
     private final String callBack = "https://api.test.barion.com/v2/Payment/GetPaymentState/";
-    private PaymentHistoryRepository paymentHistoryRepository;
-    private OrderHistoryRepository orderHistoryRepository;
-
+    private final PaymentHistoryRepository paymentHistoryRepository;
+    private final OrderHistoryRepository orderHistoryRepository;
+    private final OrderAndPaymentEmailProcessService orderAndPaymentEmailProcessService;
 
     public PaymentService(RestTemplateBuilder restTemplateBuilder,
                           ShippingOptionRepository shippingOptionRepository,
                           PaymentHistoryRepository paymentHistoryRepository,
-                          OrderHistoryRepository orderHistoryRepository) {
+                          OrderHistoryRepository orderHistoryRepository,
+                          OrderAndPaymentEmailProcessService orderAndPaymentEmailProcessService) {
         this.restTemplate = restTemplateBuilder.build();
         this.shippingOptionRepository = shippingOptionRepository;
         this.paymentHistoryRepository = paymentHistoryRepository;
         this.orderHistoryRepository = orderHistoryRepository;
+        this.orderAndPaymentEmailProcessService = orderAndPaymentEmailProcessService;
     }
 
     public List<AptListItem> getAtp() throws JsonProcessingException {
@@ -104,8 +107,8 @@ public class PaymentService {
         paymentData.setPaymentRequestId(paymentId);
         paymentData.setOrderNumber(orderHistory.getOrderId());
         paymentData.setShippingAddress(null);
-        // paymentData.setRedirectUrl("https://textilgarden.hu");
-        paymentData.setRedirectUrl("http://localhost:4200");
+        paymentData.setRedirectUrl("https://textilgarden.hu");
+        //paymentData.setRedirectUrl("http://localhost:4200");
         paymentData.setCallbackUrl("https://textilgarden.hu/api/public/payment/barion");
 
         paymentData.setLocale("hu-HU");
@@ -161,8 +164,11 @@ public class PaymentService {
         return this.restTemplate.getForEntity(url, String.class);
     }
 
-    public PaymentAndOrderDto checkStatus(String paymentId) {
+    public PaymentAndOrderDto checkStatus(String paymentId) throws MessagingException {
         PaymentHistory payment = this.paymentHistoryRepository.findByPaymentId(paymentId);
+        if (payment.getStatus() == PaymentStatus.SUCCEEDED)
+            this.orderAndPaymentEmailProcessService.orderEmail(payment);
+
         return new PaymentAndOrderDto(payment.getStatus().getType(), payment.getOrderHistory().getOrderId());
     }
 
