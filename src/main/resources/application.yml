@@ -29,6 +29,11 @@ spring:
     password: "d06a0abade0cb1"
     protocol: "smtp"
 
+yamlconfig:
+  barionConfig:
+    posKey: "5bdaeb94f3a44cdd91a644b73354fc63"
+    redirectUrl: "http://localhost:4200"
+    callbackUrl: "http://localhost:4200"
 
 logging:
   level:
@@ -41,6 +46,7 @@ logging:
 
 server:
   port: 8080
+
 
 
 

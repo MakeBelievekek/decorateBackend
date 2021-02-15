@@ -13,6 +13,7 @@ import com.example.decorate.mapper.DecorationMapper;
 import com.example.decorate.mapper.FurnitureFabricMapper;
 import com.example.decorate.mapper.WallpaperMapper;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,6 @@ import java.time.Instant;
 @AllArgsConstructor
 @Service
 @Transactional
-
 public class EntityUpdateService {
 
     private final CurtainMapper curtainMapper;
@@ -40,7 +40,7 @@ public class EntityUpdateService {
     }
 
     public void setFurnitureFabricUpdatedValues(FurnitureFabric furnitureFabric, FurnitureFabricModel furnitureFabricModel) {
-       furnitureFabricMapper.updateFurnitureFabricFields(furnitureFabric, furnitureFabricModel);
+        furnitureFabricMapper.updateFurnitureFabricFields(furnitureFabric, furnitureFabricModel);
     }
 
     public void setDecorationUpdatedValues(Decoration decoration, DecorationModel decorationModel) {

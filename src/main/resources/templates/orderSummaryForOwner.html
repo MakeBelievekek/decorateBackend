@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title></title>
+    <link rel="stylesheet" th:href="@{static/order.css}" href="../static/order.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <style>
+        p, h3 {
+            margin: 0;
+        }
+
+        header {
+            font-size: 2rem;
+        }
+
+        h3 {
+            padding: 0 0 15px 0;
+            font-size: 1.3rem;
+            color: #C6D7CD;
+        }
+
+        p {
+            padding: 3px 0 3px 0;
+            font-size: 1rem;
+        }
+
+        td {
+            padding: 0 0 0 10px;
+            font-weight: bold;
+        }
+
+        .order-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .order-content {
+            margin: 50px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            border: grey 1px solid;
+            background-color: #f2f2f2;
+        }
+
+        .order-header {
+            background-color: #C6D7CD;
+            padding: 20px 0 20px 50px;
+        }
+
+        .order-table {
+            margin: 50px;
+            border: 1px solid grey;
+        }
+
+        .shipping-information {
+            padding: 0 0 0 50px;
+            display: flex;
+        }
+
+        .billing-details {
+            display: flex;
+            flex-grow: 1;
+            flex-basis: 0;
+            flex-direction: column;
+            margin: 0 0 50px 0;
+        }
+
+        @media screen and (max-width: 500px) {
+            header {
+                font-size: 1.4rem;
+            }
+
+            h3 {
+                padding: 0 0 10px 0;
+                font-size: .8rem;
+                color: #C6D7CD;
+            }
+
+            p {
+                padding: 3px 0 3px 0;
+                font-size: .7rem;
+            }
+
+            .shipping-information {
+                padding: 0 0 0 10px;
+            }
+
+            .order-header {
+                padding: 10px 0 10px 30px;
+            }
+
+            .order-table {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="order-container">
+    <div class="order-content">
+        <div class="order-header">
+            <header>Megrendelés érkezett</header>
+        </div>
+        <table class="order-table" border="1">
+            <colgroup>
+                <col span="1" style="width: 50%;">
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 35%;">
+            </colgroup>
+            <tr height="50px">
+                <th>Termék</th>
+                <th style="text-align: center">Mennyiség</th>
+                <th style="text-align: center">Ár</th>
+            </tr>
+            <tr th:each="product : ${products}" height="50px">
+                <td th:text="${product.getName()+' ' + product.getItemNumber()}">valami</td>
+                <td th:text="${product.getQuantity()}">2</td>
+                <td th:text="${product.getPrice()*product.getQuantity()+' Ft'}">221111</td>
+            </tr>
+            <tr height="50px">
+                <td colspan="2">Részösszeg:</td>
+                <td th:text="${subtotal +' Ft'}"></td>
+            </tr>
+            <tr height="50px">
+                <td colspan="2">Szállítás:</td>
+                <td th:text="${shipMethod}"></td>
+            </tr>
+            <tr height="50px">
+                <td colspan="2">Fizetés módja:</td>
+                <td th:text="${paymentType}"></td>
+            </tr>
+            <tr height="50px">
+                <td colspan="2">Végösszeg:</td>
+                <td th:text="${totalPrice +' Ft'}"></td>
+            </tr>
+            <tr height="50px">
+                <td colspan="2">Megjegyzés:</td>
+                <td th:text="${shipInfo}"></td>
+            </tr>
+        </table>
+        <div class="shipping-information">
+            <div class="billing-details">
+                <h3>Számlázási cím</h3>
+                <p th:text="${lastName+' '+firstName}"></p>
+                <p th:text="${billCity}"></p>
+                <p th:text="${billAddress}"></p>
+                <p th:text="${billZip}"></p>
+                <p th:text="${phone}"></p>
+                <a th:text="${email}"></a>
+            </div>
+            <div class="billing-details">
+                <h3>Szállítási cím</h3>
+                <p th:text="${lastName+' '+firstName}"></p>
+                <p th:text="${shipCity}"></p>
+                <p th:text="${shipAddress}"></p>
+                <p th:text="${shipZip}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -36,7 +36,7 @@ public class MailContentBuilder {
         context.setVariable("shipCity", orderDto.getShippingDetails().getCity());
         context.setVariable("shipAddress", orderDto.getShippingDetails().getAddress());
         context.setVariable("shipZip", orderDto.getShippingDetails().getZip());
-        return templateEngine.process("order", context);
+        return templateEngine.process("orderSummaryForOwner", context);
     }
 
 

@@ -26,6 +26,7 @@ spring:
     username: "2c09225ea19cd0"
     password: "d06a0abade0cb1"
     protocol: "smtp"
+
 logging:
   level:
     hu.formulative.demo: debug

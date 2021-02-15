@@ -1,5 +1,6 @@
 package com.example.decorate.services;
 
+import com.example.decorate.config.YAMLConfig;
 import com.example.decorate.domain.OrderHistory;
 import com.example.decorate.domain.PaymentHistory;
 import com.example.decorate.domain.PaymentStatus;
@@ -35,31 +36,32 @@ public class PaymentService {
     private final RestTemplate restTemplate;
     private final ShippingOptionRepository shippingOptionRepository;
     private final String startUrl = "https://api.test.barion.com/v2/Payment/Start";
-    private final String callBack = "https://api.test.barion.com/v2/Payment/GetPaymentState/";
+    private final String foxPostUrl = "https://api.csomagvarazslo.hu/v2/apt";
     private final PaymentHistoryRepository paymentHistoryRepository;
     private final OrderHistoryRepository orderHistoryRepository;
     private final OrderAndPaymentEmailProcessService orderAndPaymentEmailProcessService;
+    private final YAMLConfig yamlConfig;
 
     public PaymentService(RestTemplateBuilder restTemplateBuilder,
                           ShippingOptionRepository shippingOptionRepository,
                           PaymentHistoryRepository paymentHistoryRepository,
                           OrderHistoryRepository orderHistoryRepository,
-                          OrderAndPaymentEmailProcessService orderAndPaymentEmailProcessService) {
+                          OrderAndPaymentEmailProcessService orderAndPaymentEmailProcessService, YAMLConfig yamlConfig) {
         this.restTemplate = restTemplateBuilder.build();
         this.shippingOptionRepository = shippingOptionRepository;
         this.paymentHistoryRepository = paymentHistoryRepository;
         this.orderHistoryRepository = orderHistoryRepository;
         this.orderAndPaymentEmailProcessService = orderAndPaymentEmailProcessService;
+        this.yamlConfig = yamlConfig;
     }
 
     public List<AptListItem> getAtp() throws JsonProcessingException {
 
         Map<String, List<String>> citys = new HashMap<>();
         List<AptListItem> items = new ArrayList<>();
-        String url = "https://api.csomagvarazslo.hu/v2/apt";
         ObjectMapper mapper = new ObjectMapper();
 
-        ResponseEntity<String> responseEntity = this.restTemplate.getForEntity(url, String.class);
+        ResponseEntity<String> responseEntity = this.restTemplate.getForEntity(foxPostUrl, String.class);
         JsonNode jsonNode = mapper.readTree(Objects.requireNonNull(responseEntity.getBody()));
 
         List<Atp> objects = mapper.readValue(jsonNode.toString(), new TypeReference<List<Atp>>() {
@@ -96,21 +98,20 @@ public class PaymentService {
     }
 
     public ResponseEntity processOrder(List<Product> products, OrderHistory orderHistory) throws JsonProcessingException {
+        System.out.println(yamlConfig.getBarionConfig().getPosKey());
         String paymentId = generatePaymentId();
         int totalPrice = orderHistory.getTotalPrice();
         String[] funding = {"All"};
         PaymentData paymentData = new PaymentData();
-        paymentData.setPOSKey("5bdaeb94f3a44cdd91a644b73354fc63");
+        paymentData.setPOSKey(yamlConfig.getBarionConfig().getPosKey());
         paymentData.setPaymentType("Immediate");
         paymentData.setGuestCheckout(true);
         paymentData.setFundingSources(funding);
         paymentData.setPaymentRequestId(paymentId);
         paymentData.setOrderNumber(orderHistory.getOrderId());
         paymentData.setShippingAddress(null);
-        paymentData.setRedirectUrl("https://textilgarden.hu");
-        //paymentData.setRedirectUrl("http://localhost:4200");
-        paymentData.setCallbackUrl("https://textilgarden.hu/api/public/payment/barion");
-
+        paymentData.setRedirectUrl(yamlConfig.getBarionConfig().getRedirectUrl());
+        paymentData.setCallbackUrl(yamlConfig.getBarionConfig().getCallbackUrl());
         paymentData.setLocale("hu-HU");
         paymentData.setCurrency("HUF");
         paymentData.setPaymentWindow("00:30:00");
@@ -160,7 +161,7 @@ public class PaymentService {
     }
 
     public ResponseEntity<String> barionProcessing(String paymentId) {
-        String url = "https://api.test.barion.com/v2/Payment/GetPaymentState/?poskey=5bdaeb94f3a44cdd91a644b73354fc63&" + paymentId;
+        String url = "https://api.test.barion.com/v2/Payment/GetPaymentState/?poskey=" + yamlConfig.getBarionConfig().getPosKey() + "&" + paymentId;
         return this.restTemplate.getForEntity(url, String.class);
     }
 
